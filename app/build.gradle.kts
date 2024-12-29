@@ -9,12 +9,16 @@ plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     application
     id("java-library")
+    id("org.openjfx.javafxplugin") version "0.1.0"
 }
 
 repositories {
     // Use Maven Central for resolving dependencies.
     mavenCentral()
 }
+
+group = "io.github.ClownGraphics"
+version = "0.1.0"
 
 dependencies {
     // Use JUnit Jupiter for testing.
@@ -32,6 +36,11 @@ java {
         languageVersion = JavaLanguageVersion.of(21)
     }
 }
+javafx {
+    modules("javafx.graphics", "javafx.fxml", "javafx.controls")
+    version = "23.0.1"
+}
+
 
 application {
     // Define the main class for the application.

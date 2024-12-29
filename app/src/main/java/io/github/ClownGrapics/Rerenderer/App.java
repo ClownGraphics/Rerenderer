@@ -3,12 +3,19 @@
  */
 package io.github.ClownGrapics.Rerenderer;
 
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.stage.Stage;
+import javafx.stage.Window;
+
+import java.io.IOException;
+
 public class App {
-    public String getGreeting() {
-        return "Hello World!";
-    }
 
     public static void main(String[] args) {
-        System.out.println(new App().getGreeting());
+        WindowApp.main(null);
     }
+
 }

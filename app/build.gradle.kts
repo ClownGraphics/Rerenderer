@@ -28,6 +28,10 @@ dependencies {
 
     // This dependency is used by the application.
     implementation(libs.guava)
+
+    // Linear algebra by Alphameo
+    implementation("io.github.alphameo:linear_algebra:2.0.0")
+
 }
 
 // Apply a specific Java toolchain to ease working on different environments.

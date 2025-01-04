@@ -34,6 +34,11 @@ dependencies {
 
     // Obj reader by shimeoki
     implementation("io.github.shimeoki:jshaper:0.15.0")
+
+    // Triangulation by Traunin
+    implementation("io.github.traunin:triangulation:1.1.1")
+
+
 }
 
 // Apply a specific Java toolchain to ease working on different environments.

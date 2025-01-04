@@ -1,10 +1,10 @@
-package io.github.ClownGrapics.Rerenderer.rasterisers;
+package io.github.ClownGraphics.Rerenderer.rasterisers;
 
 
-import io.github.ClownGrapics.Rerenderer.color.Texture;
-import io.github.ClownGrapics.Rerenderer.math.Barycentric;
-import io.github.ClownGrapics.Rerenderer.math.Triangle;
-import io.github.ClownGrapics.Rerenderer.math.Utils;
+import io.github.ClownGraphics.Rerenderer.math.Barycentric;
+import io.github.ClownGraphics.Rerenderer.math.Triangle;
+import io.github.ClownGraphics.Rerenderer.math.Utils;
+import io.github.ClownGraphics.Rerenderer.color.Texture;
 import javafx.geometry.Point2D;
 import javafx.scene.image.PixelWriter;
 import java.util.*;

@@ -1,7 +1,5 @@
 package io.github.ClownGraphics.Rerenderer.triangulation;
 
-import io.github.ClownGrapics.Rerenderer.triangulation.Vector2f;
-
 public class ReadOnlyVector2f implements Vector2f {
     private final float x;
     private final float y;

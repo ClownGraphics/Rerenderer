@@ -1,7 +1,7 @@
-package io.github.ClownGrapics.Rerenderer.color;
+package io.github.ClownGraphics.Rerenderer.color;
 
 
-import io.github.ClownGrapics.Rerenderer.math.Utils;
+import io.github.ClownGraphics.Rerenderer.math.Utils;
 import javafx.scene.paint.Color;
 
 public class ColorRGB {

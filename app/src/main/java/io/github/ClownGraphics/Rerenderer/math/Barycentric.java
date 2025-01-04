@@ -1,4 +1,4 @@
-package io.github.ClownGrapics.Rerenderer.math;
+package io.github.ClownGraphics.Rerenderer.math;
 
 public class Barycentric {
 

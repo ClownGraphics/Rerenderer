@@ -1,6 +1,6 @@
-package io.github.ClownGrapics.Rerenderer.math;
+package io.github.ClownGraphics.Rerenderer.math;
 
-import io.github.ClownGrapics.Rerenderer.triangulation.Vector2f;
+import io.github.ClownGraphics.Rerenderer.triangulation.Vector2f;
 
 public final class VectorMath {
 

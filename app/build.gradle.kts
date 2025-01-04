@@ -32,6 +32,8 @@ dependencies {
     // Linear algebra by Alphameo
     implementation("io.github.alphameo:linear_algebra:2.0.0")
 
+    // Obj reader by shimeoki
+    implementation("io.github.shimeoki:jshaper:0.15.0")
 }
 
 // Apply a specific Java toolchain to ease working on different environments.

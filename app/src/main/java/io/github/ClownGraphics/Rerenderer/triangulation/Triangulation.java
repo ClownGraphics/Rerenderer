@@ -1,12 +1,11 @@
-package io.github.ClownGrapics.Rerenderer.triangulation;
+package io.github.ClownGraphics.Rerenderer.triangulation;
 
-import io.github.ClownGrapics.Rerenderer.math.VectorMath;
+import io.github.ClownGraphics.Rerenderer.math.VectorMath;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
 
-import static io.github.ClownGrapics.Rerenderer.math.VectorMath.EPSILON;
 public final class Triangulation {
 
     private Triangulation() {
@@ -58,7 +57,7 @@ public final class Triangulation {
 
                 // Ухо выпуклое? Проверка через векторное произведение
                 float crossProduct = VectorMath.crossProduct(prevVertex, curVertex, nextVertex);
-                if ((isCCW ? crossProduct : -crossProduct) < EPSILON) {
+                if ((isCCW ? crossProduct : -crossProduct) < VectorMath.EPSILON) {
                     continue;
                 }
 

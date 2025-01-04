@@ -1,11 +1,9 @@
 package io.github.ClownGraphics.Rerenderer.triangulation;
 
-import io.github.ClownGrapics.Rerenderer.triangulation.Triangulation;
-import io.github.ClownGrapics.Rerenderer.triangulation.TriangulationException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
-import io.github.ClownGrapics.Rerenderer.math.VectorMath;
+import io.github.ClownGraphics.Rerenderer.math.VectorMath;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

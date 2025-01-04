@@ -3,7 +3,7 @@
  */
 package org.example;
 
-import io.github.ClownGrapics.Rerenderer.App;
+import io.github.ClownGraphics.Rerenderer.App;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 

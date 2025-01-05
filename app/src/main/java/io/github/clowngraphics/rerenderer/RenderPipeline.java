@@ -32,4 +32,8 @@ public class RenderPipeline {
 
     }
 
+    private void lookAt(Camera camera){
+
+    }
+
 }

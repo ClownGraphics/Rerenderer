@@ -25,7 +25,7 @@ public class MonotoneTexture implements Texture {
         return color;
     }
 
-    @Override
+
     public ColorRGB get(final float x, final float y){
         return color;
     }

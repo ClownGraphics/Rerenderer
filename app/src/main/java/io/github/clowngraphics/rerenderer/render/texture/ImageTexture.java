@@ -1,5 +1,7 @@
 package io.github.clowngraphics.rerenderer.render.texture;
 
+import io.github.alphameo.linear_algebra.vec.Vec2;
+import io.github.alphameo.linear_algebra.vec.Vector2;
 import io.github.clowngraphics.rerenderer.math.Barycentric;
 
 import javax.imageio.ImageIO;
@@ -19,15 +21,15 @@ public class ImageTexture implements Texture{
         width = image.getWidth();
         height = image.getHeight();
     }
-    @Override
+
     public ColorRGB get(final float x, final float y) {
 
         if (x < -1 || y < -1 || x > 1 || y > 1) {
             throw new IllegalArgumentException("Coordinates has to be in [-1, 1]");
         }
 
-        int pixelX = (int) ((x + 1) / 2 * width);
-        int pixelY = (int) ((y + 1) / 2 * height);
+        int pixelX = Math.min(Math.max(0, (int) ((x + 1) / 2 * width)), width - 1);
+        int pixelY = Math.min(Math.max(0, (int) ((y + 1) / 2 * height)), height - 1);
 
         int color = texture.getRGB(pixelX, pixelY);
         System.out.println(color);
@@ -40,9 +42,26 @@ public class ImageTexture implements Texture{
         System.out.println(new ColorRGB(red, green, blue, alpha).convertToJFXColor().toString());
         return new ColorRGB(red, green, blue, alpha);
     }
-    @Override
-    public ColorRGB get(Barycentric b) {
-        return new ColorRGB(0,0,0,0);
+
+    public ColorRGB get(Barycentric b, UVCoordinates uvCoordinates) {
+
+        Vector2 interpolatedUV = uvCoordinates.barycentric(b);
+
+        float u = interpolatedUV.x();
+        float v = interpolatedUV.y();
+
+        int pixelX = Math.min((int) (u * (width - 1)), width - 1);
+        int pixelY = Math.min((int) (v * (height - 1)), height - 1);
+
+        int color = texture.getRGB(pixelX, pixelY);
+
+
+        float alpha = ((color >> 24) & 0xFF) / 255f;
+        float red = ((color >> 16) & 0xFF) / 255f;
+        float green = ((color >> 8) & 0xFF) / 255f;
+        float blue = (color & 0xFF) / 255f;
+
+        return new ColorRGB(red, green, blue, alpha);
     }
 
 

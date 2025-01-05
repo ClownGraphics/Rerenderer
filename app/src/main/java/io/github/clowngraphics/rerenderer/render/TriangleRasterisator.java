@@ -3,6 +3,7 @@ package io.github.clowngraphics.rerenderer.render;
 import io.github.clowngraphics.rerenderer.math.Barycentric;
 import io.github.clowngraphics.rerenderer.math.Triangle;
 import io.github.clowngraphics.rerenderer.math.Utils;
+import io.github.clowngraphics.rerenderer.render.texture.ColorRGB;
 import io.github.clowngraphics.rerenderer.render.texture.Texture;
 import javafx.geometry.Point2D;
 import javafx.scene.image.PixelWriter;
@@ -104,7 +105,9 @@ public class TriangleRasterisator {
 //            System.out.print("; " + y + " --> ");
 //            System.out.println(t.getTexture().get(b).convertToJFXColor().toString());
 
-            pixelWriter.setColor(x, y, t.getTexture().get(b).convertToJFXColor());
+            ColorRGB color = t.getTexture().get(b);
+
+            pixelWriter.setColor(x, y, color.convertToJFXColor());
         }
     }
 

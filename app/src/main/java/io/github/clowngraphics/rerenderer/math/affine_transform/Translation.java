@@ -4,7 +4,7 @@ import io.github.alphameo.linear_algebra.mat.Mat4;
 import io.github.alphameo.linear_algebra.mat.Matrix4;
 
 public class Translation implements Transformation{
-    private Matrix4 transformationMatrix;
+    private final Matrix4 transformationMatrix;
 
     public Translation(float dx, float dy, float dz) {
         this.transformationMatrix = new Mat4(new float[][] {

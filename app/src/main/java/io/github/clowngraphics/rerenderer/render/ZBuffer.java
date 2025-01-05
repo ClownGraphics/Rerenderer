@@ -2,6 +2,10 @@ package io.github.clowngraphics.rerenderer.render;
 
 import java.util.Arrays;
 
+/**
+ * @author traunin {@link https://github.com/Traunin}
+ */
+
 public class ZBuffer {
 
     private int width;

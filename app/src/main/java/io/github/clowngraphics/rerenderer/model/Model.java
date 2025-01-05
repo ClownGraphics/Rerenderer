@@ -3,7 +3,7 @@ package io.github.clowngraphics.rerenderer.model;
 
 import io.github.alphameo.linear_algebra.mat.Mat4;
 import io.github.alphameo.linear_algebra.mat.Matrix4;
-import io.github.clowngraphics.rerenderer.render.color.Texture;
+import io.github.clowngraphics.rerenderer.render.texture.Texture;
 import io.github.shimeoki.jshaper.ObjFile;
 import io.github.shimeoki.jshaper.obj.Face;
 import io.github.shimeoki.jshaper.obj.TextureVertex;
@@ -11,6 +11,10 @@ import io.github.shimeoki.jshaper.obj.Vertex;
 import io.github.shimeoki.jshaper.obj.VertexNormal;
 import java.util.List;
 
+
+/**
+ * @author traunin {@link https://github.com/Traunin}
+ */
 public class Model {
 
     private final List<Vertex> vertices;

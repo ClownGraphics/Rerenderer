@@ -1,4 +1,4 @@
-package io.github.clowngraphics.rerenderer.render.color;
+package io.github.clowngraphics.rerenderer.render.texture;
 
 import io.github.clowngraphics.rerenderer.math.Utils;
 import javafx.scene.paint.Color;

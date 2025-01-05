@@ -1,4 +1,4 @@
-package io.github.clowngraphics.rerenderer.rasterisers;
+package io.github.clowngraphics.rerenderer.render;
 
 import io.github.clowngraphics.rerenderer.math.Barycentric;
 import io.github.clowngraphics.rerenderer.math.Triangle;

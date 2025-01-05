@@ -1,4 +1,4 @@
-package io.github.clowngraphics.rerenderer.color;
+package io.github.clowngraphics.rerenderer.render.color;
 
 import io.github.clowngraphics.rerenderer.math.Barycentric;
 import javafx.scene.paint.Color;
@@ -23,6 +23,11 @@ public class MonotoneTexture implements Texture {
     public ColorRGB get(final Barycentric b) {
         Objects.requireNonNull(b);
 
+        return color;
+    }
+
+    @Override
+    public ColorRGB get(final float x, final float y){
         return color;
     }
 }

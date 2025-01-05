@@ -1,7 +1,8 @@
 package io.github.clowngraphics.rerenderer;
 
 import io.github.clowngraphics.rerenderer.render.TriangleRasterisator;
-import io.github.clowngraphics.rerenderer.render.color.MonotoneTexture;
+import io.github.clowngraphics.rerenderer.render.texture.ImageTexture;
+import io.github.clowngraphics.rerenderer.render.texture.MonotoneTexture;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
@@ -14,6 +15,10 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.Random;
 
 public class RenderTestFrame extends Application {
@@ -27,13 +32,27 @@ public class RenderTestFrame extends Application {
         TriangleRasterisator tr = new TriangleRasterisator(gc.getPixelWriter());
 
         Random rnd = new Random();
-        MonotoneTexture mt = new MonotoneTexture(Color.BLACK);
+        try {
+            // Указываем путь к изображению
+            File imageFile = new File("C:\\Users\\user\\Downloads\\grad.jpg");
+
+            // Загружаем изображение в объект BufferedImage
+            BufferedImage image = ImageIO.read(imageFile);
+
+            ImageTexture mt = ImageTexture.setFromFile(imageFile);
+//            MonotoneTexture mt = new MonotoneTexture(Color.BLANCHEDALMOND);
+            p1 = new Point2D(100, 100);
+            p2 = new Point2D(0, 500);
+            p3 = new Point2D(900,1000);
+            System.out.println(mt.get(0,0));
+            tr.draw(p1, p2, p3, mt);
+
+        } catch (IOException e) {
+            System.err.println("Ошибка при загрузке изображения: " + e.getMessage());
+        }
 
 
-        p1 = new Point2D(rnd.nextInt(1000), rnd.nextInt(1000));
-        p2 = new Point2D(rnd.nextInt(1000), rnd.nextInt(1000));
-        p3 = new Point2D(rnd.nextInt(1000), rnd.nextInt(1000));
-        tr.draw(p1, p2, p3, mt);
+
     }
 
     public static void main(String[] args) {
@@ -60,6 +79,17 @@ public class RenderTestFrame extends Application {
                 if (t.getCode() == KeyCode.ESCAPE) {
                     Stage sb = (Stage) scene.getScene().getWindow();
                     sb.close();
+                }
+            }
+        });
+
+        scene.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent t) {
+                if (t.getCode() == KeyCode.SPACE) {
+                    root.getChildren().clear();
+                    showTriangle(gc);
+                    root.getChildren().add(canvas);
                 }
             }
         });

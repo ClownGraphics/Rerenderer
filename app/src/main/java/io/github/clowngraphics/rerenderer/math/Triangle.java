@@ -1,6 +1,6 @@
 package io.github.clowngraphics.rerenderer.math;
 
-import io.github.clowngraphics.rerenderer.render.color.Texture;
+import io.github.clowngraphics.rerenderer.render.texture.Texture;
 import javafx.geometry.Point2D;
 
 import java.util.Objects;
@@ -46,37 +46,37 @@ public class Triangle {
         return point3;
     }
 
-    public double x3() {
-        return point3.getX();
+    public float x3() {
+        return (float) point3.getX();
     }
 
-    public double y3() {
-        return point3.getY();
+    public float y3() {
+        return (float) point3.getY();
     }
 
     public Barycentric barycentrics(final Point2D p) {
 
-        final double x = p.getX();
-        final double y = p.getY();
+        final float x = (float) p.getX();
+        final float y = (float) p.getY();
 
-        final double x1 = getPoint1().getX();
-        final double y1 = getPoint1().getY();
+        final float x1 = (float) getPoint1().getX();
+        final float y1 = (float) getPoint1().getY();
 
-        final double x2 = getPoint2().getX();
-        final double y2 = getPoint2().getY();
+        final float x2 = (float) getPoint2().getX();
+        final float y2 = (float) getPoint2().getY();
 
-        final double x3 = getPoint3().getX();
-        final double y3 = getPoint3().getY();
+        final float x3 = (float) getPoint3().getX();
+        final float y3 = (float) getPoint3().getY();
 
-        final double n1 = (y2 - y3) * (x - x3) + (x3 - x2) * (y - y3);
-        final double n2 = (y3 - y1) * (x - x3) + (x1 - x3) * (y - y3);
-        final double n3 = (y1 - y2) * (x - x1) + (x2 - x1) * (y - y1);
+        final float n1 = (y2 - y3) * (x - x3) + (x3 - x2) * (y - y3);
+        final float n2 = (y3 - y1) * (x - x3) + (x1 - x3) * (y - y3);
+        final float n3 = (y1 - y2) * (x - x1) + (x2 - x1) * (y - y1);
 
-        final double d = 1 / ((y2 - y3) * (x1 - x3) + (x3 - x2) * (y1 - y3));
+        final float d = 1 / ((y2 - y3) * (x1 - x3) + (x3 - x2) * (y1 - y3));
 
-        final double l1 = n1 * d;
-        final double l2 = n2 * d;
-        final double l3 = n3 * d;
+        final float l1 = n1 * d;
+        final float l2 = n2 * d;
+        final float l3 = n3 * d;
 
         return new Barycentric(l1, l2, l3);
     }

@@ -2,13 +2,13 @@ package io.github.clowngraphics.rerenderer.math;
 
 public class Barycentric {
 
-    private final double lambda1;
-    private final double lambda2;
-    private final double lambda3;
+    private final float lambda1;
+    private final float lambda2;
+    private final float lambda3;
 
     private final boolean inside;
 
-    public Barycentric(final double lambda1, final double lambda2, final double lambda3) {
+    public Barycentric(final float lambda1, final float lambda2, final float lambda3) {
 
         final double sum = lambda1 + lambda2 + lambda3;
         if (!Utils.equals(sum, 1)) {

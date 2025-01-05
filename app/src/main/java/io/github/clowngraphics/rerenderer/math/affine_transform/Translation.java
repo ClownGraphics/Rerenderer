@@ -6,6 +6,16 @@ import io.github.alphameo.linear_algebra.mat.Matrix4;
 public class Translation implements Transformation{
     private final Matrix4 transformationMatrix;
 
+
+    public Translation() {
+        this.transformationMatrix = new Mat4(new float[][] {
+                {1, 0, 0, 0},
+                {0, 1, 0, 0},
+                {0, 0, 1, 0},
+                {0, 0, 0, 1}
+        });
+    }
+
     public Translation(float dx, float dy, float dz) {
         this.transformationMatrix = new Mat4(new float[][] {
                 {1, 0, 0, dx},

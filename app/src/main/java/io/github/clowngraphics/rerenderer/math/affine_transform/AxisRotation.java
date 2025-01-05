@@ -8,6 +8,16 @@ public class AxisRotation implements Transformation{
     private final Mat4 transformationMatrix;
     private final Axis axis;
 
+    public AxisRotation(Axis axis, Axis axis1) {
+        this.axis = axis;
+        switch (axis){
+            case X -> this.transformationMatrix = rotationX(0);
+            case Y -> this.transformationMatrix = rotationY(0);
+            case Z -> this.transformationMatrix = rotationZ(0);
+            default -> this.transformationMatrix = null;
+        }
+    }
+
     public AxisRotation(float angle, Axis axis) {
         this.axis = axis;
         switch (axis){
@@ -17,17 +27,15 @@ public class AxisRotation implements Transformation{
             default -> this.transformationMatrix = null;
         }
     }
-    public enum Axis{
-        X, Y, Z
-    }
+
 
     private Mat4 rotationX(float angle){
         float cosA = (float) Math.cos(angle);
         float sinA = (float) Math.sin(angle);
         return new Mat4(new float[][]{
                 {1, 0, 0, 0},
-                {0, 1, 0, 0},
-                {0, 0, 1, 0},
+                {0, cosA, sinA, 0},
+                {0, -sinA, cosA, 0},
                 {0, 0, 0, 1}
         });
     }
@@ -35,9 +43,9 @@ public class AxisRotation implements Transformation{
         float cosA = (float) Math.cos(angle);
         float sinA = (float) Math.sin(angle);
         return new Mat4(new float[][]{
-                {1, 0, 0, 0},
+                {cosA, 0, sinA, 0},
                 {0, 1, 0, 0},
-                {0, 0, 1, 0},
+                {-sinA, 0, cosA, 0},
                 {0, 0, 0, 1}
         });
     }
@@ -45,8 +53,8 @@ public class AxisRotation implements Transformation{
         float cosA = (float) Math.cos(angle);
         float sinA = (float) Math.sin(angle);
         return new Mat4(new float[][]{
-                {1, 0, 0, 0},
-                {0, 1, 0, 0},
+                {cosA, sinA, 0, 0},
+                {-sinA, cosA, 0, 0},
                 {0, 0, 1, 0},
                 {0, 0, 0, 1}
         });

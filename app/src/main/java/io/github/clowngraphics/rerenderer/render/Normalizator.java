@@ -1,4 +1,4 @@
-package io.github.clowngraphics.rerenderer.normalizator;
+package io.github.clowngraphics.rerenderer.render;
 
 import io.github.alphameo.linear_algebra.vec.Vec3;
 import io.github.alphameo.linear_algebra.vec.Vec3Math;

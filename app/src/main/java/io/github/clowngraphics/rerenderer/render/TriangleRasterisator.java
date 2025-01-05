@@ -1,12 +1,16 @@
-package io.github.clowngraphics.rerenderer.rasterisers;
+package io.github.clowngraphics.rerenderer.render;
 
 import io.github.clowngraphics.rerenderer.math.Barycentric;
 import io.github.clowngraphics.rerenderer.math.Triangle;
 import io.github.clowngraphics.rerenderer.math.Utils;
-import io.github.clowngraphics.rerenderer.color.Texture;
+import io.github.clowngraphics.rerenderer.render.color.Texture;
 import javafx.geometry.Point2D;
 import javafx.scene.image.PixelWriter;
-import java.util.*;
+
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Objects;
 
 public class TriangleRasterisator {
 
@@ -47,6 +51,7 @@ public class TriangleRasterisator {
 
         double deltaX1 = deltaFlatX1 / deltaFlatY1;
         double deltaX2 = deltaFlatX2 / deltaFlatY2;
+
 
         final double flatY = flat1.getY();
         if (Utils.moreThan(ly, flatY)) {

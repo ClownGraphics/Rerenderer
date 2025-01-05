@@ -1,6 +1,6 @@
 package io.github.clowngraphics.rerenderer.math;
 
-import io.github.clowngraphics.rerenderer.color.Texture;
+import io.github.clowngraphics.rerenderer.render.color.Texture;
 import javafx.geometry.Point2D;
 
 import java.util.Objects;

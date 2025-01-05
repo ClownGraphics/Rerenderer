@@ -1,4 +1,5 @@
 package io.github.clowngraphics.rerenderer.math.affine_transform;
 
-public class Rotation {
+public enum Axis{
+    X, Y, Z
 }

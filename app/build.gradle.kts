@@ -55,7 +55,7 @@ javafx {
 
 application {
     // Define the main class for the application.
-    mainClass = "io.github.clownGraphics.rerenderer.App"
+    mainClass = "io.github.clowngraphics.rerenderer.App"
 }
 
 tasks.named<Test>("test") {

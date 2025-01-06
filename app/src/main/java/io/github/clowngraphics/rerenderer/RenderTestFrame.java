@@ -1,8 +1,10 @@
 package io.github.clowngraphics.rerenderer;
 
+import io.github.alphameo.linear_algebra.vec.Vec2;
 import io.github.clowngraphics.rerenderer.render.TriangleRasterisator;
 import io.github.clowngraphics.rerenderer.render.texture.ImageTexture;
 import io.github.clowngraphics.rerenderer.render.texture.MonotoneTexture;
+import io.github.clowngraphics.rerenderer.render.texture.UVCoordinates;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
@@ -26,24 +28,31 @@ public class RenderTestFrame extends Application {
     private Point2D p1;
     private Point2D p2;
     private Point2D p3;
+    int width = 500;
+    int height = 500;
 
     public void showTriangle(GraphicsContext gc){
-        gc.clearRect(0, 0, 1000, 1000);
+
+        gc.clearRect(0, 0, width, height);
         TriangleRasterisator tr = new TriangleRasterisator(gc.getPixelWriter());
 
         Random rnd = new Random();
         try {
             // Указываем путь к изображению
-            File imageFile = new File("C:\\Users\\user\\Downloads\\grad.jpg");
-
+            File imageFile = new File("C:\\Users\\Stepan\\Downloads\\spampton.jpg");
+            p1 = new Point2D(100, 400);
+            p2 = new Point2D(0, 500);
+            p3 = new Point2D(500,500);
             // Загружаем изображение в объект BufferedImage
             BufferedImage image = ImageIO.read(imageFile);
+            UVCoordinates uvCoordinates = new UVCoordinates(new Vec2(
+                    (float) p1.getX()/width,(float) p1.getY()/height),
+                    new Vec2((float) p2.getX()/width, (float) p2.getY()/height),
+                    new Vec2((float) p3.getX()/width,(float) p3.getY()/height));
 
-            ImageTexture mt = ImageTexture.setFromFile(imageFile);
+            ImageTexture mt = ImageTexture.setFromFile(imageFile,uvCoordinates);
 //            MonotoneTexture mt = new MonotoneTexture(Color.BLANCHEDALMOND);
-            p1 = new Point2D(100, 100);
-            p2 = new Point2D(0, 500);
-            p3 = new Point2D(900,1000);
+
             System.out.println(mt.get(0,0));
             tr.draw(p1, p2, p3, mt);
 
@@ -64,7 +73,7 @@ public class RenderTestFrame extends Application {
         scene.setTitle("Render Test");
 
         Group root = new Group();
-        Canvas canvas = new Canvas(1000, 1000);
+        Canvas canvas = new Canvas(width, height);
         GraphicsContext gc = canvas.getGraphicsContext2D();
 
         showTriangle(gc);

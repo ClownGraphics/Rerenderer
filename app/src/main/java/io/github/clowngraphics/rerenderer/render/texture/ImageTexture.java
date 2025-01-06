@@ -15,12 +15,16 @@ public class ImageTexture implements Texture{
     private BufferedImage texture;
     private final int width;
     private final int height;
+    private final UVCoordinates uvCoordinates;
 
-    private ImageTexture(final BufferedImage image) {
-        texture = image;
-        width = image.getWidth();
-        height = image.getHeight();
+    private ImageTexture(final BufferedImage image, UVCoordinates uvCoordinates) {
+        this.texture = image;
+        this.width = image.getWidth();
+        this.height = image.getHeight();
+        this.uvCoordinates = uvCoordinates;
     }
+
+
 
     public ColorRGB get(final float x, final float y) {
 
@@ -43,7 +47,9 @@ public class ImageTexture implements Texture{
         return new ColorRGB(red, green, blue, alpha);
     }
 
-    public ColorRGB get(Barycentric b, UVCoordinates uvCoordinates) {
+
+
+    public ColorRGB get(Barycentric b) {
 
         Vector2 interpolatedUV = uvCoordinates.barycentric(b);
 
@@ -65,7 +71,7 @@ public class ImageTexture implements Texture{
     }
 
 
-    public static ImageTexture setFromFile(final File file) {
+    public static ImageTexture setFromFile(final File file, UVCoordinates uvCoordinates) {
         Objects.requireNonNull(file);
         final BufferedImage image;
         try {
@@ -74,7 +80,7 @@ public class ImageTexture implements Texture{
             throw new IllegalArgumentException("Unable to read texture");
         }
 
-        return new ImageTexture(image);
+        return new ImageTexture(image, uvCoordinates);
     }
 
 }

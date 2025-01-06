@@ -4,7 +4,6 @@ import io.github.clowngraphics.rerenderer.math.Barycentric;
 
 public interface Texture<T> {
 
-    ColorRGB get(Barycentric b, UVCoordinates uvCoordinates);
-
+    ColorRGB get(Barycentric b);
 
 }

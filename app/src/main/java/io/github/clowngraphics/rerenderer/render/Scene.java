@@ -1,6 +1,5 @@
 package io.github.clowngraphics.rerenderer.render;
 
-import io.github.clowngraphics.rerenderer.model.Camera;
 import io.github.clowngraphics.rerenderer.model.Model;
 
 import java.util.ArrayList;

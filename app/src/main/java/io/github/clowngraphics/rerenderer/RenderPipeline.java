@@ -1,6 +1,5 @@
 package io.github.clowngraphics.rerenderer;
 
-import io.github.clowngraphics.rerenderer.model.Camera;
 import io.github.clowngraphics.rerenderer.render.Scene;
 import io.github.clowngraphics.rerenderer.render.ZBuffer;
 import javafx.scene.canvas.GraphicsContext;

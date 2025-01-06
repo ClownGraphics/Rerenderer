@@ -2,6 +2,9 @@ package io.github.clowngraphics.rerenderer.render;
 
 import io.github.alphameo.linear_algebra.vec.Vec3;
 import io.github.alphameo.linear_algebra.vec.Vector3;
+import io.github.clowngraphics.rerenderer.model.Model;
+
+import java.util.List;
 
 
 public class Illumination {
@@ -26,6 +29,12 @@ public class Illumination {
 
     public void setRay(Vector3 ray) {
         this.ray = ray;
+    }
+
+    public static List<Vec3> computeNormals(Model model){
+
+        List<Vec3> normals = model.getNormals();
+
     }
 }
 

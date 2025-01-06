@@ -1,7 +1,5 @@
-package io.github.clowngraphics.rerenderer.triangulation;
+package io.github.clowngraphics.rerenderer.render;
 
-
-import io.github.clowngraphics.rerenderer.render.Polygon;
 
 import java.util.ArrayList;
 import java.util.List;

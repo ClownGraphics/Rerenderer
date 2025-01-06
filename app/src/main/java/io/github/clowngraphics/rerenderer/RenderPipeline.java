@@ -28,8 +28,6 @@ public class RenderPipeline {
         final Camera selectedCamera = scene.getCamera();
 
         zBuffer.clear();
-
-
     }
 
     private void lookAt(Camera camera){

@@ -3,6 +3,7 @@ package io.github.clowngraphics.rerenderer.render;
 import java.util.Arrays;
 
 
+
 public class ZBuffer {
 
     private final int width;

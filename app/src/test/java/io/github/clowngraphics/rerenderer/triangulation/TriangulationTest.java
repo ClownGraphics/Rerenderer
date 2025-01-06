@@ -1,6 +1,7 @@
 package io.github.clowngraphics.rerenderer.triangulation;
 
 import io.github.clowngraphics.rerenderer.render.Polygon;
+import io.github.clowngraphics.rerenderer.render.Triangulation;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

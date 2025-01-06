@@ -1,4 +1,4 @@
-package io.github.clowngraphics.rerenderer.model;
+package io.github.clowngraphics.rerenderer.model.camera;
 
 import io.github.alphameo.linear_algebra.vec.Vec;
 import io.github.alphameo.linear_algebra.vec.Vec3;
@@ -18,20 +18,27 @@ public class Camera {
     private Vector3 xAxis;
     private Vector3 yAxis;
     private Vector3 zAxis;
+    private float fov;
+    private float ar;
+    private float f;
+    private float n;
 
     public Camera(Vector3 eye) {
         this.eye = eye;
+        updateVectors();
     }
 
     public Camera(Vector3 eye, Vector3 target) {
         this.eye = eye;
         this.target = target;
+        updateVectors();
     }
 
     public Camera(Vector3 up, Vector3 eye, Vector3 target) {
         this.up = up;
         this.eye = eye;
         this.target = target;
+        updateVectors();
     }
 
     private void updateVectors(){

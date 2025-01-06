@@ -49,6 +49,9 @@ public class Camera {
         xAxis = Vec3Math.normalize(xAxis);
         yAxis = Vec3Math.normalize(yAxis);
         zAxis = Vec3Math.normalize(zAxis);
+    }
 
+    public CameraProperties getProperties() {
+        return properties;
     }
 }

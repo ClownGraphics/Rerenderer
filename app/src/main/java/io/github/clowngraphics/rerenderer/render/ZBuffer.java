@@ -2,27 +2,35 @@ package io.github.clowngraphics.rerenderer.render;
 
 import java.util.Arrays;
 
-/**
- * @author traunin {@link https://github.com/Traunin}
- */
 
 public class ZBuffer {
 
-    private int width;
+    private final int width;
 
-    private int height;
+    private final int height;
 
-    private float[][] depthsM;
+    private final float[][] zBuffer;
 
     public ZBuffer(int width, int height) {
-        if (width <= 0 || height <= 0) {
-            throw new IllegalArgumentException("Dimensions are invalid");
-        }
 
         this.width = width;
         this.height = height;
+        zBuffer = new float[width][height];
+        clear();
+    }
 
-        depthsM = new float[height][width];
+    public boolean isDrawable(int x, int y, int z){
+        if (z < zBuffer[x][y]){
+            zBuffer[x][y] = z;
+            return true;
+        }
+        return false;
+    }
+
+    public void clear() {
+        for (float[] row : zBuffer) {
+            Arrays.fill(row, Float.MAX_VALUE);
+        }
     }
 
     public int getWidth() {
@@ -31,24 +39,5 @@ public class ZBuffer {
 
     public int getHeight() {
         return height;
-    }
-
-
-
-    public boolean draw(int x, int y, int z) {
-        if (x >= getWidth() || y >= getHeight() || x < 0 || y < 0) {
-            throw new IllegalArgumentException("Coordinates are outside of dimensions box");
-        }
-
-        if (depthsM[x][y] < z) {
-            return false;
-        }
-
-        depthsM[x][y] = z;
-        return true;
-    }
-
-    public void clear() {
-        Arrays.fill(depthsM, 2);
     }
 }

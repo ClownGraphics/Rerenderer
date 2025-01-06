@@ -1,12 +1,13 @@
 package io.github.clowngraphics.rerenderer.render;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Polygon {
 
-    private ArrayList<Integer> vertexIndices;
-    private ArrayList<Integer> textureVertexIndices;
-    public ArrayList<Integer> normalIndices;
+    private List<Integer> vertexIndices;
+    private List<Integer> textureVertexIndices;
+    public List<Integer> normalIndices;
 
     public Polygon() {
         vertexIndices = new ArrayList<>();
@@ -14,33 +15,33 @@ public class Polygon {
         normalIndices = new ArrayList<>();
     }
 
-    public ArrayList<Integer> getVertexIndices() {
+    public List<Integer> getVertexIndices() {
         return vertexIndices;
     }
 
-    public ArrayList<Integer> getTextureVertexIndices() {
+    public List<Integer> getTextureVertexIndices() {
         return textureVertexIndices;
     }
 
-    public ArrayList<Integer> getNormalIndices() {
+    public List<Integer> getNormalIndices() {
         return normalIndices;
     }
 
-    public void setVertexIndices(ArrayList<Integer> vertexIndices) {
+    public void setVertexIndices(List<Integer> vertexIndices) {
         if (vertexIndices.size() < 3){
             throw new IllegalArgumentException("vertexIndices List has less then 3 vertices");
         }
         this.vertexIndices = vertexIndices;
     }
 
-    public void setTextureVertexIndices(ArrayList<Integer> textureVertexIndices) {
+    public void setTextureVertexIndices(List<Integer> textureVertexIndices) {
         if (textureVertexIndices.size() < 3){
             throw new IllegalArgumentException("textureVertexIndices List has less then 3 vertices");
         }
         this.textureVertexIndices = textureVertexIndices;
     }
 
-    public void setNormalIndices(ArrayList<Integer> normalIndices) {
+    public void setNormalIndices(List<Integer> normalIndices) {
         if (normalIndices.size() < 3){
             throw new IllegalArgumentException("normalIndices List has less then 3 vertices");
         }

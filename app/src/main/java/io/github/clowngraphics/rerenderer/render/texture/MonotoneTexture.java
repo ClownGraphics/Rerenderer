@@ -1,6 +1,6 @@
 package io.github.clowngraphics.rerenderer.render.texture;
 
-import io.github.alphameo.linear_algebra.vec.Vec2;
+
 import io.github.clowngraphics.rerenderer.math.Barycentric;
 import javafx.scene.paint.Color;
 import java.util.Objects;

@@ -11,7 +11,6 @@ import io.github.shimeoki.jshaper.obj.Vertex;
 import io.github.shimeoki.jshaper.obj.VertexNormal;
 import java.util.List;
 
-
 /**
  * @author traunin {@link https://github.com/Traunin}
  */

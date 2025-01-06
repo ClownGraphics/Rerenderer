@@ -1,6 +1,7 @@
 package io.github.clowngraphics.rerenderer.model;
 
 
+
 import io.github.alphameo.linear_algebra.mat.Mat4;
 import io.github.alphameo.linear_algebra.mat.Matrix4;
 import io.github.clowngraphics.rerenderer.render.texture.Texture;

@@ -3,6 +3,9 @@
  */
 package io.github.clowngraphics.rerenderer;
 
+import io.github.clowngraphics.rerenderer.model.Model;
+import io.github.clowngraphics.rerenderer.model.transform.ModelTransform;
+
 public class App {
     public String getGreeting() {
         return "Hello World!";

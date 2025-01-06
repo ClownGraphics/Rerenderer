@@ -54,4 +54,20 @@ public class Camera {
     public CameraProperties getProperties() {
         return properties;
     }
+
+    public CameraTransform getCameraTransform() {
+        return cameraTransform;
+    }
+
+    public void setCameraTransform(CameraTransform cameraTransform) {
+        this.cameraTransform = cameraTransform;
+    }
+
+    public ScreenTransform getScreenTransform() {
+        return screenTransform;
+    }
+
+    public void setScreenTransform(ScreenTransform screenTransform) {
+        this.screenTransform = screenTransform;
+    }
 }

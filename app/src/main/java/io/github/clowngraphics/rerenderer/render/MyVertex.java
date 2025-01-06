@@ -8,11 +8,11 @@ import io.github.shimeoki.jshaper.Pos;
 /**
  * @author shimeoki {@link https://github.com/shimeoki}
  */
-public final class Vertex implements Clearable, Point {
+public final class MyVertex implements Clearable, Point {
 
     private final float[] values = new float[4];
 
-    public Vertex(float x, float y, float z, float w) {
+    public MyVertex(float x, float y, float z, float w) {
         this.setX(x);
         this.setY(y);
         this.setZ(z);

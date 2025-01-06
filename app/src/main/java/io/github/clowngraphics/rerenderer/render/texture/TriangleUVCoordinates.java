@@ -1,6 +1,5 @@
 package io.github.clowngraphics.rerenderer.render.texture;
 
-import io.github.alphameo.linear_algebra.vec.Vec;
 import io.github.alphameo.linear_algebra.vec.Vec2;
 import io.github.alphameo.linear_algebra.vec.Vector2;
 import io.github.clowngraphics.rerenderer.math.Barycentric;

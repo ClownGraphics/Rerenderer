@@ -1,6 +1,5 @@
 package io.github.clowngraphics.rerenderer.render.texture;
 
-import io.github.alphameo.linear_algebra.vec.Vec2;
 import io.github.alphameo.linear_algebra.vec.Vector2;
 import io.github.clowngraphics.rerenderer.math.Barycentric;
 
@@ -15,12 +14,16 @@ public class ImageTexture implements Texture{
     private BufferedImage texture;
     private final int width;
     private final int height;
+    private final TriangleUVCoordinates triangleUvCoordinates;
 
-    private ImageTexture(final BufferedImage image) {
-        texture = image;
-        width = image.getWidth();
-        height = image.getHeight();
+    private ImageTexture(final BufferedImage image, TriangleUVCoordinates triangleUvCoordinates) {
+        this.texture = image;
+        this.width = image.getWidth();
+        this.height = image.getHeight();
+        this.triangleUvCoordinates = triangleUvCoordinates;
     }
+
+
 
     public ColorRGB get(final float x, final float y) {
 
@@ -43,9 +46,11 @@ public class ImageTexture implements Texture{
         return new ColorRGB(red, green, blue, alpha);
     }
 
-    public ColorRGB get(Barycentric b, UVCoordinates uvCoordinates) {
 
-        Vector2 interpolatedUV = uvCoordinates.barycentric(b);
+
+    public ColorRGB get(Barycentric b) {
+
+        Vector2 interpolatedUV = triangleUvCoordinates.barycentric(b);
 
         float u = interpolatedUV.x();
         float v = interpolatedUV.y();
@@ -65,7 +70,7 @@ public class ImageTexture implements Texture{
     }
 
 
-    public static ImageTexture setFromFile(final File file) {
+    public static ImageTexture setFromFile(final File file, TriangleUVCoordinates triangleUvCoordinates) {
         Objects.requireNonNull(file);
         final BufferedImage image;
         try {
@@ -74,7 +79,7 @@ public class ImageTexture implements Texture{
             throw new IllegalArgumentException("Unable to read texture");
         }
 
-        return new ImageTexture(image);
+        return new ImageTexture(image, triangleUvCoordinates);
     }
 
 }

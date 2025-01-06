@@ -11,37 +11,38 @@ import io.github.clowngraphics.rerenderer.model.transform.ScreenTransform;
 public class Camera {
     CameraTransform cameraTransform;
     ScreenTransform screenTransform;
+    CameraProperties properties;
 
-    private Vector3 up = new Vec3(0,1, 0);
+    private Vector3 up = new Vec3(0, 1, 0);
     private Vector3 eye;
-    private Vector3 target = new Vec3(0,0, 1);
+    private Vector3 target = new Vec3(0, 0, 1);
     private Vector3 xAxis;
     private Vector3 yAxis;
     private Vector3 zAxis;
-    private float fov;
-    private float ar;
-    private float f;
-    private float n;
 
-    public Camera(Vector3 eye) {
+
+    public Camera(Vector3 eye, CameraProperties properties) {
         this.eye = eye;
+        this.properties = properties;
         updateVectors();
     }
 
-    public Camera(Vector3 eye, Vector3 target) {
+    public Camera(Vector3 eye, Vector3 target, CameraProperties properties) {
         this.eye = eye;
         this.target = target;
+        this.properties = properties;
         updateVectors();
     }
 
-    public Camera(Vector3 up, Vector3 eye, Vector3 target) {
+    public Camera(Vector3 up, Vector3 eye, Vector3 target, CameraProperties properties) {
         this.up = up;
         this.eye = eye;
         this.target = target;
+        this.properties = properties;
         updateVectors();
     }
 
-    private void updateVectors(){
+    private void updateVectors() {
         zAxis = Vec3Math.sub(target, eye);
         xAxis = Vec3Math.cross(up, zAxis);
         yAxis = Vec3Math.cross(zAxis, xAxis);

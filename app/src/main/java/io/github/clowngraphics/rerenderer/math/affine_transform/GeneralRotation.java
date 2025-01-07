@@ -6,8 +6,7 @@ import io.github.alphameo.linear_algebra.mat.Matrix4;
 
 
 
-public class GeneralRotation implements Transformation {
-    private Matrix4 transformationMatrix;
+public class GeneralRotation extends GeneralTransformation {
     private AxisRotation first;
     private AxisRotation second;
     private AxisRotation third;
@@ -85,10 +84,6 @@ public class GeneralRotation implements Transformation {
         recalculateMatrix();
     }
     private void recalculateMatrix(){
-        transformationMatrix = Mat4Math.prod(Mat4Math.prod(first.getMatrix(), second.getMatrix()), third.getMatrix());
-    }
-    @Override
-    public Matrix4 getMatrix() {
-        return transformationMatrix;
+        setMatrix(Mat4Math.prod(Mat4Math.prod(first.getMatrix(), second.getMatrix()), third.getMatrix()));
     }
 }

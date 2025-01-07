@@ -4,9 +4,8 @@ import io.github.alphameo.linear_algebra.mat.Mat4;
 import io.github.alphameo.linear_algebra.mat.Matrix4;
 import io.github.alphameo.linear_algebra.vec.Vector3;
 
-public class ScalarProjection implements Transformation {
+public class ScalarProjection extends GeneralTransformation {
 
-    private Matrix4 transformationMatrix;
     private Vector3 vx;
     private Vector3 vy;
     private Vector3 vz;
@@ -18,16 +17,12 @@ public class ScalarProjection implements Transformation {
         recalculateMatrix();
     }
     private void recalculateMatrix(){
-        transformationMatrix = new Mat4(new float[][]{
+        setMatrix(new Mat4(new float[][]{
                 {vx.x(), vx.y(), vx.z(), 0},
                 {vy.x(), vy.y(), vy.z(), 0},
                 {vz.x(), vz.y(), vz.z(), 0},
                 {0, 0, 0, 1}
-        });
-    }
-    @Override
-    public Matrix4 getMatrix() {
-        return transformationMatrix;
+        }));
     }
     public Vector3 getVx() {
         return vx;

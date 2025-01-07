@@ -8,28 +8,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GeneralTransformation implements Transformation{
-    private List<Transformation> transformations = new ArrayList<>();
-    private Matrix4 transformationMatrix;
+    private Mat4 transformationMatrix;
 
-
-    public  void add(Transformation t){
-        transformations.add(t);
-    }
-    public void remove(int i){
-        transformations.remove(i);
-    }
-    public void remove(Transformation t){
-        transformations.remove(t);
+    public GeneralTransformation() {
     }
 
-    private void recalculateMatrix(){
-        for(Transformation t: transformations){
-            transformationMatrix = Mat4Math.prod(transformationMatrix, t.getMatrix());
-        }
+    public GeneralTransformation(Matrix4 transformationMatrix) {
+        this.transformationMatrix = (Mat4) transformationMatrix;
+    }
+
+    public GeneralTransformation combine(GeneralTransformation other){
+        GeneralTransformation result =  new GeneralTransformation();
+        result.setMatrix(Mat4Math.prod(getMatrix(), other.getMatrix()));
+        return result;
     }
     @Override
-    public Matrix4 getMatrix() {
-        recalculateMatrix();
+    public Mat4 getMatrix() {
         return transformationMatrix;
+    }
+
+    public void setMatrix(Matrix4 matrix) {
+        transformationMatrix = (Mat4) matrix;
     }
 }

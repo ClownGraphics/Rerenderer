@@ -3,7 +3,7 @@ package io.github.clowngraphics.rerenderer;
 import io.github.alphameo.linear_algebra.vec.Vec2;
 import io.github.clowngraphics.rerenderer.render.TriangleRasterisator;
 import io.github.clowngraphics.rerenderer.render.texture.ImageTexture;
-import io.github.clowngraphics.rerenderer.render.texture.TriangleUVCoordinates;
+import io.github.clowngraphics.rerenderer.render.texture.PolygonUVCoordinates;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
@@ -43,12 +43,12 @@ public class RenderTestFrame extends Application {
             p3 = new Point2D(500,500);
             // Загружаем изображение в объект BufferedImage
             BufferedImage image = ImageIO.read(imageFile);
-            TriangleUVCoordinates triangleUvCoordinates = new TriangleUVCoordinates(new Vec2(
+            PolygonUVCoordinates polygonUvCoordinates = new PolygonUVCoordinates(new Vec2(
                     (float) p1.getX()/width,(float) p1.getY()/height),
                     new Vec2((float) p2.getX()/width, (float) p2.getY()/height),
                     new Vec2((float) p3.getX()/width,(float) p3.getY()/height));
 
-            ImageTexture mt = ImageTexture.setFromFile(imageFile, triangleUvCoordinates);
+            ImageTexture mt = ImageTexture.setFromFile(imageFile, polygonUvCoordinates);
 //            MonotoneTexture mt = new MonotoneTexture(Color.BLANCHEDALMOND);
 
             System.out.println(mt.get(0,0));

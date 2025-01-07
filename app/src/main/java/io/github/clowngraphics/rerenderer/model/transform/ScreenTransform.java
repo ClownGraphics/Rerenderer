@@ -14,6 +14,12 @@ public class ScreenTransform implements Transformation {
         recalculateMatrix();
     }
 
+    public ScreenTransform() {
+        properties = new CameraProperties();
+        recalculateMatrix();
+    }
+
+
     public void setProperties(CameraProperties properties) {
         this.properties = properties;
         recalculateMatrix();

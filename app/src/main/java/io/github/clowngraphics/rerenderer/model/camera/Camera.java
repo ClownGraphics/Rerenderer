@@ -11,15 +11,17 @@ import io.github.clowngraphics.rerenderer.model.transform.CameraTransform;
 import io.github.clowngraphics.rerenderer.model.transform.ModelTransform;
 import io.github.clowngraphics.rerenderer.model.transform.ScreenTransform;
 
+
+//todo: это что-то на криворуком, переделать
 public class Camera implements Object {
-    CameraTransform cameraTransform;
+    CameraTransform cameraTransform = new CameraTransform();
 
     //TODO: решить, как лучше получать преобразованную камеру:
     //  1) Статическим классом трансформатором
     //  2) Внутренними методами
     // - Миша
     ModelTransform orientation;
-    ScreenTransform screenTransform;
+    ScreenTransform screenTransform = new ScreenTransform();
     CameraProperties properties;
 
     private Vector3 up = new Vec3(0, 1, 0);
@@ -59,7 +61,26 @@ public class Camera implements Object {
         yAxis = Vec3Math.normalize(yAxis);
         zAxis = Vec3Math.normalize(zAxis);
     }
+    //todo: переделать передвижение камеры
+    public Vector3 getEye() {
+        return eye;
+    }
 
+    public void setEye(Vector3 eye) {
+        this.eye = eye;
+        updateVectors();
+    }
+
+    public Vector3 getTarget() {
+        return target;
+    }
+
+    public void setTarget(Vector3 target) {
+        this.target = target;
+        updateVectors();
+    }
+    //todo: lookAt()
+//    public void lookAt(){}
     public CameraProperties getProperties() {
         return properties;
     }
@@ -79,6 +100,8 @@ public class Camera implements Object {
     public void setScreenTransform(ScreenTransform screenTransform) {
         this.screenTransform = screenTransform;
     }
+
+
 
     @Override
     public void scale(float s, Axis axis) {

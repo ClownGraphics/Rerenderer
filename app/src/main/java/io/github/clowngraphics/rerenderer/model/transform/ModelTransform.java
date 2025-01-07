@@ -11,10 +11,18 @@ public class ModelTransform implements Transformation {
     private Translation translation;
     private Scale scale;
 
+    public ModelTransform() {
+        this.generalRotation = new GeneralRotation();
+        this.translation = new Translation();
+        this.scale = new Scale();
+        recalculateMatrix();
+    }
+
     public ModelTransform(GeneralRotation generalRotation, Translation translation, Scale scale) {
         this.generalRotation = generalRotation;
         this.translation = translation;
         this.scale = scale;
+        recalculateMatrix();
     }
 
     public void rotate(float angle, Axis axis){

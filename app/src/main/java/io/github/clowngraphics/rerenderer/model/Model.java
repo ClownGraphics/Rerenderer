@@ -62,6 +62,8 @@ public class Model implements Object {
 
     }
 
+
+
     public Matrix4 getModelMatrix() {
         return modelM;
     }

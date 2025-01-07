@@ -1,6 +1,6 @@
 package io.github.clowngraphics.rerenderer.model.transform;
 
-import io.github.clowngraphics.rerenderer.model.Camera;
+import io.github.clowngraphics.rerenderer.model.camera.Camera;
 import io.github.clowngraphics.rerenderer.model.Model;
 
 public class Transformer {

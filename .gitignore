@@ -148,7 +148,9 @@ fabric.properties
 
  *.iml
  modules.xml
- .idea/misc.xml
+/.idea/misc.xml
+/.idea/vcs.xml
+/.idea/.gitignore
  *.ipr
 
 

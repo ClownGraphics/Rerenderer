@@ -4,12 +4,20 @@ import io.github.alphameo.linear_algebra.vec.Vec;
 import io.github.alphameo.linear_algebra.vec.Vec3;
 import io.github.alphameo.linear_algebra.vec.Vec3Math;
 import io.github.alphameo.linear_algebra.vec.Vector3;
+import io.github.clowngraphics.rerenderer.math.affine_transform.Axis;
 import io.github.clowngraphics.rerenderer.math.affine_transform.ScalarProjection;
+import io.github.clowngraphics.rerenderer.model.Object;
 import io.github.clowngraphics.rerenderer.model.transform.CameraTransform;
+import io.github.clowngraphics.rerenderer.model.transform.ModelTransform;
 import io.github.clowngraphics.rerenderer.model.transform.ScreenTransform;
 
-public class Camera {
+public class Camera implements Object {
     CameraTransform cameraTransform;
+
+    //TODO: решить, как лучше получать преобразованную камеру:
+    //  1) Статическим классом трансформатором
+    //  2) Внутренними методами
+    ModelTransform orientation;
     ScreenTransform screenTransform;
     CameraProperties properties;
 
@@ -69,5 +77,15 @@ public class Camera {
 
     public void setScreenTransform(ScreenTransform screenTransform) {
         this.screenTransform = screenTransform;
+    }
+
+    @Override
+    public void scale(float s, Axis axis) {
+        return;
+    }
+
+    @Override
+    public ModelTransform getTransform() {
+        return orientation;
     }
 }

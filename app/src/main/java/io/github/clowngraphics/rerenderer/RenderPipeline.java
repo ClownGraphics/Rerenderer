@@ -4,10 +4,13 @@ import io.github.alphameo.linear_algebra.mat.Matrix4;
 import io.github.clowngraphics.rerenderer.model.Model;
 import io.github.clowngraphics.rerenderer.model.camera.Camera;
 import io.github.clowngraphics.rerenderer.render.Scene;
+import io.github.clowngraphics.rerenderer.render.Vertex;
 import io.github.clowngraphics.rerenderer.render.ZBuffer;
 import javafx.scene.canvas.GraphicsContext;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class RenderPipeline {
@@ -38,14 +41,22 @@ public class RenderPipeline {
     }
 
     public void renderModel(Camera camera, Model model){
-        // model matrix
-        Matrix4 modelM = model.getModelMatrix();
-        // view matrix
-        Matrix4 viewM = camera.getCameraTransform().getMatrix();
-        // projection matrix
-        Matrix4 projectionM = camera.getScreenTransform().getMatrix();
 
-        model.get
+        List<Vertex> newVertices = new ArrayList<>();
+
+        for (Vertex vertices : model.getVertices()){
+            // model matrix
+            Matrix4 modelM = model.getModelMatrix();
+            // view matrix
+            Matrix4 viewM = camera.getCameraTransform().getMatrix();
+            // projection matrix
+            Matrix4 projectionM = camera.getScreenTransform().getMatrix();
+
+            Matrix4
+
+            Vertex newVertex =
+            newVertices.add()
+        }
 
     }
 

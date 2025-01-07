@@ -1,59 +1,99 @@
 package io.github.clowngraphics.rerenderer.render;
 
+import io.github.alphameo.linear_algebra.vec.*;
 import io.github.clowngraphics.rerenderer.render.texture.PolygonUVCoordinates;
+import io.github.shimeoki.jshaper.obj.Face;
+import io.github.shimeoki.jshaper.obj.TextureVertex;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Polygon {
 
-    private List<Integer> vertexIndices;
+    private List<Vertex> vertices;
 
-    public List<PolygonUVCoordinates> polygonUVCoordinates;
+    public PolygonUVCoordinates polygonUVCoordinates;
 
-    // TODO текстурные вершины нужно будет убрать - @Fiecher
-    private List<Integer> textureVertexIndices;
-    public List<Integer> normalIndices;
+    public Vector3 normal;
 
 
-
-    public Polygon() {
-        vertexIndices = new ArrayList<>();
-        textureVertexIndices = new ArrayList<>();
-        normalIndices = new ArrayList<>();
-        polygonUVCoordinates = new ArrayList<>();
+    public Polygon(List<Vertex> vertices, PolygonUVCoordinates polygonUVCoordinates) {
+        this.vertices = vertices;
+        this.polygonUVCoordinates = polygonUVCoordinates;
+        this.normal = computeNormal();
     }
 
-    public List<Integer> getVertexIndices() {
-        return vertexIndices;
+
+    public List<Vertex> getVertices() {
+        return vertices;
     }
 
-    public List<Integer> getTextureVertexIndices() {
-        return textureVertexIndices;
+    public PolygonUVCoordinates getPolygonUVCoordinates() {
+        return polygonUVCoordinates;
     }
 
-    public List<Integer> getNormalIndices() {
-        return normalIndices;
+    public Vector3 getNormal() {
+        return normal;
     }
 
-    public void setVertexIndices(List<Integer> vertexIndices) {
-        if (vertexIndices.size() < 3){
-            throw new IllegalArgumentException("vertexIndices List has less then 3 vertices");
+    public Vector3 computeNormal() {
+        // Проверяем, что у полигона есть как минимум три вершины
+        if (vertices.size() < 3) {
+            throw new IllegalStateException("Polygon must have at least 3 vertices to compute a normal");
         }
-        this.vertexIndices = vertexIndices;
+
+        // Инициализация нормали
+        Vector4 normal = new Vec4(0, 0, 0, 0);
+
+        // Обходим вершины в порядке против часовой стрелки
+        for (int i = 0; i < vertices.size(); i++) {
+            Vertex current = vertices.get(i);
+            Vertex next = vertices.get((i + 1) % vertices.size());
+
+            // Получаем позиции текущей и следующей вершин
+            Vector4 currentPosition = current.getValues();
+            Vector4 nextPosition = next.getValues();
+
+            // Вычисляем вклад текущей пары вершин в нормаль
+            normal = Vec4Math.add(normal, Vec4Math.sub(currentPosition, nextPosition));
+        }
+
+        // Нормализуем нормаль
+        return normalize(new Vec3(normal.x(), normal.y(), normal.z()));
     }
 
-    public void setTextureVertexIndices(List<Integer> textureVertexIndices) {
-        if (textureVertexIndices.size() < 3){
-            throw new IllegalArgumentException("textureVertexIndices List has less then 3 vertices");
+    private Vector3 normalize(Vec3 v) {
+        double length = Math.sqrt(v.x() * v.x() + v.y() * v.y() + v.z() * v.z());
+        if (length == 0) {
+            throw new IllegalStateException("Cannot normalize a zero-length vector");
         }
-        this.textureVertexIndices = textureVertexIndices;
+        return new Vec3((float) (v.x() / length),(float) (v.y() / length),(float) (v.z() / length));
     }
 
-    public void setNormalIndices(List<Integer> normalIndices) {
-        if (normalIndices.size() < 3){
-            throw new IllegalArgumentException("normalIndices List has less then 3 vertices");
+
+    public static List<Polygon> convertPolgonsFromJShaper(List<Face> faces) {
+        List<Polygon> newPolygons = new ArrayList<>();
+
+        for (Face face : faces) {
+
+            // Getting vertices
+            List<io.github.shimeoki.jshaper.obj.Vertex> oldVertices = new ArrayList<>();
+            oldVertices.add(face.triplets().get(0).vertex());
+            oldVertices.add(face.triplets().get(1).vertex());
+            oldVertices.add(face.triplets().get(2).vertex());
+
+            // Getting UV's
+
+            TextureVertex tv0 = face.triplets().get(0).textureVertex();
+            TextureVertex tv1 = face.triplets().get(1).textureVertex();
+            TextureVertex tv2 = face.triplets().get(2).textureVertex();
+
+
+            newPolygons.add(new Polygon(Vertex.convertVerticesFromJShaper(oldVertices),
+                    PolygonUVCoordinates.convertToUV(tv0, tv1, tv2)));
         }
-        this.normalIndices = normalIndices;
+
+        return newPolygons;
     }
+
 }

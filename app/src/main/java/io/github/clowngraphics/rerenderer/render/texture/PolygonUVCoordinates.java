@@ -66,7 +66,7 @@ public class PolygonUVCoordinates {
         return uv3.y();
     }
 
-    public PolygonUVCoordinates convertToUV(TextureVertex tv1, TextureVertex tv2, TextureVertex tv3){
+    public static PolygonUVCoordinates convertToUV(TextureVertex tv1, TextureVertex tv2, TextureVertex tv3){
         return new PolygonUVCoordinates(new Vec2(tv1.u(),tv1.u()), new Vec2(tv2.u(),tv2.u()), new Vec2(tv3.u(),tv3.u()));
     }
 }

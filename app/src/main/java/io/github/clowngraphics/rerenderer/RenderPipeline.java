@@ -20,18 +20,24 @@ import java.util.Objects;
 
 public class RenderPipeline {
     private final ZBuffer zBuffer;
-
+    int screenWidth;
+    int screenHeight;
     private final GraphicsContext ctx;
 
-
-    public RenderPipeline(final GraphicsContext ctx) {
+    public RenderPipeline(final GraphicsContext ctx, int screenWidth, int screenHeight) {
         this.ctx = Objects.requireNonNull(ctx);
+        this.screenWidth = screenWidth;
+        this.screenHeight = screenHeight;
 
-        GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-
-        int screenWidth = gd.getDisplayMode().getWidth();
-        int screenHeight = gd.getDisplayMode().getHeight();
         this.zBuffer = new ZBuffer(screenWidth, screenHeight);
+    }
+
+    public int getScreenWidth() {
+        return screenWidth;
+    }
+
+    public int getScreenHeight() {
+        return screenHeight;
     }
 
     public void renderScene(Scene scene) {
@@ -49,47 +55,35 @@ public class RenderPipeline {
 
     public void renderModel(Camera camera, Model model) {
 
-        List<Vertex> newVertices = new ArrayList<>();
-
-        for (Vertex vertex : model.getVertices()) {
-            // model matrix
-            Matrix4 modelM = model.getTransform().getMatrix();
-            // view matrix
-            Matrix4 viewM = camera.getCameraTransform().getMatrix();
-            // projection matrix
-            Matrix4 projectionM = camera.getScreenTransform().getMatrix();
-
-            Matrix4 finalM = Mat4Math.prod(projectionM, Mat4Math.prod(viewM, modelM));
-
-            Vertex newVertex = new Vertex(Mat4Math.prod(finalM, vertex.getValues()));
-            newVertices.add(newVertex);
-        }
-
-        drawModel(newVertices, model);
-
-    }
-
-    private void drawModel(List<Vertex> vertices, Model model) {
         TriangleRasterisator rasterisator = new TriangleRasterisator(ctx.getPixelWriter());
         Texture texture = model.getTexture();
         List<Polygon> polygons = model.getPolygons();
 
 
         for (Polygon polygon : polygons) {
-            int index1 = polygon.getVertexIndices().get(0);
-            int index2 = polygon.getVertexIndices().get(1);
-            int index3 = polygon.getVertexIndices().get(2);
+            List<Vertex> newVertices = new ArrayList<>();
+            for (Vertex vertex : polygon.getVertices()) {
+                // model matrix
+                Matrix4 modelM = model.getTransform().getMatrix();
+                // view matrix
+                Matrix4 viewM = camera.getCameraTransform().getMatrix();
+                // projection matrix
+                Matrix4 projectionM = camera.getScreenTransform().getMatrix();
 
-            Vertex v1 = vertices.get(index1);
-            Vertex v2 = vertices.get(index2);
-            Vertex v3 = vertices.get(index3);
+                Matrix4 finalM = Mat4Math.prod(projectionM, Mat4Math.prod(viewM, modelM));
 
-            Point2D p1 = new Point2D(v1.getX(), v1.getY());
-            Point2D p2 = new Point2D(v2.getX(), v2.getY());
-            Point2D p3 = new Point2D(v3.getX(), v3.getY());
+                Vertex newVertex = new Vertex(Mat4Math.prod(finalM, vertex.getValues()));
+                newVertices.add(newVertex);
+            }
+            Point2D points[] = new Point2D[3];
+            for (int i = 0; i < 3; i++) {
+                points[i] = new Point2D(newVertices.get(i).getX() * getScreenWidth(), newVertices.get(i).getY() * getScreenHeight());
+//                System.out.println(points[i].getX() + " " + points[i].getY());
+            }
 
-            rasterisator.draw(p1, p2, p3, texture);
+            rasterisator.draw(points[0], points[1], points[2], texture);
         }
+
     }
 
 

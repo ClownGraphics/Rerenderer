@@ -37,11 +37,11 @@ public final class Vertex implements Clearable {
     }
 
     public void setZ(float z){
-        this.values.setY(z);
+        this.values.setZ(z);
     }
 
     public void setW(float w){
-        this.values.setY(w);
+        this.values.setW(w);
     }
 
     public Vector4 getValues() {
@@ -74,8 +74,8 @@ public final class Vertex implements Clearable {
 
     public static List<Vertex> convertVerticesFromJShaper(List<io.github.shimeoki.jshaper.obj.Vertex> oldVertices){
         List<Vertex> newVertices = new ArrayList<>();
-        for (io.github.shimeoki.jshaper.obj.Vertex vertex : oldVertices){
-            newVertices.add(new Vertex(vertex.x(), vertex.y(), vertex.z(), vertex.w()));
+        for (io.github.shimeoki.jshaper.obj.Vertex v : oldVertices){
+            newVertices.add(new Vertex(v.x(), v.y(), v.z(), v.w()));
         }
         return newVertices;
     }

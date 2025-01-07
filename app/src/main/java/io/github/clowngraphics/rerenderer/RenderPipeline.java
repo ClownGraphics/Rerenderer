@@ -1,6 +1,9 @@
 package io.github.clowngraphics.rerenderer;
 
+import io.github.alphameo.linear_algebra.mat.Mat4;
+import io.github.alphameo.linear_algebra.mat.Mat4Math;
 import io.github.alphameo.linear_algebra.mat.Matrix4;
+import io.github.alphameo.linear_algebra.vec.Vec3Math;
 import io.github.clowngraphics.rerenderer.model.Model;
 import io.github.clowngraphics.rerenderer.model.camera.Camera;
 import io.github.clowngraphics.rerenderer.render.Scene;
@@ -32,36 +35,47 @@ public class RenderPipeline {
     public void renderScene(Scene scene){
         final Camera selectedCamera = scene.getCurrentCamera();
 
+        zBuffer.clear();
+
+        //TODO Тут будет что-то для освещения - @Fiecher
+
         for (Model model : scene.getModels()){
             renderModel(selectedCamera, model);
         }
 
-
-        zBuffer.clear();
     }
 
     public void renderModel(Camera camera, Model model){
 
         List<Vertex> newVertices = new ArrayList<>();
 
-        for (Vertex vertices : model.getVertices()){
+        for (Vertex vertex : model.getVertices()){
             // model matrix
-            Matrix4 modelM = model.getModelMatrix();
+            Matrix4 modelM = model.getTransform().getMatrix();
             // view matrix
             Matrix4 viewM = camera.getCameraTransform().getMatrix();
             // projection matrix
             Matrix4 projectionM = camera.getScreenTransform().getMatrix();
 
-            Matrix4
+            Matrix4 finalM = Mat4Math.prod(projectionM,Mat4Math.prod(viewM,modelM));
 
-            Vertex newVertex =
-            newVertices.add()
+            Vertex newVertex = new Vertex(Mat4Math.prod(finalM, vertex.getValues()));
+            newVertices.add(newVertex);
         }
+
+        drawModel(newVertices);
+
+    }
+
+    private void drawModel(List<Vertex> vertices){
+
+
 
     }
 
     private void lookAt(Camera camera){
 
     }
+
 
 }

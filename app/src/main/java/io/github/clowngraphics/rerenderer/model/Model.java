@@ -75,4 +75,7 @@ public class Model  implements Object{
     public List<Vertex> getVertices() {
         return vertices;
     }
+
+
+
 }

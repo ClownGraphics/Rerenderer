@@ -24,7 +24,8 @@ public class Model implements Object {
     //  1) Статическим классом трансформатором
     //  2) Внутренними методами
     // - Миша
-    private ModelTransform orientation;
+
+    private ModelTransform orientation = new ModelTransform();
     private Texture texture;
     private final List<Vertex> vertices;
     private final List<Polygon> polygons;

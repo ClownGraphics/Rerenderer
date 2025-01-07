@@ -14,13 +14,13 @@ public class ImageTexture implements Texture{
     private BufferedImage texture;
     private final int width;
     private final int height;
-    private final TriangleUVCoordinates triangleUvCoordinates;
+    private final PolygonUVCoordinates polygonUVCoordinates;
 
-    private ImageTexture(final BufferedImage image, TriangleUVCoordinates triangleUvCoordinates) {
+    private ImageTexture(final BufferedImage image, PolygonUVCoordinates polygonUVCoordinates) {
         this.texture = image;
         this.width = image.getWidth();
         this.height = image.getHeight();
-        this.triangleUvCoordinates = triangleUvCoordinates;
+        this.polygonUVCoordinates = polygonUVCoordinates;
     }
 
 
@@ -50,7 +50,7 @@ public class ImageTexture implements Texture{
 
     public ColorRGB get(Barycentric b) {
 
-        Vector2 interpolatedUV = triangleUvCoordinates.barycentric(b);
+        Vector2 interpolatedUV = polygonUVCoordinates.barycentric(b);
 
         float u = interpolatedUV.x();
         float v = interpolatedUV.y();
@@ -70,7 +70,7 @@ public class ImageTexture implements Texture{
     }
 
 
-    public static ImageTexture setFromFile(final File file, TriangleUVCoordinates triangleUvCoordinates) {
+    public static ImageTexture setFromFile(final File file, PolygonUVCoordinates polygonUvCoordinates) {
         Objects.requireNonNull(file);
         final BufferedImage image;
         try {
@@ -79,7 +79,7 @@ public class ImageTexture implements Texture{
             throw new IllegalArgumentException("Unable to read texture");
         }
 
-        return new ImageTexture(image, triangleUvCoordinates);
+        return new ImageTexture(image, polygonUvCoordinates);
     }
 
 }

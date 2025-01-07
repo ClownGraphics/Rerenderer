@@ -5,7 +5,7 @@ import io.github.alphameo.linear_algebra.vec.Vector2;
 import io.github.clowngraphics.rerenderer.math.Barycentric;
 import io.github.shimeoki.jshaper.obj.TextureVertex;
 
-public class TriangleUVCoordinates {
+public class PolygonUVCoordinates {
 
     private final Vector2 uv1;
 
@@ -14,7 +14,7 @@ public class TriangleUVCoordinates {
     private final Vector2 uv3;
 
 
-    public TriangleUVCoordinates(Vector2 uv1, Vector2 uv2, Vector2 uv3) {
+    public PolygonUVCoordinates(Vector2 uv1, Vector2 uv2, Vector2 uv3) {
         if (!checkCoordinateRange(uv1.x(), uv1.y())) {
             throw new IllegalArgumentException("Coordinates for uv1 are not normalized");
         }
@@ -66,7 +66,7 @@ public class TriangleUVCoordinates {
         return uv3.y();
     }
 
-    public TriangleUVCoordinates convertToUV(TextureVertex tv1, TextureVertex tv2, TextureVertex tv3){
-        return new TriangleUVCoordinates(new Vec2(tv1.u(),tv1.u()), new Vec2(tv2.u(),tv2.u()), new Vec2(tv3.u(),tv3.u()));
+    public PolygonUVCoordinates convertToUV(TextureVertex tv1, TextureVertex tv2, TextureVertex tv3){
+        return new PolygonUVCoordinates(new Vec2(tv1.u(),tv1.u()), new Vec2(tv2.u(),tv2.u()), new Vec2(tv3.u(),tv3.u()));
     }
 }

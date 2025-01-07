@@ -1,18 +1,27 @@
 package io.github.clowngraphics.rerenderer.render;
 
+import io.github.clowngraphics.rerenderer.render.texture.PolygonUVCoordinates;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Polygon {
 
     private List<Integer> vertexIndices;
+
+    public List<PolygonUVCoordinates> polygonUVCoordinates;
+
+    // TODO текстурные вершины нужно будет убрать - @Fiecher
     private List<Integer> textureVertexIndices;
     public List<Integer> normalIndices;
+
+
 
     public Polygon() {
         vertexIndices = new ArrayList<>();
         textureVertexIndices = new ArrayList<>();
         normalIndices = new ArrayList<>();
+        polygonUVCoordinates = new ArrayList<>();
     }
 
     public List<Integer> getVertexIndices() {

@@ -7,7 +7,7 @@ import io.github.alphameo.linear_algebra.mat.Matrix4;
 public class AxisRotation extends GeneralTransformation{
     private final Axis axis;
 
-    public AxisRotation(Axis axis, Axis axis1) {
+    public AxisRotation(Axis axis) {
         this.axis = axis;
         switch (axis){
             case X -> setMatrix(rotationX(0));

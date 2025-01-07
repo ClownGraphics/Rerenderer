@@ -7,8 +7,10 @@ import io.github.alphameo.linear_algebra.vec.Vector3;
 import io.github.clowngraphics.rerenderer.model.transform.ModelTransform;
 import io.github.clowngraphics.rerenderer.render.Polygon;
 import io.github.clowngraphics.rerenderer.render.Vertex;
+import io.github.clowngraphics.rerenderer.render.texture.MonotoneTexture;
 import io.github.clowngraphics.rerenderer.render.texture.Texture;
 import io.github.shimeoki.jshaper.ObjFile;
+import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,6 +57,8 @@ public class Model implements Object {
         for (Polygon polygon : polygons){
             normals.add(polygon.getNormal());
         }
+
+        this.texture = new MonotoneTexture(Color.BLACK);
 
     }
 

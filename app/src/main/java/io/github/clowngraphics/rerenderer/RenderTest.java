@@ -1,17 +1,15 @@
 package io.github.clowngraphics.rerenderer;
 
-import io.github.alphameo.linear_algebra.vec.Vec2;
+
 import io.github.alphameo.linear_algebra.vec.Vec3;
 import io.github.clowngraphics.rerenderer.model.Model;
 import io.github.clowngraphics.rerenderer.model.camera.Camera;
 import io.github.clowngraphics.rerenderer.model.camera.CameraProperties;
-import io.github.clowngraphics.rerenderer.render.TriangleRasterisator;
-import io.github.clowngraphics.rerenderer.render.texture.ImageTexture;
-import io.github.clowngraphics.rerenderer.render.texture.PolygonUVCoordinates;
+import io.github.clowngraphics.rerenderer.RenderPipeline;
 import io.github.shimeoki.jshaper.obj.ModelReader;
 import javafx.application.Application;
 import javafx.event.EventHandler;
-import javafx.geometry.Point2D;
+
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -20,16 +18,14 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
+
 import java.io.File;
-import java.io.IOException;
-import java.util.Random;
+
 
 public class RenderTest extends Application{
 
-    int width = 500;
-    int height = 500;
+    int width = 1000;
+    int height = 1000;
 
     public static void main(String[] args) {
         launch(args);
@@ -49,7 +45,8 @@ public class RenderTest extends Application{
 
         Model model = new Model(mr.read(new File("C:\\Users\\user\\Downloads\\caracal_cube.obj")));
         CameraProperties cp = new CameraProperties();
-        Camera camera = new Camera(new Vec3(0,0,0), cp);
+        Camera camera = new Camera(new Vec3(5,5,5), cp);
+        // TODO: Camera.lookAt() - Миша
 
         RenderPipeline rpipe = new RenderPipeline(gc);
 

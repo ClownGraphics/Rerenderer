@@ -68,6 +68,10 @@ public class Model implements Object {
         return normals;
     }
 
+    public List<Polygon> getPolygons() {
+        return polygons;
+    }
+
     @Override
     public ModelTransform getTransform() {
         return orientation;

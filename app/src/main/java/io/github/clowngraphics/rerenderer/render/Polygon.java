@@ -11,7 +11,7 @@ import java.util.List;
 public class Polygon {
 
     private List<Vertex> vertices;
-
+    private List<Integer> vertexIndices;
     public PolygonUVCoordinates polygonUVCoordinates;
 
     public Vector3 normal;
@@ -21,12 +21,26 @@ public class Polygon {
         this.vertices = vertices;
         this.polygonUVCoordinates = polygonUVCoordinates;
         this.normal = computeNormal();
+
+        this.vertexIndices = new ArrayList<>();
+        for (int i = 0; i < vertices.size(); i++) {
+            vertexIndices.add(i);
+        }
     }
 
 
     public List<Vertex> getVertices() {
         return vertices;
     }
+
+    public List<Integer> getVertexIndices() {
+        return vertexIndices;
+    }
+
+    public void setVertexIndices(List<Integer> vertexIndices) {
+        this.vertexIndices = vertexIndices;
+    }
+
 
     public PolygonUVCoordinates getPolygonUVCoordinates() {
         return polygonUVCoordinates;
@@ -42,23 +56,19 @@ public class Polygon {
             throw new IllegalStateException("Polygon must have at least 3 vertices to compute a normal");
         }
 
-        // Инициализация нормали
         Vector4 normal = new Vec4(0, 0, 0, 0);
 
-        // Обходим вершины в порядке против часовой стрелки
         for (int i = 0; i < vertices.size(); i++) {
             Vertex current = vertices.get(i);
             Vertex next = vertices.get((i + 1) % vertices.size());
 
-            // Получаем позиции текущей и следующей вершин
             Vector4 currentPosition = current.getValues();
             Vector4 nextPosition = next.getValues();
 
-            // Вычисляем вклад текущей пары вершин в нормаль
             normal = Vec4Math.add(normal, Vec4Math.sub(currentPosition, nextPosition));
         }
 
-        // Нормализуем нормаль
+
         return normalize(new Vec3(normal.x(), normal.y(), normal.z()));
     }
 

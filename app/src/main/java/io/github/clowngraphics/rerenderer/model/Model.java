@@ -5,10 +5,11 @@ package io.github.clowngraphics.rerenderer.model;
 import io.github.alphameo.linear_algebra.mat.Mat4;
 import io.github.alphameo.linear_algebra.mat.Matrix4;
 import io.github.clowngraphics.rerenderer.model.transform.ModelTransform;
+import io.github.clowngraphics.rerenderer.render.Vertex;
 import io.github.clowngraphics.rerenderer.render.texture.Texture;
 import io.github.shimeoki.jshaper.ObjFile;
 import io.github.shimeoki.jshaper.obj.Face;
-import io.github.shimeoki.jshaper.obj.Vertex;
+
 import io.github.shimeoki.jshaper.obj.TextureVertex;
 import io.github.shimeoki.jshaper.obj.VertexNormal;
 import java.util.List;
@@ -39,7 +40,7 @@ public class Model  implements Object{
     private Texture texture;
 
     public Model(final ObjFile obj, final Texture texture){
-        vertices = obj.vertexData().vertices();
+        vertices = Vertex.convertVerticesFromJShaper(obj.vertexData().vertices());
         textureVertices = obj.vertexData().textureVertices();
         normals = obj.vertexData().vertexNormals();
         faces = obj.elements().faces();
@@ -70,4 +71,11 @@ public class Model  implements Object{
     public ModelTransform getTransform() {
         return orientation;
     }
+
+    public List<Vertex> getVertices() {
+        return vertices;
+    }
+
+
+
 }

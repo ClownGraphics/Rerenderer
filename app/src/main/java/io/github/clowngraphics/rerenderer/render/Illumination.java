@@ -41,7 +41,7 @@ public class Illumination {
         this.ray = ray;
     }
 
-    // TODO Change ObjFile to Model or something else
+    // TODO Change ObjFile to Model or something else - @Fiecher
     public ObjFile computeNormals(ObjFile file) {
 
         List<Vertex> vertices = file.vertexData().vertices();
@@ -90,13 +90,13 @@ public class Illumination {
             vertexNormals.put(index, Vec3Math.divided(vertexNormals.get(index), vertexNormalsCount.get(index)));
         }
 
-        // TODO Проверить, скорее всего нормали не изменяются, так как меняем не textureVertices
+        // TODO Проверить, скорее всего нормали не изменяются, так как меняем не textureVertices - @Fiecher
         return new ObjFile(new VertexData(vertices, file.vertexData().textureVertices(),
                 file.vertexData().vertexNormals(), file.vertexData().parameterVertices()), file.elements(),
                 file.groupingData());
     }
 
-    // TODO Сделать один метод внутри барицентриков, для расчитывания подобного (мб уже есть)
+    // TODO Сделать один метод внутри барицентриков, для расчитывания подобного (мб уже есть) - @Fiecher
     private static Vector3 smoothNormals(final Barycentric b, final List<Vector3> n) {
         float x = (float) (b.getLambda1() * n.get(0).x() + b.getLambda2() * n.get(1).x() + b.getLambda3() * n.get(2).x());
         float y = (float) (b.getLambda1() * n.get(0).y() + b.getLambda2() * n.get(1).y() + b.getLambda3() * n.get(2).y());
@@ -104,7 +104,7 @@ public class Illumination {
         return new Vec3(x, y, z);
     }
 
-    // TODO Переделать эту дичь
+    // TODO Переделать эту дичь - @Fiecher
     public static void light(Barycentric b, final List<Vector3> normals, float[] light, int[] rgb) {
         Vector3 smooth = smoothNormals(b, normals);
 

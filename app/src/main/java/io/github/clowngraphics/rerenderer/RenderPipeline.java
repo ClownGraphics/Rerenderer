@@ -1,11 +1,19 @@
 package io.github.clowngraphics.rerenderer;
 
+import io.github.alphameo.linear_algebra.mat.Mat4;
+import io.github.alphameo.linear_algebra.mat.Mat4Math;
+import io.github.alphameo.linear_algebra.mat.Matrix4;
+import io.github.alphameo.linear_algebra.vec.Vec3Math;
+import io.github.clowngraphics.rerenderer.model.Model;
 import io.github.clowngraphics.rerenderer.model.camera.Camera;
 import io.github.clowngraphics.rerenderer.render.Scene;
+import io.github.clowngraphics.rerenderer.render.Vertex;
 import io.github.clowngraphics.rerenderer.render.ZBuffer;
 import javafx.scene.canvas.GraphicsContext;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class RenderPipeline {
@@ -25,13 +33,49 @@ public class RenderPipeline {
     }
 
     public void renderScene(Scene scene){
-        final Camera selectedCamera = scene.getCamera();
+        final Camera selectedCamera = scene.getCurrentCamera();
 
         zBuffer.clear();
+
+        //TODO Тут будет что-то для освещения - @Fiecher
+
+        for (Model model : scene.getModels()){
+            renderModel(selectedCamera, model);
+        }
+
+    }
+
+    public void renderModel(Camera camera, Model model){
+
+        List<Vertex> newVertices = new ArrayList<>();
+
+        for (Vertex vertex : model.getVertices()){
+            // model matrix
+            Matrix4 modelM = model.getTransform().getMatrix();
+            // view matrix
+            Matrix4 viewM = camera.getCameraTransform().getMatrix();
+            // projection matrix
+            Matrix4 projectionM = camera.getScreenTransform().getMatrix();
+
+            Matrix4 finalM = Mat4Math.prod(projectionM,Mat4Math.prod(viewM,modelM));
+
+            Vertex newVertex = new Vertex(Mat4Math.prod(finalM, vertex.getValues()));
+            newVertices.add(newVertex);
+        }
+
+        drawModel(newVertices);
+
+    }
+
+    private void drawModel(List<Vertex> vertices){
+
+
+
     }
 
     private void lookAt(Camera camera){
 
     }
+
 
 }

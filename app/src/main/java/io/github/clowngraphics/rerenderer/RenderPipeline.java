@@ -25,7 +25,8 @@ public class RenderPipeline {
     }
 
     public void renderScene(Scene scene){
-        final Camera selectedCamera = scene.getCamera();
+
+        final Camera selectedCamera = scene.getCurrentCamera();
 
         zBuffer.clear();
     }

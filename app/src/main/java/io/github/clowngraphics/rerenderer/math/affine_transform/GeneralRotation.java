@@ -16,7 +16,7 @@ public class GeneralRotation extends GeneralTransformation {
     private AxisRotation rotationZ;
 
     public GeneralRotation(){
-        this.rotationOrder = rotationOrder;
+        this.rotationOrder = RotationOrder.XYZ;
         rotationX= new AxisRotation(0, Axis.X);
         rotationY = new AxisRotation(0, Axis.Y);
         rotationZ = new AxisRotation(0, Axis.Z);

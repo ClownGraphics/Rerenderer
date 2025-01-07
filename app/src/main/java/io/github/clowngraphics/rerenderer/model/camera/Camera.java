@@ -17,6 +17,7 @@ public class Camera implements Object {
     //TODO: решить, как лучше получать преобразованную камеру:
     //  1) Статическим классом трансформатором
     //  2) Внутренними методами
+    // - Миша
     ModelTransform orientation;
     ScreenTransform screenTransform;
     CameraProperties properties;

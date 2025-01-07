@@ -3,6 +3,9 @@ package io.github.clowngraphics.rerenderer.model.transform;
 import io.github.clowngraphics.rerenderer.model.camera.Camera;
 import io.github.clowngraphics.rerenderer.model.Model;
 
+
+//todo: сделать класс статическим? - Миша
+
 public class Transformer {
     private Model model;
     private Camera camera;
@@ -11,7 +14,7 @@ public class Transformer {
         this.model = model;
         this.camera = camera;
     }
-    //todo: а преобразования применяются только к вершинам, или ещё к нормалям, или как...
+    //todo: а преобразования применяются только к вершинам, или ещё к нормалям, или как... - Миша
     public void transform(){
 
     }

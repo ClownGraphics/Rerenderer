@@ -21,6 +21,7 @@ public class Model  implements Object{
     //TODO: решить, как лучше получать преобразованную модель:
     //  1) Статическим классом трансформатором
     //  2) Внутренними методами
+    // - Миша
     private ModelTransform orientation;
     private final List<Vertex> vertices;
 

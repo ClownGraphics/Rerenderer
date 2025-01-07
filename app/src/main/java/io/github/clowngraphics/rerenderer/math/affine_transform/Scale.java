@@ -25,6 +25,14 @@ public class Scale implements Transformation {
         });
     }
 
+    public void scale(float s, Axis axis){
+        switch (axis){
+            case X -> scaleX(s);
+            case Y -> scaleY(s);
+            case Z -> scaleZ(s);
+        }
+    }
+
     public void scaleX(float sx) {
         transformationMatrix.set(0, 0, sx);
     }

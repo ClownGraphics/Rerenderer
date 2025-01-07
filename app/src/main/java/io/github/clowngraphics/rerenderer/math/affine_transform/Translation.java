@@ -24,14 +24,22 @@ public class Translation implements Transformation{
                 {0, 0, 0, 1}
         });
     }
-    public void moveX(float dx){
+    public void translate(float dt, Axis axis){
+        switch (axis){
+            case X -> translateX(dt);
+            case Y -> translateY(dt);
+            case Z -> translateZ(dt);
+        }
+    }
+    
+    public void translateX(float dx){
         transformationMatrix.set(0,0, dx);
     }
 
-    public void moveY(float dy){
+    public void translateY(float dy){
         transformationMatrix.set(1,1, dy);
     }
-    public void moveZ(float dz){
+    public void translateZ(float dz){
         transformationMatrix.set(2,2, dz);
     }
     @Override

@@ -2,6 +2,7 @@ package io.github.clowngraphics.rerenderer.math.affine_transform;
 
 import io.github.alphameo.linear_algebra.mat.Mat4;
 import io.github.alphameo.linear_algebra.mat.Matrix4;
+import io.github.alphameo.linear_algebra.vec.Vec3;
 import io.github.alphameo.linear_algebra.vec.Vector3;
 
 public class ScalarProjection extends GeneralTransformation {
@@ -10,6 +11,9 @@ public class ScalarProjection extends GeneralTransformation {
     private Vector3 vy;
     private Vector3 vz;
 
+    public ScalarProjection(){
+        new ScalarProjection(new Vec3(1, 0, 0), new Vec3(0, 1, 0), new Vec3(0, 0, 1));
+    }
     public ScalarProjection(Vector3 vx, Vector3 vy, Vector3 vz) {
         this.vx = vx;
         this.vy = vy;

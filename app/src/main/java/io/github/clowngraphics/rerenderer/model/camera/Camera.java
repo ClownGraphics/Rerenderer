@@ -12,7 +12,7 @@ import io.github.clowngraphics.rerenderer.model.transform.ModelTransform;
 import io.github.clowngraphics.rerenderer.model.transform.ScreenTransform;
 
 public class Camera implements Object {
-    CameraTransform cameraTransform;
+    CameraTransform cameraTransform = new CameraTransform();
 
     //TODO: решить, как лучше получать преобразованную камеру:
     //  1) Статическим классом трансформатором

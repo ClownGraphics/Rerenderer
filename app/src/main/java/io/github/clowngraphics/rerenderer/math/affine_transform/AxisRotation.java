@@ -4,27 +4,26 @@ import io.github.alphameo.linear_algebra.mat.Mat4;
 import io.github.alphameo.linear_algebra.mat.Matrix4;
 
 
-public class AxisRotation implements Transformation{
-    private final Mat4 transformationMatrix;
+public class AxisRotation extends GeneralTransformation{
     private final Axis axis;
 
     public AxisRotation(Axis axis, Axis axis1) {
         this.axis = axis;
         switch (axis){
-            case X -> this.transformationMatrix = rotationX(0);
-            case Y -> this.transformationMatrix = rotationY(0);
-            case Z -> this.transformationMatrix = rotationZ(0);
-            default -> this.transformationMatrix = null;
+            case X -> setMatrix(rotationX(0));
+            case Y -> setMatrix(rotationY(0));
+            case Z -> setMatrix(rotationZ(0));
+            default -> setMatrix(null);
         }
     }
 
     public AxisRotation(float angle, Axis axis) {
         this.axis = axis;
         switch (axis){
-            case X -> this.transformationMatrix = rotationX(angle);
-            case Y -> this.transformationMatrix = rotationY(angle);
-            case Z -> this.transformationMatrix = rotationZ(angle);
-            default -> this.transformationMatrix = null;
+            case X -> setMatrix(rotationX(angle));
+            case Y -> setMatrix(rotationY(angle));
+            case Z -> setMatrix(rotationZ(angle));
+            default -> setMatrix(null);
         }
     }
 
@@ -62,23 +61,19 @@ public class AxisRotation implements Transformation{
 
     public void rotate(float angle){
         switch (axis){
-            case X -> this.transformationMatrix.add(rotationX(angle));
-            case Y -> this.transformationMatrix.add(rotationY(angle));
-            case Z -> this.transformationMatrix.add(rotationZ(angle));
+            case X -> getMatrix().add(rotationX(angle));
+            case Y -> getMatrix().add(rotationY(angle));
+            case Z -> getMatrix().add(rotationZ(angle));
         }
     }
     public void setAngle(float angle){
-        this.transformationMatrix.mult(0);
+        getMatrix().mult(0);
         switch (axis){
-            case X -> this.transformationMatrix.add(rotationX(angle));
-            case Y -> this.transformationMatrix.add(rotationY(angle));
-            case Z -> this.transformationMatrix.add(rotationZ(angle));
+            case X -> getMatrix().add(rotationX(angle));
+            case Y -> getMatrix().add(rotationY(angle));
+            case Z -> getMatrix().add(rotationZ(angle));
         }
     }
 
-    @Override
-    public Matrix4 getMatrix() {
-        return transformationMatrix;
-    }
 
 }

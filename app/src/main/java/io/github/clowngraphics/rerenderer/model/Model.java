@@ -4,6 +4,7 @@ package io.github.clowngraphics.rerenderer.model;
 
 import io.github.alphameo.linear_algebra.mat.Mat4;
 import io.github.alphameo.linear_algebra.mat.Matrix4;
+import io.github.clowngraphics.rerenderer.model.transform.ModelTransform;
 import io.github.clowngraphics.rerenderer.render.texture.Texture;
 import io.github.shimeoki.jshaper.ObjFile;
 import io.github.shimeoki.jshaper.obj.Face;
@@ -15,8 +16,13 @@ import java.util.List;
 /**
  * @author traunin {@link https://github.com/Traunin}
  */
-public class Model {
+public class Model  implements Object{
 
+    //TODO: решить, как лучше получать преобразованную модель:
+    //  1) Статическим классом трансформатором
+    //  2) Внутренними методами
+    // - Миша
+    private ModelTransform orientation;
     private final List<Vertex> vertices;
 
     private final List<TextureVertex> textureVertices;
@@ -58,5 +64,10 @@ public class Model {
 
     public List<VertexNormal> getNormals() {
         return normals;
+    }
+
+    @Override
+    public ModelTransform getTransform() {
+        return orientation;
     }
 }

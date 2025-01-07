@@ -39,6 +39,7 @@ public class ModelTransform implements Transformation {
 
     public void setGeneralRotation(GeneralRotation generalRotation) {
         this.generalRotation = generalRotation;
+        recalculateMatrix();
     }
 
     public Translation getTranslation() {
@@ -47,6 +48,7 @@ public class ModelTransform implements Transformation {
 
     public void setTranslation(Translation translation) {
         this.translation = translation;
+        recalculateMatrix();
     }
 
     public Scale getScale() {
@@ -55,6 +57,7 @@ public class ModelTransform implements Transformation {
 
     public void setScale(Scale scale) {
         this.scale = scale;
+        recalculateMatrix();
     }
 
     @Override

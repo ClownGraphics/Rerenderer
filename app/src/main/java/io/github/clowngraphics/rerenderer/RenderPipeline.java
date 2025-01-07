@@ -71,27 +71,23 @@ public class RenderPipeline {
 
     private void drawModel(List<Vertex> vertices, Model model) {
         TriangleRasterisator rasterisator = new TriangleRasterisator(ctx.getPixelWriter());
-        Texture texture = model.getTexture(); // Получаем текстуру модели
-        List<Polygon> polygons = model.getPolygons(); // Получаем полигоны модели
+        Texture texture = model.getTexture();
+        List<Polygon> polygons = model.getPolygons();
 
-        // Проходим по каждому полигону модели
+
         for (Polygon polygon : polygons) {
-            // Получаем индексы вершин полигона
             int index1 = polygon.getVertexIndices().get(0);
             int index2 = polygon.getVertexIndices().get(1);
             int index3 = polygon.getVertexIndices().get(2);
 
-            // Используем индексы для выбора соответствующих вершин
             Vertex v1 = vertices.get(index1);
             Vertex v2 = vertices.get(index2);
             Vertex v3 = vertices.get(index3);
 
-            // Получаем координаты вершин в экранном пространстве
             Point2D p1 = new Point2D(v1.getX(), v1.getY());
             Point2D p2 = new Point2D(v2.getX(), v2.getY());
             Point2D p3 = new Point2D(v3.getX(), v3.getY());
 
-            // Рисуем треугольник с использованием TriangleRasterisator
             rasterisator.draw(p1, p2, p3, texture);
         }
     }

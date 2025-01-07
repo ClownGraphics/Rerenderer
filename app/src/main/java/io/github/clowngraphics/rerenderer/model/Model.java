@@ -17,9 +17,7 @@ import io.github.shimeoki.jshaper.obj.VertexNormal;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @author traunin {@link https://github.com/Traunin}
- */
+
 public class Model implements Object {
 
     //TODO: решить, как лучше получать преобразованную модель:
@@ -50,6 +48,18 @@ public class Model implements Object {
         }
 
         this.texture = texture;
+    }
+
+    public Model(final ObjFile obj) {
+        vertices = Vertex.convertVerticesFromJShaper(obj.vertexData().vertices());
+        polygons = Polygon.convertPolgonsFromJShaper(obj.elements().faces());
+
+        normals = new ArrayList<>();
+        for (Polygon polygon : polygons){
+            normals.add(polygon.getNormal());
+        }
+
+
     }
 
     public Matrix4 getModelMatrix() {

@@ -17,20 +17,24 @@ public final class Triangulation {
                 throw new IllegalArgumentException("Polygon has to have at least 3 vertices.");
             }
 
+            //TODO Пофиксить это - @Fiecher
+
             for (int i = 1; i < vertexCount - 1; i++) {
-                Polygon triangle = new Polygon();
+//                Polygon triangle = new Polygon();
 
-                triangle.setVertexIndices(createSublist(vertexIndices, 0, i, i + 1));
+//                triangle.setVertexIndices(createSublist(vertexIndices, 0, i, i + 1));
 
-                if (!polygon.getTextureVertexIndices().isEmpty()) {
-                    triangle.setTextureVertexIndices(createSublist(polygon.getTextureVertexIndices(), 0, i, i + 1));
-                }
 
-                if (!polygon.getNormalIndices().isEmpty()) {
-                    triangle.setNormalIndices(createSublist(polygon.getNormalIndices(), 0, i, i + 1));
-                }
 
-                triangulatedPolygons.add(triangle);
+//                if (!polygon.getTextureVertexIndices().isEmpty()) {
+//                    triangle.setTextureVertexIndices(createSublist(polygon.getTextureVertexIndices(), 0, i, i + 1));
+//                }
+//
+//                if (!polygon.getNormalIndices().isEmpty()) {
+//                    triangle.setNormalIndices(createSublist(polygon.getNormalIndices(), 0, i, i + 1));
+//                }
+
+//                triangulatedPolygons.add(triangle);
             }
         }
 

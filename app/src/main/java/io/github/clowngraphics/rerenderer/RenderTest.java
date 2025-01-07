@@ -48,7 +48,7 @@ public class RenderTest extends Application{
 
 
         Model model = new Model(mr.read(new File("C:\\Users\\user\\Downloads\\caracal_cube.obj")));
-        CameraProperties cp = new CameraProperties(180,20,2,3);
+        CameraProperties cp = new CameraProperties();
         Camera camera = new Camera(new Vec3(0,0,0), cp);
 
         RenderPipeline rpipe = new RenderPipeline(gc);

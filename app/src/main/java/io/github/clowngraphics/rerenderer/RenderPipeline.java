@@ -34,24 +34,24 @@ public class RenderPipeline {
         this.zBuffer = new ZBuffer(screenWidth, screenHeight);
     }
 
-    public void renderScene(Scene scene){
+    public void renderScene(Scene scene) {
         final Camera selectedCamera = scene.getCurrentCamera();
 
         zBuffer.clear();
 
         //TODO Тут будет что-то для освещения - @Fiecher
 
-        for (Model model : scene.getModels()){
+        for (Model model : scene.getModels()) {
             renderModel(selectedCamera, model);
         }
 
     }
 
-    public void renderModel(Camera camera, Model model){
+    public void renderModel(Camera camera, Model model) {
 
         List<Vertex> newVertices = new ArrayList<>();
 
-        for (Vertex vertex : model.getVertices()){
+        for (Vertex vertex : model.getVertices()) {
             // model matrix
             Matrix4 modelM = model.getTransform().getMatrix();
             // view matrix
@@ -59,7 +59,7 @@ public class RenderPipeline {
             // projection matrix
             Matrix4 projectionM = camera.getScreenTransform().getMatrix();
 
-            Matrix4 finalM = Mat4Math.prod(projectionM,Mat4Math.prod(viewM,modelM));
+            Matrix4 finalM = Mat4Math.prod(projectionM, Mat4Math.prod(viewM, modelM));
 
             Vertex newVertex = new Vertex(Mat4Math.prod(finalM, vertex.getValues()));
             newVertices.add(newVertex);
@@ -93,7 +93,7 @@ public class RenderPipeline {
     }
 
 
-    private void lookAt(Camera camera){
+    private void lookAt(Camera camera) {
 
     }
 

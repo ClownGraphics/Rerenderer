@@ -11,9 +11,17 @@ public class ScalarProjection extends GeneralTransformation {
     private Vector3 vy;
     private Vector3 vz;
 
-    public ScalarProjection(){
-        new ScalarProjection(new Vec3(1, 0, 0), new Vec3(0, 1, 0), new Vec3(0, 0, 1));
+    // TODO: В чем проблема - Миша
+//    public ScalarProjection(){
+//        new ScalarProjection(new Vec3(1, 0, 0), new Vec3(0, 1, 0), new Vec3(0, 0, 1));
+//    }
+    public ScalarProjection() {
+        this.vx = new Vec3(1, 0, 0);
+        this.vy = new Vec3(0, 1, 0);
+        this.vz = new Vec3(0, 0, 1);
+        recalculateMatrix();
     }
+
     public ScalarProjection(Vector3 vx, Vector3 vy, Vector3 vz) {
         this.vx = vx;
         this.vy = vy;

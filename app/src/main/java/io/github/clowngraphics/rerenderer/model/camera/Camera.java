@@ -19,7 +19,7 @@ public class Camera implements Object {
     //  2) Внутренними методами
     // - Миша
     ModelTransform orientation;
-    ScreenTransform screenTransform;
+    ScreenTransform screenTransform = new ScreenTransform();
     CameraProperties properties;
 
     private Vector3 up = new Vec3(0, 1, 0);

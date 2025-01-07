@@ -9,10 +9,6 @@ import io.github.clowngraphics.rerenderer.render.Polygon;
 import io.github.clowngraphics.rerenderer.render.Vertex;
 import io.github.clowngraphics.rerenderer.render.texture.Texture;
 import io.github.shimeoki.jshaper.ObjFile;
-import io.github.shimeoki.jshaper.obj.Face;
-
-import io.github.shimeoki.jshaper.obj.TextureVertex;
-import io.github.shimeoki.jshaper.obj.VertexNormal;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +21,7 @@ public class Model implements Object {
     //  2) Внутренними методами
     // - Миша
 
-    private ModelTransform orientation = new ModelTransform();
+    private ModelTransform modelTransform = new ModelTransform();
     private Texture texture;
     private final List<Vertex> vertices;
     private final List<Polygon> polygons;
@@ -60,7 +56,6 @@ public class Model implements Object {
             normals.add(polygon.getNormal());
         }
 
-
     }
 
     public Matrix4 getModelMatrix() {
@@ -85,7 +80,7 @@ public class Model implements Object {
 
     @Override
     public ModelTransform getTransform() {
-        return orientation;
+        return modelTransform;
     }
 
     public List<Vertex> getVertices() {

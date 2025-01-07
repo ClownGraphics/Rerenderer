@@ -16,6 +16,7 @@ public class CameraTransform implements Transformation {
     public CameraTransform() {
         this.scalarProjection = new ScalarProjection();
         this.translation = new Translation();
+        recalculateMatrix();
     }
 
     public CameraTransform(ScalarProjection scalarProjection, Translation translation) {

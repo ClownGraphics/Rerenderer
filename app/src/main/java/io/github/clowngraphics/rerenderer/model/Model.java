@@ -70,4 +70,8 @@ public class Model  implements Object{
     public ModelTransform getTransform() {
         return orientation;
     }
+
+    public List<Vertex> getVertices() {
+        return vertices;
+    }
 }

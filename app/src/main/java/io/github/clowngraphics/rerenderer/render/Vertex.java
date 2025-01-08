@@ -2,15 +2,12 @@ package io.github.clowngraphics.rerenderer.render;
 
 import io.github.alphameo.linear_algebra.vec.Vec4;
 import io.github.alphameo.linear_algebra.vec.Vector4;
-import io.github.shimeoki.jshaper.Clearable;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-// TODO Убрать имплементацию интерфейсов - @Fiecher
-
-public final class Vertex implements Clearable {
+public final class Vertex {
 
     private Vector4 values = new Vec4();
 
@@ -64,7 +61,6 @@ public final class Vertex implements Clearable {
         return values.w();
     }
 
-    @Override
     public void clear() {
         this.setX(0);
         this.setY(0);

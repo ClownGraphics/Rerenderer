@@ -50,6 +50,8 @@ public class Model implements Object {
         this.texture = texture;
     }
 
+
+
     public Model(final ObjFile obj) {
         vertices = Vertex.convertVerticesFromJShaper(obj.vertexData().vertices());
 //        polygons = Triangulation.triangulate(Polygon.convertPolgonsFromJShaper(obj.elements().faces()));

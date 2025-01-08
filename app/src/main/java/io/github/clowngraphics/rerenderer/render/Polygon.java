@@ -13,9 +13,7 @@ public class Polygon {
     private List<Vertex> vertices;
     private List<Integer> vertexIndices;
     public PolygonUVCoordinates polygonUVCoordinates;
-
     public Vector3 normal;
-
 
     public Polygon(List<Vertex> vertices, PolygonUVCoordinates polygonUVCoordinates) {
         this.vertices = vertices;
@@ -96,7 +94,6 @@ public class Polygon {
             oldVertices.add(face.triplets().get(2).vertex());
 
             // Getting UV's
-
             TextureVertex tv0 = face.triplets().get(0).textureVertex();
             TextureVertex tv1 = face.triplets().get(1).textureVertex();
             TextureVertex tv2 = face.triplets().get(2).textureVertex();

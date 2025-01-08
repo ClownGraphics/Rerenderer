@@ -2,6 +2,7 @@ package io.github.clowngraphics.rerenderer.render;
 
 import io.github.alphameo.linear_algebra.vec.*;
 import io.github.clowngraphics.rerenderer.render.texture.PolygonUVCoordinates;
+import io.github.shimeoki.jshaper.ObjFile;
 import io.github.shimeoki.jshaper.obj.Face;
 import io.github.shimeoki.jshaper.obj.TextureVertex;
 
@@ -15,17 +16,22 @@ public class Polygon {
     public PolygonUVCoordinates polygonUVCoordinates;
     public Vector3 normal;
 
+    public Polygon(List<Vertex> vertices, PolygonUVCoordinates polygonUVCoordinates, List<Integer> vertexIndices) {
+        this.vertices = vertices;
+        this.polygonUVCoordinates = polygonUVCoordinates;
+        this.normal = computeNormal();
+        this.vertexIndices = vertexIndices;
+    }
+
     public Polygon(List<Vertex> vertices, PolygonUVCoordinates polygonUVCoordinates) {
         this.vertices = vertices;
         this.polygonUVCoordinates = polygonUVCoordinates;
         this.normal = computeNormal();
-
         this.vertexIndices = new ArrayList<>();
-        for (int i = 0; i < vertices.size(); i++) {
-            vertexIndices.add(i);
-        }
+        vertexIndices.add(0);
+        vertexIndices.add(1);
+        vertexIndices.add(2);
     }
-
 
     public List<Vertex> getVertices() {
         return vertices;
@@ -82,8 +88,11 @@ public class Polygon {
     }
 
 
-    public static List<Polygon> convertPolgonsFromJShaper(List<Face> faces) {
+    public static List<Polygon> convertPolgonsFromJShaper(ObjFile obj) {
+
+        List<Face> faces = obj.elements().faces();
         List<Polygon> newPolygons = new ArrayList<>();
+
 
         for (Face face : faces) {
 
@@ -98,16 +107,21 @@ public class Polygon {
             TextureVertex tv1 = face.triplets().get(1).textureVertex();
             TextureVertex tv2 = face.triplets().get(2).textureVertex();
 
+            List<Integer> vertexIndices = new ArrayList<>();
+            vertexIndices.add(obj.vertexData().vertices().indexOf(oldVertices.get(0)));
+            vertexIndices.add(obj.vertexData().vertices().indexOf(oldVertices.get(1)));
+            vertexIndices.add(obj.vertexData().vertices().indexOf(oldVertices.get(2)));
 
             newPolygons.add(new Polygon(Vertex.convertVerticesFromJShaper(oldVertices),
-                    PolygonUVCoordinates.convertToUV(tv0, tv1, tv2)));
+                    PolygonUVCoordinates.convertToUV(tv0, tv1, tv2),
+                    vertexIndices));
         }
 
         return newPolygons;
     }
 
     public static Polygon copy(Polygon polygon){
-        return new Polygon(polygon.getVertices(),polygon.getPolygonUVCoordinates());
+        return new Polygon(polygon.getVertices(),polygon.getPolygonUVCoordinates(), polygon.getVertexIndices());
     }
 
 }

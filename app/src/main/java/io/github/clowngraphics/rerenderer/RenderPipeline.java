@@ -2,8 +2,7 @@ package io.github.clowngraphics.rerenderer;
 
 import io.github.alphameo.linear_algebra.mat.Mat4Math;
 import io.github.alphameo.linear_algebra.mat.Matrix4;
-import io.github.alphameo.linear_algebra.vec.Vector3;
-import io.github.alphameo.linear_algebra.vec.Vector4;
+import io.github.alphameo.linear_algebra.vec.*;
 import io.github.clowngraphics.rerenderer.math.affine_transform.GeneralTransformation;
 import io.github.clowngraphics.rerenderer.model.Model;
 import io.github.clowngraphics.rerenderer.model.camera.Camera;
@@ -71,6 +70,7 @@ public class RenderPipeline {
         TriangleRasterisator rasterisator = new TriangleRasterisator(ctx.getPixelWriter(), zBuffer);
         Texture texture = model.getTexture();
         List<Vertex> vertices = model.getVertices();
+        List<Polygon> polygons = model.getPolygons();
 
         ModelTransform modelTransform = model.getTransform();
         CameraTransform cameraTransform = camera.getCameraTransform();
@@ -78,22 +78,34 @@ public class RenderPipeline {
         GeneralTransformation fin = screenTransform.combine(cameraTransform.combine(modelTransform));
 
         List<Vector4> vectorVertices = new ArrayList<>();
-        List<Vector4> vectorNewVertices;
-
-        for(Vertex vertex: vertices){
+        List<Vector4> vectorNewVertices = new ArrayList<>();
+        Vector3 temp;
+        for (Vertex vertex : vertices) {
             vectorVertices.add(vertex.getValues());
+//            temp = modelTransform.transform(new Vec3(vertex.getX(), vertex.getY(), vertex.getZ()));
+//            temp = cameraTransform.transform(new Vec3(temp.x(), temp.y(), temp.z()));
+//            temp = screenTransform.transform(temp);
+//            vectorNewVertices.add(Vec3Math.toVec4(temp));
         }
         vectorNewVertices = fin.transform(vectorVertices);
 //        float w = screenTransform.getMatrix().get(2, 3);
-
-        for(Vector4 vertex: vectorNewVertices){
-            for(int i = 0; i < 4; i++){
-                vertex.set(i, vertex.get(i) / vertex.w());
-            }
-            Point3D points[] = new Point3D[3];
+        Point3D[] points;
+        int w = getScreenWidth();
+        int h = getScreenHeight();
+        for (Polygon polygon : polygons) {
+            points = new Point3D[3];
             for (int i = 0; i < 3; i++) {
-                points[i] = new Point3D(vectorNewVertices.get(i).x()*getScreenWidth(), vectorNewVertices.get(i).y()*getScreenHeight(), vectorNewVertices.get(i).z());
-//                System.out.println(points[i].getX() + " " + points[i].getY());
+                Vector4 vertex = vectorNewVertices.get(polygon.getVertexIndices().get(i));
+
+                for (int j = 0; j < 4; j++) {
+                    vertex.set(j, vertex.get(j) / vertex.w());
+                }
+
+                points[i] = new Point3D(
+                        vertex.x() * (w - 1) / 2 + (double) (w - 1) / 2,
+                        vertex.y() * (1-h)/2 + (double) (h - 1) /2,
+                        vertex.z()
+                );
             }
 
             rasterisator.draw(points[0], points[1], points[2], texture, getCurrentRenderType());

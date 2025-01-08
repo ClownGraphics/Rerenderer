@@ -46,12 +46,15 @@ public class Polygon {
         return polygonUVCoordinates;
     }
 
+    public void setPolygonUVCoordinates(PolygonUVCoordinates polygonUVCoordinates) {
+        this.polygonUVCoordinates = polygonUVCoordinates;
+    }
+
     public Vector3 getNormal() {
         return normal;
     }
 
     public Vector3 computeNormal() {
-        // Проверяем, что у полигона есть как минимум три вершины
         if (vertices.size() < 3) {
             throw new IllegalStateException("Polygon must have at least 3 vertices to compute a normal");
         }

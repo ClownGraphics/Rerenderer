@@ -41,8 +41,9 @@ public class RenderTest extends Application{
         GraphicsContext gc = canvas.getGraphicsContext2D();
 
         ModelReader mr = new ModelReader();
-
+        //TODO Пофиксить проблему с кодировками -- @Fiecher/Миша
         String filename = getClass().getResource("cube.obj").getPath();
+
         Model model = new Model(mr.read(new File(filename)));
         CameraProperties cp = new CameraProperties();
         Camera camera = new Camera(new Vec3(10,10,10), cp);

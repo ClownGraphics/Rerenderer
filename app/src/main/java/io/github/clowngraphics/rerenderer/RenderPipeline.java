@@ -85,8 +85,8 @@ public class RenderPipeline {
             }
             Point2D points[] = new Point2D[3];
             for (int i = 0; i < 3; i++) {
-                points[i] = new Point2D(vectorNewVertices.get(i).x()*getScreenWidth()/10+200, vectorNewVertices.get(i).y()*getScreenHeight()/10+200);
-                System.out.println(points[i].getX() + " " + points[i].getY());
+                points[i] = new Point2D(vectorNewVertices.get(i).x()*getScreenWidth()/10+200, vectorNewVertices.get(i).y()*getScreenHeight()/10+250);
+//                System.out.println(points[i].getX() + " " + points[i].getY());
             }
             // TODO Сделать нормальным выбором рисовать ли Waveframe -- @Fiecher
             rasterisator.draw(points[0], points[1], points[2], texture, true);

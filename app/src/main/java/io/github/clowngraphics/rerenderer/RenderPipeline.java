@@ -77,11 +77,11 @@ public class RenderPipeline {
             vectorVertices.add(vertex.getValues());
         }
         vectorNewVertices = fin.transform(vectorVertices);
-        float w = screenTransform.getMatrix().get(2, 3);
+//        float w = screenTransform.getMatrix().get(2, 3);
 
         for(Vector4 vertex: vectorNewVertices){
             for(int i = 0; i < 4; i++){
-                vertex.set(i, vertex.get(i) / w);
+                vertex.set(i, vertex.get(i) / vertex.w());
             }
             Point2D points[] = new Point2D[3];
             for (int i = 0; i < 3; i++) {

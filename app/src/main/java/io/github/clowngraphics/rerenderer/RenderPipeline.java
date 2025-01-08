@@ -17,6 +17,7 @@ import io.github.clowngraphics.rerenderer.render.Vertex;
 import io.github.clowngraphics.rerenderer.render.ZBuffer;
 import io.github.clowngraphics.rerenderer.render.texture.Texture;
 import javafx.geometry.Point2D;
+import javafx.geometry.Point3D;
 import javafx.scene.canvas.GraphicsContext;
 
 import java.awt.*;
@@ -61,7 +62,7 @@ public class RenderPipeline {
 
     public void renderModel(Camera camera, Model model) {
 
-        TriangleRasterisator rasterisator = new TriangleRasterisator(ctx.getPixelWriter());
+        TriangleRasterisator rasterisator = new TriangleRasterisator(ctx.getPixelWriter(), zBuffer);
         Texture texture = model.getTexture();
         List<Vertex> vertices = model.getVertices();
 
@@ -83,9 +84,9 @@ public class RenderPipeline {
             for(int i = 0; i < 4; i++){
                 vertex.set(i, vertex.get(i) / w);
             }
-            Point2D points[] = new Point2D[3];
+            Point3D points[] = new Point3D[3];
             for (int i = 0; i < 3; i++) {
-                points[i] = new Point2D(vectorNewVertices.get(i).x()*getScreenWidth()/10+200, vectorNewVertices.get(i).y()*getScreenHeight()/10+250);
+                points[i] = new Point3D(vectorNewVertices.get(i).x()*getScreenWidth()/10+200, vectorNewVertices.get(i).y()*getScreenHeight()/10+250, vectorNewVertices.get(i).z());
 //                System.out.println(points[i].getX() + " " + points[i].getY());
             }
             // TODO Сделать нормальным выбором рисовать ли Waveframe -- @Fiecher
@@ -93,7 +94,6 @@ public class RenderPipeline {
         }
 
     }
-
 
     private void lookAt(Camera camera) {
 

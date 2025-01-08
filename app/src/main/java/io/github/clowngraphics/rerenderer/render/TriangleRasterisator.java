@@ -5,7 +5,7 @@ import io.github.clowngraphics.rerenderer.math.Triangle;
 import io.github.clowngraphics.rerenderer.math.Utils;
 import io.github.clowngraphics.rerenderer.render.texture.ColorRGB;
 import io.github.clowngraphics.rerenderer.render.texture.Texture;
-import javafx.geometry.Point2D;
+import javafx.geometry.Point3D;
 import javafx.scene.image.PixelWriter;
 
 import java.util.ArrayList;
@@ -17,8 +17,11 @@ public class TriangleRasterisator {
 
     private PixelWriter pixelWriter;
 
-    public TriangleRasterisator(PixelWriter pixelWriter) {
+    private ZBuffer zBuffer;
+
+    public TriangleRasterisator(PixelWriter pixelWriter, ZBuffer zBuffer) {
         this.pixelWriter = pixelWriter;
+        this.zBuffer = zBuffer;
     }
 
     public PixelWriter getPixelWriter() {
@@ -29,17 +32,17 @@ public class TriangleRasterisator {
         this.pixelWriter = pixelWriter;
     }
 
-    private List<Point2D> sortedVertices(final Triangle t) {
-        final List<Point2D> vertices = new ArrayList<>();
+    private List<Point3D> sortedVertices(final Triangle t) {
+        final List<Point3D> vertices = new ArrayList<>();
         vertices.add(t.getPoint1());
         vertices.add(t.getPoint2());
         vertices.add(t.getPoint3());
 
-        vertices.sort(Comparator.comparing(Point2D::getY).thenComparing(Point2D::getX));
+        vertices.sort(Comparator.comparing(Point3D::getY).thenComparing(Point3D::getX));
         return vertices;
     }
 
-    private void drawFlat(final Triangle t, final Point2D lone, final Point2D flat1, final Point2D flat2) {
+    private void drawFlat(final Triangle t, final Point3D lone, final Point3D flat1, final Point3D flat2) {
         final double lx = lone.getX();
         final double ly = lone.getY();
 
@@ -61,37 +64,39 @@ public class TriangleRasterisator {
         }
     }
 
-    private void drawTop(final Triangle t, final Point2D v, final double maxY, final double dx1, final double dx2) {
+    private void drawTop(final Triangle t, final Point3D v, final double maxY, final double dx1, final double dx2) {
 
         double x1 = v.getX();
         double x2 = x1;
 
         for (int y = (int) v.getY(); y <= maxY; y++) {
-            drawHLine(t, (int) x1, (int) x2, y);
+            drawHLine(t, (int) x1, (int) x2, (int) v.getZ(), y);
             x1 += dx1;
             x2 += dx2;
         }
     }
 
-    private void drawBottom(final Triangle t, final Point2D v, final double minY, final double dx1, final double dx2) {
+    private void drawBottom(final Triangle t, final Point3D v, final double minY, final double dx1, final double dx2) {
 
         double x1 = v.getX();
         double x2 = x1;
 
         for (int y = (int) v.getY(); y > minY; y--) {
-            drawHLine(t, (int) x1, (int) x2, y);
+            drawHLine(t, (int) x1, (int) x2, (int) v.getZ(), y);
 
             x1 -= dx1;
             x2 -= dx2;
         }
     }
 
-    private void drawHLine(final Triangle t, final int x1, final int x2, final int y) {
+    private void drawHLine(final Triangle t, final int x1, final int x2, final int z, final int y) {
 
         for (int x = (int) x1; x <= x2; x++) {
             final Barycentric b;
+            // TODO Правильно? -- @Fiecher
+
             try {
-                b = t.barycentrics(new Point2D(x, y));
+                b = t.barycentrics(new Point3D(x, y, z));
             } catch (Exception e) {
                 continue;
             }
@@ -101,12 +106,13 @@ public class TriangleRasterisator {
             }
 
             ColorRGB color = t.getTexture().get(b);
-
-            pixelWriter.setColor(x, y, color.convertToJFXColor());
+            if (zBuffer.isDrawable(x, y, z)) {
+                pixelWriter.setColor(x, y, color.convertToJFXColor());
+            }
         }
     }
 
-    public void draw(Point2D p1, Point2D p2, Point2D p3, Texture texture, boolean drawEdgesOnly) {
+    public void draw(Point3D p1, Point3D p2, Point3D p3, Texture texture, boolean drawEdgesOnly) {
         Objects.requireNonNull(p1);
         Objects.requireNonNull(p2);
         Objects.requireNonNull(p3);
@@ -117,11 +123,11 @@ public class TriangleRasterisator {
         }
 
         Triangle t = new Triangle(p1, p2, p3, texture);
-        List<Point2D> vertices = sortedVertices(t);
+        List<Point3D> vertices = sortedVertices(t);
 
-        Point2D v1 = vertices.get(0);
-        Point2D v2 = vertices.get(1);
-        Point2D v3 = vertices.get(2);
+        Point3D v1 = vertices.get(0);
+        Point3D v2 = vertices.get(1);
+        Point3D v3 = vertices.get(2);
 
         double x1 = v1.getX();
         double y1 = v1.getY();
@@ -143,7 +149,7 @@ public class TriangleRasterisator {
         }
 
         final double x4 = x1 + ((y2 - y1) / (y3 - y1)) * (x3 - x1);
-        final Point2D v4 = new Point2D(x4, v2.getY());
+        final Point3D v4 = new Point3D(x4, v2.getY(), v2.getZ());
 
         if (Utils.moreThan(x4, x2)) {
             drawFlat(t, v1, v2, v4);
@@ -154,13 +160,13 @@ public class TriangleRasterisator {
         }
     }
 
-    private void drawEdges(Point2D p1, Point2D p2, Point2D p3) {
+    private void drawEdges(Point3D p1, Point3D p2, Point3D p3) {
         drawLine(p1, p2);
         drawLine(p2, p3);
         drawLine(p3, p1);
     }
 
-    private void drawLine(Point2D p1, Point2D p2) {
+    private void drawLine(Point3D p1, Point3D p2) {
         int x1 = (int) p1.getX();
         int y1 = (int) p1.getY();
         int x2 = (int) p2.getX();

@@ -10,11 +10,8 @@ import io.github.clowngraphics.rerenderer.model.camera.Camera;
 import io.github.clowngraphics.rerenderer.model.transform.CameraTransform;
 import io.github.clowngraphics.rerenderer.model.transform.ModelTransform;
 import io.github.clowngraphics.rerenderer.model.transform.ScreenTransform;
+import io.github.clowngraphics.rerenderer.render.*;
 import io.github.clowngraphics.rerenderer.render.Polygon;
-import io.github.clowngraphics.rerenderer.render.Scene;
-import io.github.clowngraphics.rerenderer.render.TriangleRasterisator;
-import io.github.clowngraphics.rerenderer.render.Vertex;
-import io.github.clowngraphics.rerenderer.render.ZBuffer;
 import io.github.clowngraphics.rerenderer.render.texture.Texture;
 import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
@@ -30,6 +27,7 @@ public class RenderPipeline {
     int screenWidth;
     int screenHeight;
     private final GraphicsContext ctx;
+    private RenderType currentRenderType = RenderType.WIREFRAME;
 
     public RenderPipeline(final GraphicsContext ctx, int screenWidth, int screenHeight) {
         this.ctx = Objects.requireNonNull(ctx);
@@ -45,6 +43,14 @@ public class RenderPipeline {
 
     public int getScreenHeight() {
         return screenHeight;
+    }
+
+    public RenderType getCurrentRenderType() {
+        return currentRenderType;
+    }
+
+    public void setCurrentRenderType(RenderType currentRenderType) {
+        this.currentRenderType = currentRenderType;
     }
 
     public void renderScene(Scene scene) {
@@ -86,11 +92,11 @@ public class RenderPipeline {
             }
             Point3D points[] = new Point3D[3];
             for (int i = 0; i < 3; i++) {
-                points[i] = new Point3D(vectorNewVertices.get(i).x()*getScreenWidth()/10+200, vectorNewVertices.get(i).y()*getScreenHeight()/10+250, vectorNewVertices.get(i).z());
+                points[i] = new Point3D(vectorNewVertices.get(i).x()*getScreenWidth(), vectorNewVertices.get(i).y()*getScreenHeight(), vectorNewVertices.get(i).z());
 //                System.out.println(points[i].getX() + " " + points[i].getY());
             }
-            // TODO Сделать нормальным выбором рисовать ли Waveframe -- @Fiecher
-            rasterisator.draw(points[0], points[1], points[2], texture, true);
+
+            rasterisator.draw(points[0], points[1], points[2], texture, getCurrentRenderType());
         }
 
     }

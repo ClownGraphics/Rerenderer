@@ -88,12 +88,11 @@ public class TriangleRasterisator {
             x2 -= dx2;
         }
     }
-
+    // TODO Правильно? -- @Fiecher
     private void drawHLine(final Triangle t, final int x1, final int x2, final int z, final int y) {
 
         for (int x = (int) x1; x <= x2; x++) {
             final Barycentric b;
-            // TODO Правильно? -- @Fiecher
 
             try {
                 b = t.barycentrics(new Point3D(x, y, z));
@@ -112,51 +111,54 @@ public class TriangleRasterisator {
         }
     }
 
-    public void draw(Point3D p1, Point3D p2, Point3D p3, Texture texture, boolean drawEdgesOnly) {
+    public void draw(Point3D p1, Point3D p2, Point3D p3, Texture texture, RenderType renderType) {
         Objects.requireNonNull(p1);
         Objects.requireNonNull(p2);
         Objects.requireNonNull(p3);
 
-        if (drawEdgesOnly) {
+        if (renderType == RenderType.WIREFRAME) {
             drawEdges(p1, p2, p3);
             return;
         }
 
-        Triangle t = new Triangle(p1, p2, p3, texture);
-        List<Point3D> vertices = sortedVertices(t);
+        if (renderType == RenderType.SOLID) {
 
-        Point3D v1 = vertices.get(0);
-        Point3D v2 = vertices.get(1);
-        Point3D v3 = vertices.get(2);
+            Triangle t = new Triangle(p1, p2, p3, texture);
+            List<Point3D> vertices = sortedVertices(t);
 
-        double x1 = v1.getX();
-        double y1 = v1.getY();
+            Point3D v1 = vertices.get(0);
+            Point3D v2 = vertices.get(1);
+            Point3D v3 = vertices.get(2);
 
-        double x2 = v2.getX();
-        double y2 = v2.getY();
+            double x1 = v1.getX();
+            double y1 = v1.getY();
 
-        double x3 = v3.getX();
-        double y3 = v3.getY();
+            double x2 = v2.getX();
+            double y2 = v2.getY();
 
-        if (Utils.equals(y2, y3)) {
-            drawFlat(t, v1, v2, v3);
-            return;
-        }
+            double x3 = v3.getX();
+            double y3 = v3.getY();
 
-        if (Utils.equals(y1, y2)) {
-            drawFlat(t, v3, v1, v2);
-            return;
-        }
+            if (Utils.equals(y2, y3)) {
+                drawFlat(t, v1, v2, v3);
+                return;
+            }
 
-        final double x4 = x1 + ((y2 - y1) / (y3 - y1)) * (x3 - x1);
-        final Point3D v4 = new Point3D(x4, v2.getY(), v2.getZ());
+            if (Utils.equals(y1, y2)) {
+                drawFlat(t, v3, v1, v2);
+                return;
+            }
 
-        if (Utils.moreThan(x4, x2)) {
-            drawFlat(t, v1, v2, v4);
-            drawFlat(t, v3, v2, v4);
-        } else {
-            drawFlat(t, v1, v4, v2);
-            drawFlat(t, v3, v4, v2);
+            final double x4 = x1 + ((y2 - y1) / (y3 - y1)) * (x3 - x1);
+            final Point3D v4 = new Point3D(x4, v2.getY(), v2.getZ());
+
+            if (Utils.moreThan(x4, x2)) {
+                drawFlat(t, v1, v2, v4);
+                drawFlat(t, v3, v2, v4);
+            } else {
+                drawFlat(t, v1, v4, v2);
+                drawFlat(t, v3, v4, v2);
+            }
         }
     }
 

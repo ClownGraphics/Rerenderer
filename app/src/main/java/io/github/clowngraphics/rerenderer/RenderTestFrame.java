@@ -52,7 +52,7 @@ public class RenderTestFrame extends Application {
 //            MonotoneTexture mt = new MonotoneTexture(Color.BLANCHEDALMOND);
 
             System.out.println(mt.get(0,0));
-            tr.draw(p1, p2, p3, mt);
+//            tr.draw(p1, p2, p3, mt);
 
         } catch (IOException e) {
             System.err.println("Ошибка при загрузке изображения: " + e.getMessage());

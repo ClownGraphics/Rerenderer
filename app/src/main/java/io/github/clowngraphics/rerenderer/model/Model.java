@@ -53,7 +53,7 @@ public class Model implements Object {
     public Model(final ObjFile obj) {
         vertices = Vertex.convertVerticesFromJShaper(obj.vertexData().vertices());
         polygons = Triangulation.triangulate(Polygon.convertPolgonsFromJShaper(obj.elements().faces()));
-
+//        polygons = Polygon.convertPolgonsFromJShaper(obj.elements().faces());
         normals = new ArrayList<>();
         for (Polygon polygon : polygons){
             normals.add(polygon.getNormal());

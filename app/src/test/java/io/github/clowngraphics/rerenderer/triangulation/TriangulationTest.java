@@ -1,14 +1,19 @@
 package io.github.clowngraphics.rerenderer.triangulation;
 
 import io.github.alphameo.linear_algebra.vec.Vec2;
+import io.github.clowngraphics.rerenderer.model.Model;
 import io.github.clowngraphics.rerenderer.render.Polygon;
 import io.github.clowngraphics.rerenderer.render.Triangulation;
 import io.github.clowngraphics.rerenderer.render.texture.PolygonUVCoordinates;
 import io.github.alphameo.linear_algebra.vec.Vec4;
 import io.github.clowngraphics.rerenderer.render.Vertex;
+import io.github.shimeoki.jshaper.ObjFile;
+import io.github.shimeoki.jshaper.ShaperError;
+import io.github.shimeoki.jshaper.obj.ModelReader;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
 import java.util.*;
 
 public class TriangulationTest {
@@ -81,5 +86,18 @@ public class TriangulationTest {
         );
 
         return new Polygon(vertices, dummyUV);
+    }
+
+    @Test
+    public void testTriangulationOBJ() throws ShaperError {
+        ModelReader mr = new ModelReader();
+        String oldFilename = getClass().getResource("cube.obj").getPath();
+        Model oldCube = new Model(mr.read(new File(oldFilename)));
+
+        String newFilename = getClass().getResource("cube_triangulated.obj").getPath();
+        Model newCube = new Model(mr.read(new File(newFilename)));
+        System.out.println(newCube.getVertices().size());
+        System.out.println(oldCube.getVertices().size());
+//        Assertions.assertEquals(newCube.getVertices().size(), oldCube.getVertices().size());
     }
 }

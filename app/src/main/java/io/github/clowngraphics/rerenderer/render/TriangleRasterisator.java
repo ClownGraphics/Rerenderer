@@ -53,7 +53,6 @@ public class TriangleRasterisator {
         double deltaX1 = deltaFlatX1 / deltaFlatY1;
         double deltaX2 = deltaFlatX2 / deltaFlatY2;
 
-
         final double flatY = flat1.getY();
         if (Utils.moreThan(ly, flatY)) {
             drawBottom(t, lone, flatY, deltaX1, deltaX2);
@@ -101,20 +100,22 @@ public class TriangleRasterisator {
                 continue;
             }
 
-//            System.out.print(x);
-//            System.out.print("; " + y + " --> ");
-//            System.out.println(t.getTexture().get(b).convertToJFXColor().toString());
-
             ColorRGB color = t.getTexture().get(b);
 
             pixelWriter.setColor(x, y, color.convertToJFXColor());
         }
     }
 
-    public void draw(Point2D p1, Point2D p2, Point2D p3, Texture texture) {
+    public void draw(Point2D p1, Point2D p2, Point2D p3, Texture texture, boolean drawEdgesOnly) {
         Objects.requireNonNull(p1);
         Objects.requireNonNull(p2);
         Objects.requireNonNull(p3);
+
+        if (drawEdgesOnly) {
+            drawEdges(p1, p2, p3);
+            return;
+        }
+
         Triangle t = new Triangle(p1, p2, p3, texture);
         List<Point2D> vertices = sortedVertices(t);
 
@@ -150,6 +151,43 @@ public class TriangleRasterisator {
         } else {
             drawFlat(t, v1, v4, v2);
             drawFlat(t, v3, v4, v2);
+        }
+    }
+
+    private void drawEdges(Point2D p1, Point2D p2, Point2D p3) {
+        drawLine(p1, p2);
+        drawLine(p2, p3);
+        drawLine(p3, p1);
+    }
+
+    private void drawLine(Point2D p1, Point2D p2) {
+        int x1 = (int) p1.getX();
+        int y1 = (int) p1.getY();
+        int x2 = (int) p2.getX();
+        int y2 = (int) p2.getY();
+
+        int dx = Math.abs(x2 - x1);
+        int dy = Math.abs(y2 - y1);
+        int sx = x1 < x2 ? 1 : -1;
+        int sy = y1 < y2 ? 1 : -1;
+        int err = dx - dy;
+
+        while (true) {
+            pixelWriter.setColor(x1, y1, javafx.scene.paint.Color.BLACK);
+
+            if (x1 == x2 && y1 == y2) {
+                break;
+            }
+
+            int e2 = 2 * err;
+            if (e2 > -dy) {
+                err -= dy;
+                x1 += sx;
+            }
+            if (e2 < dx) {
+                err += dx;
+                y1 += sy;
+            }
         }
     }
 }

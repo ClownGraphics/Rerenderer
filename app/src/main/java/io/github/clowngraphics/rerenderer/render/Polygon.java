@@ -13,9 +13,7 @@ public class Polygon {
     private List<Vertex> vertices;
     private List<Integer> vertexIndices;
     public PolygonUVCoordinates polygonUVCoordinates;
-
     public Vector3 normal;
-
 
     public Polygon(List<Vertex> vertices, PolygonUVCoordinates polygonUVCoordinates) {
         this.vertices = vertices;
@@ -46,12 +44,15 @@ public class Polygon {
         return polygonUVCoordinates;
     }
 
+    public void setPolygonUVCoordinates(PolygonUVCoordinates polygonUVCoordinates) {
+        this.polygonUVCoordinates = polygonUVCoordinates;
+    }
+
     public Vector3 getNormal() {
         return normal;
     }
 
     public Vector3 computeNormal() {
-        // Проверяем, что у полигона есть как минимум три вершины
         if (vertices.size() < 3) {
             throw new IllegalStateException("Polygon must have at least 3 vertices to compute a normal");
         }
@@ -93,7 +94,6 @@ public class Polygon {
             oldVertices.add(face.triplets().get(2).vertex());
 
             // Getting UV's
-
             TextureVertex tv0 = face.triplets().get(0).textureVertex();
             TextureVertex tv1 = face.triplets().get(1).textureVertex();
             TextureVertex tv2 = face.triplets().get(2).textureVertex();
@@ -104,6 +104,10 @@ public class Polygon {
         }
 
         return newPolygons;
+    }
+
+    public static Polygon copy(Polygon polygon){
+        return new Polygon(polygon.getVertices(),polygon.getPolygonUVCoordinates());
     }
 
 }

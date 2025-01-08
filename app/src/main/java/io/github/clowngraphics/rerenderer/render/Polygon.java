@@ -106,4 +106,8 @@ public class Polygon {
         return newPolygons;
     }
 
+    public static Polygon copy(Polygon polygon){
+        return new Polygon(polygon.getVertices(),polygon.getPolygonUVCoordinates());
+    }
+
 }

@@ -101,10 +101,6 @@ public class TriangleRasterisator {
                 continue;
             }
 
-//            System.out.print(x);
-//            System.out.print("; " + y + " --> ");
-//            System.out.println(t.getTexture().get(b).convertToJFXColor().toString());
-
             ColorRGB color = t.getTexture().get(b);
 
             pixelWriter.setColor(x, y, color.convertToJFXColor());

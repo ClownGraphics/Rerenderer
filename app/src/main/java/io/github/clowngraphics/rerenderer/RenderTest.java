@@ -24,8 +24,8 @@ import java.io.File;
 
 public class RenderTest extends Application{
 
-    int width = 1000;
-    int height = 1000;
+    int width = 500;
+    int height = 500;
 
     public static void main(String[] args) {
         launch(args);
@@ -43,9 +43,9 @@ public class RenderTest extends Application{
         ModelReader mr = new ModelReader();
 
 
-        Model model = new Model(mr.read(new File("C:\\Users\\user\\Downloads\\cube.obj")));
+        Model model = new Model(mr.read(new File("C:\\Users\\Stepan\\Downloads\\caracal_cube.obj")));
         CameraProperties cp = new CameraProperties();
-        Camera camera = new Camera(new Vec3(100,100,100), cp);
+        Camera camera = new Camera(new Vec3(0,100,100), cp);
 //        camera.setTarget(new Vec3(0,0,0));
         // TODO: Camera.lookAt() - Миша
 

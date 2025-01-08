@@ -20,11 +20,9 @@ public final class Triangulation {
             //TODO Пофиксить это - @Fiecher
 
             for (int i = 1; i < vertexCount - 1; i++) {
-//                Polygon triangle = new Polygon();
+                Polygon triangle = Polygon.copy(polygon);
 
-//                triangle.setVertexIndices(createSublist(vertexIndices, 0, i, i + 1));
-
-
+                triangle.setVertexIndices(createSublist(vertexIndices, 0, i, i + 1));
 
 //                if (!polygon.getTextureVertexIndices().isEmpty()) {
 //                    triangle.setTextureVertexIndices(createSublist(polygon.getTextureVertexIndices(), 0, i, i + 1));
@@ -34,7 +32,7 @@ public final class Triangulation {
 //                    triangle.setNormalIndices(createSublist(polygon.getNormalIndices(), 0, i, i + 1));
 //                }
 
-//                triangulatedPolygons.add(triangle);
+                triangulatedPolygons.add(triangle);
             }
         }
 

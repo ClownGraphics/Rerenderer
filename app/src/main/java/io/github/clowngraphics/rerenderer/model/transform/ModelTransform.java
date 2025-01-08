@@ -36,7 +36,7 @@ public class ModelTransform extends GeneralTransformation {
         translation.translate(dt, axis);
         recalculateMatrix();
     }
-    private void recalculateMatrix(){
+    public void recalculateMatrix(){
         setMatrix(Mat4Math.prod(Mat4Math.prod(translation.getMatrix(), generalRotation.getMatrix()), scale.getMatrix()));
     }
 

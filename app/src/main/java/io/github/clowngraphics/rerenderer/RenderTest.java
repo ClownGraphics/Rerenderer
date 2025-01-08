@@ -46,8 +46,8 @@ public class RenderTest extends Application{
 
         Model model = new Model(mr.read(new File(filename)));
         CameraProperties cp = new CameraProperties();
-        Camera camera = new Camera(new Vec3(10,10,10), cp);
-//        camera.setTarget(new Vec3(0,0,0));
+        Camera camera = new Camera(new Vec3(4,0,0), cp);
+        camera.setTarget(new Vec3(0,0,0));
         // TODO: Camera.lookAt() - Миша
 
         RenderPipeline rpipe = new RenderPipeline(gc, width, height);

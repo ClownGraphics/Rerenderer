@@ -65,6 +65,7 @@ public class RenderPipeline {
             for (Vertex vertex : polygon.getVertices()) {
                 // model matrix
                 Matrix4 modelM = model.getTransform().getMatrix();
+                model.getTransform()
                 // view matrix
                 Matrix4 viewM = camera.getCameraTransform().getMatrix();
                 // projection matrix

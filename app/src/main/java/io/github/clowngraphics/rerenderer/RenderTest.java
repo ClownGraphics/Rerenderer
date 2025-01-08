@@ -42,8 +42,8 @@ public class RenderTest extends Application{
 
         ModelReader mr = new ModelReader();
 
-
-        Model model = new Model(mr.read(new File("C:\\Users\\Stepan\\Downloads\\caracal_cube.obj")));
+        String filename = getClass().getResource("cube.obj").getPath();
+        Model model = new Model(mr.read(new File(filename)));
         CameraProperties cp = new CameraProperties();
         Camera camera = new Camera(new Vec3(10,10,10), cp);
 //        camera.setTarget(new Vec3(0,0,0));

@@ -7,8 +7,7 @@ import io.github.clowngraphics.rerenderer.math.affine_transform.ScalarProjection
 import io.github.clowngraphics.rerenderer.math.affine_transform.Transformation;
 import io.github.clowngraphics.rerenderer.math.affine_transform.Translation;
 
-public class CameraTransform implements Transformation {
-    private Matrix4 transformationMatrix;
+public class CameraTransform extends GeneralTransformation {
     private ScalarProjection scalarProjection;
     private Translation translation;
 
@@ -26,7 +25,7 @@ public class CameraTransform implements Transformation {
     }
 
     private void recalculateMatrix(){
-        transformationMatrix = Mat4Math.prod(scalarProjection.getMatrix(), translation.getMatrix());
+        setMatrix(Mat4Math.prod(scalarProjection.getMatrix(), translation.getMatrix()));
     }
 
     public ScalarProjection getScalarProjection() {
@@ -47,8 +46,4 @@ public class CameraTransform implements Transformation {
         recalculateMatrix();
     }
 
-    @Override
-    public Matrix4 getMatrix() {
-        return transformationMatrix;
-    }
 }

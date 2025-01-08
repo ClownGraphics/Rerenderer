@@ -66,7 +66,6 @@ public class RenderPipeline {
     }
 
     public void renderModel(Camera camera, Model model) {
-
         TriangleRasterisator rasterisator = new TriangleRasterisator(ctx.getPixelWriter(), zBuffer);
         Texture texture = model.getTexture();
         List<Vertex> vertices = model.getVertices();
@@ -92,23 +91,24 @@ public class RenderPipeline {
         Point3D[] points;
         int w = getScreenWidth();
         int h = getScreenHeight();
+        // Проблема в том, что полигонов 12, а линий 18. Получается,
         for (Polygon polygon : polygons) {
-            points = new Point3D[3];
-            for (int i = 0; i < 3; i++) {
-                Vector4 vertex = vectorNewVertices.get(polygon.getVertexIndices().get(i));
+            List<Point3D> pointsList = new ArrayList<>();
+
+            for (Integer index : polygon.getVertexIndices()) {
+                Vector4 vertex = vectorNewVertices.get(index);
 
                 for (int j = 0; j < 4; j++) {
                     vertex.set(j, vertex.get(j) / vertex.w());
                 }
-
-                points[i] = new Point3D(
+                pointsList.add(new Point3D(
                         vertex.x() * (w - 1) / 2 + (double) (w - 1) / 2,
-                        vertex.y() * (1-h)/2 + (double) (h - 1) /2,
+                        vertex.y() * (1 - h) / 2 + (double) (h - 1) / 2,
                         vertex.z()
-                );
+                ));
             }
 
-            rasterisator.draw(points[0], points[1], points[2], texture, getCurrentRenderType());
+            rasterisator.draw(pointsList.get(0), pointsList.get(1), pointsList.get(2), texture, getCurrentRenderType());
         }
 
     }

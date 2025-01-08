@@ -115,7 +115,6 @@ public class TriangleRasterisator {
         Objects.requireNonNull(p1);
         Objects.requireNonNull(p2);
         Objects.requireNonNull(p3);
-
         if (renderType == RenderType.WIREFRAME) {
             drawEdges(p1, p2, p3);
             return;

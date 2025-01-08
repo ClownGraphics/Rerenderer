@@ -2,8 +2,7 @@ package io.github.clowngraphics.rerenderer;
 
 import io.github.alphameo.linear_algebra.mat.Mat4Math;
 import io.github.alphameo.linear_algebra.mat.Matrix4;
-import io.github.alphameo.linear_algebra.vec.Vector3;
-import io.github.alphameo.linear_algebra.vec.Vector4;
+import io.github.alphameo.linear_algebra.vec.*;
 import io.github.clowngraphics.rerenderer.math.affine_transform.GeneralTransformation;
 import io.github.clowngraphics.rerenderer.model.Model;
 import io.github.clowngraphics.rerenderer.model.camera.Camera;
@@ -78,10 +77,14 @@ public class RenderPipeline {
         GeneralTransformation fin = screenTransform.combine(cameraTransform.combine(modelTransform));
 
         List<Vector4> vectorVertices = new ArrayList<>();
-        List<Vector4> vectorNewVertices;
-
+        List<Vector4> vectorNewVertices = new ArrayList<>();
+        Vector3 temp;
         for(Vertex vertex: vertices){
             vectorVertices.add(vertex.getValues());
+//            temp = modelTransform.transform(new Vec3(vertex.getX(), vertex.getY(), vertex.getZ()));
+//            temp = cameraTransform.transform(new Vec3(temp.x(), temp.y(), temp.z()));
+//            temp = screenTransform.transform(temp);
+//            vectorNewVertices.add(Vec3Math.toVec4(temp));
         }
         vectorNewVertices = fin.transform(vectorVertices);
 //        float w = screenTransform.getMatrix().get(2, 3);

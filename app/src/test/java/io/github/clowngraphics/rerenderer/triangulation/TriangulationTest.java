@@ -1,6 +1,7 @@
 package io.github.clowngraphics.rerenderer.triangulation;
 
 import io.github.alphameo.linear_algebra.vec.Vec2;
+import io.github.alphameo.linear_algebra.vec.Vector2;
 import io.github.clowngraphics.rerenderer.model.Model;
 import io.github.clowngraphics.rerenderer.render.Polygon;
 import io.github.clowngraphics.rerenderer.render.Triangulation;
@@ -79,25 +80,12 @@ public class TriangulationTest {
 
     // Utility method to create a polygon
     private Polygon createPolygon(List<Vertex> vertices) {
-        PolygonUVCoordinates dummyUV = new PolygonUVCoordinates(
-                new Vec2(0, 0),
-                new Vec2(1, 0),
-                new Vec2(0, 1 )
-        );
+        List<Vector2> list = new ArrayList<>();
+        list.add(new Vec2(0, 0));
+        list.add(new Vec2(1, 0));
+        list.add(new Vec2(0, 1));
+        PolygonUVCoordinates dummyUV = new PolygonUVCoordinates(list);
 
         return new Polygon(vertices, dummyUV);
-    }
-
-    @Test
-    public void testTriangulationOBJ() throws ShaperError {
-        ModelReader mr = new ModelReader();
-        String oldFilename = getClass().getResource("cube.obj").getPath();
-        Model oldCube = new Model(mr.read(new File(oldFilename)));
-
-        String newFilename = getClass().getResource("cube_triangulated.obj").getPath();
-        Model newCube = new Model(mr.read(new File(newFilename)));
-        System.out.println(newCube.getVertices().size());
-        System.out.println(oldCube.getVertices().size());
-//        Assertions.assertEquals(newCube.getVertices().size(), oldCube.getVertices().size());
     }
 }

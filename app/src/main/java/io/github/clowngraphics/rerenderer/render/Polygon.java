@@ -25,14 +25,20 @@ public class Polygon {
         this.vertexIndices = vertexIndices;
     }
 
+    public Polygon() {
+        // TODO Что делать с UV? -- @Fiecher
+        vertices = new ArrayList<>();
+        vertexIndices = new ArrayList<>();
+    }
+
     public Polygon(List<Vertex> vertices, PolygonUVCoordinates polygonUVCoordinates) {
         this.vertices = vertices;
         this.polygonUVCoordinates = polygonUVCoordinates;
         this.normal = computeNormal();
         this.vertexIndices = new ArrayList<>();
-        vertexIndices.add(0);
-        vertexIndices.add(1);
-        vertexIndices.add(2);
+        for (int i = 0; i < vertices.size(); i++){
+            vertexIndices.add(i);
+        }
     }
 
     public List<Vertex> getVertices() {
@@ -44,6 +50,7 @@ public class Polygon {
     }
 
     public void setVertexIndices(List<Integer> vertexIndices) {
+        assert vertexIndices.size() >= 3;
         this.vertexIndices = vertexIndices;
     }
 
@@ -95,32 +102,46 @@ public class Polygon {
         List<Face> faces = obj.elements().faces();
         List<Polygon> newPolygons = new ArrayList<>();
 
-
         for (Face face : faces) {
-
             // Getting vertices
             List<io.github.shimeoki.jshaper.obj.Vertex> oldVertices = new ArrayList<>();
-            oldVertices.add(face.triplets().get(0).vertex());
-            oldVertices.add(face.triplets().get(1).vertex());
-            oldVertices.add(face.triplets().get(2).vertex());
+            List<TextureVertex> textureVertices = new ArrayList<>();
 
-            // Getting UV's
-            TextureVertex tv0 = face.triplets().get(0).textureVertex();
-            TextureVertex tv1 = face.triplets().get(1).textureVertex();
-            TextureVertex tv2 = face.triplets().get(2).textureVertex();
+            face.triplets().forEach(triplet -> {
+                oldVertices.add(triplet.vertex());
+                textureVertices.add(triplet.textureVertex());
+            });
 
+            // Getting UVs
+            List<PolygonUVCoordinates.UVCoordinate> uvCoordinates = new ArrayList<>();
+            for (TextureVertex textureVertex : textureVertices) {
+                if (textureVertex != null) {
+                    uvCoordinates.add(new PolygonUVCoordinates.UVCoordinate(
+                            textureVertex.u(),
+                            textureVertex.v()
+                    ));
+                } else {
+                    uvCoordinates.add(new PolygonUVCoordinates.UVCoordinate(0, 0)); // Default UV if missing
+                }
+            }
+
+            PolygonUVCoordinates polygonUVCoordinates = PolygonUVCoordinates.fromUVCoordinates(uvCoordinates);
+
+            // Getting vertex indices
             List<Integer> vertexIndices = new ArrayList<>();
-            vertexIndices.add(obj.vertexData().vertices().indexOf(oldVertices.get(0)));
-            vertexIndices.add(obj.vertexData().vertices().indexOf(oldVertices.get(1)));
-            vertexIndices.add(obj.vertexData().vertices().indexOf(oldVertices.get(2)));
+            for (io.github.shimeoki.jshaper.obj.Vertex vertex : oldVertices) {
+                vertexIndices.add(obj.vertexData().vertices().indexOf(vertex));
+            }
 
+            // Create polygon
             newPolygons.add(new Polygon(Vertex.convertVerticesFromJShaper(oldVertices),
-                    PolygonUVCoordinates.convertToUV(tv0, tv1, tv2),
+                    polygonUVCoordinates,
                     vertexIndices));
         }
 
         return newPolygons;
     }
+
 
     public static Polygon copy(Polygon polygon){
         return new Polygon(polygon.getVertices(),polygon.getPolygonUVCoordinates(), polygon.getVertexIndices());

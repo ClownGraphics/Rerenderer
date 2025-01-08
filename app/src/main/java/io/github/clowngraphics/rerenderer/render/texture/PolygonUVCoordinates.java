@@ -5,68 +5,103 @@ import io.github.alphameo.linear_algebra.vec.Vector2;
 import io.github.clowngraphics.rerenderer.math.Barycentric;
 import io.github.shimeoki.jshaper.obj.TextureVertex;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class PolygonUVCoordinates {
 
-    private final Vector2 uv1;
+    public static class UVCoordinate {
+        private final float u;
+        private final float v;
 
-    private final Vector2 uv2;
+        public UVCoordinate(float u, float v) {
+            this.u = normalizeCoordinate(u);
+            this.v = normalizeCoordinate(v);
+        }
 
-    private final Vector2 uv3;
+        private float normalizeCoordinate(float coord) {
+            return Math.max(0, Math.min(coord, 1));
+        }
 
+        public float getU() {
+            return u;
+        }
 
-    public PolygonUVCoordinates(Vector2 uv1, Vector2 uv2, Vector2 uv3) {
-//        if (!checkCoordinateRange(uv1.x(), uv1.y())) {
-//            throw new IllegalArgumentException("Coordinates for uv1 are not normalized");
-//        }
-        this.uv1 = uv1;
-
-//        if (!checkCoordinateRange(uv2.x(), uv2.y())) {
-//            throw new IllegalArgumentException("Coordinates for uv2 are not normalized");
-//        }
-        this.uv2 = uv2;
-
-//        if (!checkCoordinateRange(uv3.x(), uv3.y())) {
-//            throw new IllegalArgumentException("Coordinates for uv3 are not normalized");
-//        }
-        this.uv3 = uv3;
+        public float getV() {
+            return v;
+        }
     }
 
-    private boolean checkCoordinateRange(float x, float y) {
-        return x >= 0 && x <= 1 && y >= 0 && y <= 1;
+    private final List<Vector2> uvCoordinates;
+
+    public PolygonUVCoordinates(List<Vector2> uvCoordinates) {
+        List<Vector2> normalizedUVs = new ArrayList<>();
+        for (Vector2 uv : uvCoordinates) {
+            normalizedUVs.add(new Vec2(normalizeCoordinate(uv.x()), normalizeCoordinate(uv.y())));
+        }
+        this.uvCoordinates = normalizedUVs;
+    }
+
+    private float normalizeCoordinate(float coord) {
+        return Math.max(0, Math.min(coord, 1));
+    }
+
+    public static PolygonUVCoordinates fromUVCoordinates(List<UVCoordinate> uvCoordinates) {
+        List<Vector2> tempCoordinates = new ArrayList<>();
+        for (UVCoordinate uv : uvCoordinates) {
+            tempCoordinates.add(new Vec2(uv.getU(), uv.getV()));
+        }
+        return new PolygonUVCoordinates(tempCoordinates);
     }
 
     public Vector2 barycentric(final Barycentric b) {
-        float u = (float) (getU1() * b.getLambda1() + getU2() * b.getLambda2() + getU3() * b.getLambda3());
-        float v = (float) (getV1() * b.getLambda1() + getV2() * b.getLambda2() + getV3() * b.getLambda3());
+        if (uvCoordinates.size() != 3) {
+            throw new UnsupportedOperationException("Barycentric interpolation is only supported for triangles");
+        }
+
+        float u = (float) (uvCoordinates.get(0).x() * b.getLambda1() +
+                uvCoordinates.get(1).x() * b.getLambda2() +
+                uvCoordinates.get(2).x() * b.getLambda3());
+        float v = (float) (uvCoordinates.get(0).y() * b.getLambda1() +
+                uvCoordinates.get(1).y() * b.getLambda2() +
+                uvCoordinates.get(2).y() * b.getLambda3());
 
         return new Vec2(Math.max(0, Math.min(u, 1)), Math.max(0, Math.min(v, 1)));
     }
 
-    public float getU1() {
-        return uv1.x();
+    public float getU(int index) {
+        return uvCoordinates.get(index).x();
     }
 
-    public float getV1() {
-        return uv1.y();
+    public float getV(int index) {
+        return uvCoordinates.get(index).y();
     }
 
-    public float getU2() {
-        return uv2.x();
+    public static PolygonUVCoordinates convertToUV(List<TextureVertex> textureVertices) {
+        List<Vector2> uvList = new ArrayList<>();
+        for (TextureVertex tv : textureVertices) {
+            if (tv != null) {
+                uvList.add(new Vec2(tv.u(), tv.v()));
+            } else {
+                uvList.add(new Vec2(0, 0)); // Default UV if missing
+            }
+        }
+        return new PolygonUVCoordinates(uvList);
     }
 
-    public float getV2() {
-        return uv2.y();
+    public PolygonUVCoordinates createSubUV(List<Integer> indices) {
+        List<Vector2> subUVs = new ArrayList<>();
+        for (int index : indices) {
+            subUVs.add(uvCoordinates.get(index));
+        }
+        return new PolygonUVCoordinates(subUVs);
     }
 
-    public float getU3() {
-        return uv3.x();
-    }
-
-    public float getV3() {
-        return uv3.y();
-    }
-
-    public static PolygonUVCoordinates convertToUV(TextureVertex tv1, TextureVertex tv2, TextureVertex tv3){
-        return new PolygonUVCoordinates(new Vec2(tv1.u(),tv1.u()), new Vec2(tv2.u(),tv2.u()), new Vec2(tv3.u(),tv3.u()));
+    public static PolygonUVCoordinates fromUVList(List<UVCoordinate> uvCoordinates) {
+        List<Vector2> vectorList = new ArrayList<>();
+        for (UVCoordinate uv : uvCoordinates) {
+            vectorList.add(new Vec2(uv.getU(), uv.getV()));
+        }
+        return new PolygonUVCoordinates(vectorList);
     }
 }

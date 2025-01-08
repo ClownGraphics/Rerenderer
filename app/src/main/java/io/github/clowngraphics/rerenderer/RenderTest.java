@@ -43,7 +43,7 @@ public class RenderTest extends Application{
         ModelReader mr = new ModelReader();
 
 
-        Model model = new Model(mr.read(new File("C:\\Users\\user\\Downloads\\cube.obj")));
+        Model model = new Model(mr.read(new File("C:\\Users\\Glitch\\Desktop\\caracal_cube.obj")));
         CameraProperties cp = new CameraProperties();
         Camera camera = new Camera(new Vec3(100,100,100), cp);
 //        camera.setTarget(new Vec3(0,0,0));

@@ -42,6 +42,7 @@ public class ScalarProjection extends GeneralTransformation {
 
     public void setVx(Vector3 vx) {
         this.vx = vx;
+        recalculateMatrix();
     }
 
     public Vector3 getVy() {
@@ -50,6 +51,7 @@ public class ScalarProjection extends GeneralTransformation {
 
     public void setVy(Vector3 vy) {
         this.vy = vy;
+        recalculateMatrix();
     }
 
     public Vector3 getVz() {
@@ -58,6 +60,7 @@ public class ScalarProjection extends GeneralTransformation {
 
     public void setVz(Vector3 vz) {
         this.vz = vz;
+        recalculateMatrix();
     }
 
 }

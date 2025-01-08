@@ -19,10 +19,22 @@ public interface Transformation {
         return new Vec3(result.x(), result.y(), result.z());
     }
 
-    default List<Vector3> transform(List<Vector3> vector3List){
-        List<Vector3> result = new ArrayList<>();
-        for (Vector3 vector3: vector3List){
-            result.add(transform(vector3));
+//    default List<Vector3> transform(List<Vector3> vector3List){
+//        List<Vector3> result = new ArrayList<>();
+//        for (Vector3 vector3: vector3List){
+//            result.add(transform(vector3));
+//        }
+//        return result;
+//    }
+
+    default Vector4 transform(Vector4 vec4){
+        return Mat4Math.prod(getMatrix(), vec4);
+    }
+
+    default List<Vector4> transform(List<Vector4> vector4List){
+        List<Vector4> result = new ArrayList<>();
+        for (Vector4 vector4: vector4List){
+            result.add(transform(vector4));
         }
         return result;
     }

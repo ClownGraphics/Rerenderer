@@ -14,7 +14,7 @@ public class CameraProperties {
     }
 
     public CameraProperties() {
-        this.fov = 180;
+        this.fov = 90;
         this.ar = 0.75f;
         this.f = 100;
         this.n = 0.1f;

@@ -5,8 +5,7 @@ import io.github.alphameo.linear_algebra.mat.Matrix4;
 import io.github.clowngraphics.rerenderer.math.affine_transform.*;
 import io.github.clowngraphics.rerenderer.model.Model;
 
-public class ModelTransform implements Transformation {
-    private Matrix4 transformationMatrix;
+public class ModelTransform extends GeneralTransformation {
     private GeneralRotation generalRotation;
     private Translation translation;
     private Scale scale;
@@ -37,8 +36,8 @@ public class ModelTransform implements Transformation {
         translation.translate(dt, axis);
         recalculateMatrix();
     }
-    private void recalculateMatrix(){
-        transformationMatrix = Mat4Math.prod(Mat4Math.prod(translation.getMatrix(), generalRotation.getMatrix()), scale.getMatrix());
+    public void recalculateMatrix(){
+        setMatrix(Mat4Math.prod(Mat4Math.prod(translation.getMatrix(), generalRotation.getMatrix()), scale.getMatrix()));
     }
 
     public GeneralRotation getGeneralRotation() {
@@ -66,10 +65,5 @@ public class ModelTransform implements Transformation {
     public void setScale(Scale scale) {
         this.scale = scale;
         recalculateMatrix();
-    }
-
-    @Override
-    public Matrix4 getMatrix() {
-        return transformationMatrix;
     }
 }

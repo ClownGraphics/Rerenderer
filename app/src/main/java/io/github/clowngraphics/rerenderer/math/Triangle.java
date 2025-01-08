@@ -1,19 +1,19 @@
 package io.github.clowngraphics.rerenderer.math;
 
 import io.github.clowngraphics.rerenderer.render.texture.Texture;
-import javafx.geometry.Point2D;
+import javafx.geometry.Point3D;
 
 import java.util.Objects;
 
 public class Triangle {
 
-    private Point2D point1;
-    private Point2D point2;
-    private Point2D point3;
+    private Point3D point1;
+    private Point3D point2;
+    private Point3D point3;
 
     private Texture texture;
 
-    public Triangle(Point2D point1, Point2D point2, Point2D point3, Texture texture) {
+    public Triangle(Point3D point1, Point3D point2, Point3D point3, Texture texture) {
 
         Objects.requireNonNull(point1);
         Objects.requireNonNull(point2);
@@ -34,15 +34,15 @@ public class Triangle {
         this.texture = texture;
     }
 
-    public Point2D getPoint1() {
+    public Point3D getPoint1() {
         return point1;
     }
 
-    public Point2D getPoint2() {
+    public Point3D getPoint2() {
         return point2;
     }
 
-    public Point2D getPoint3() {
+    public Point3D getPoint3() {
         return point3;
     }
 
@@ -54,7 +54,7 @@ public class Triangle {
         return (float) point3.getY();
     }
 
-    public Barycentric barycentrics(final Point2D p) {
+    public Barycentric barycentrics(final Point3D p) {
 
         final float x = (float) p.getX();
         final float y = (float) p.getY();

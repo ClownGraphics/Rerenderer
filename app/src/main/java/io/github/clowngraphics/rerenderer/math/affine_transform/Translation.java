@@ -32,15 +32,15 @@ public class Translation extends GeneralTransformation {
     }
 
     public void translateX(float dx) {
-        getMatrix().set(0, 0, dx);
+        getMatrix().set(0, 3, dx);
     }
 
     public void translateY(float dy) {
-        getMatrix().set(1, 1, dy);
+        getMatrix().set(1, 3, dy);
     }
 
     public void translateZ(float dz) {
-        getMatrix().set(2, 2, dz);
+        getMatrix().set(2, 3, dz);
     }
 
 }

@@ -2,8 +2,14 @@ package io.github.clowngraphics.rerenderer;
 
 import io.github.alphameo.linear_algebra.mat.Mat4Math;
 import io.github.alphameo.linear_algebra.mat.Matrix4;
+import io.github.alphameo.linear_algebra.vec.Vector3;
+import io.github.alphameo.linear_algebra.vec.Vector4;
+import io.github.clowngraphics.rerenderer.math.affine_transform.GeneralTransformation;
 import io.github.clowngraphics.rerenderer.model.Model;
 import io.github.clowngraphics.rerenderer.model.camera.Camera;
+import io.github.clowngraphics.rerenderer.model.transform.CameraTransform;
+import io.github.clowngraphics.rerenderer.model.transform.ModelTransform;
+import io.github.clowngraphics.rerenderer.model.transform.ScreenTransform;
 import io.github.clowngraphics.rerenderer.render.Polygon;
 import io.github.clowngraphics.rerenderer.render.Scene;
 import io.github.clowngraphics.rerenderer.render.TriangleRasterisator;
@@ -57,28 +63,29 @@ public class RenderPipeline {
 
         TriangleRasterisator rasterisator = new TriangleRasterisator(ctx.getPixelWriter());
         Texture texture = model.getTexture();
-        List<Polygon> polygons = model.getPolygons();
+        List<Vertex> vertices = model.getVertices();
 
+        ModelTransform modelTransform = model.getTransform();
+        CameraTransform cameraTransform = camera.getCameraTransform();
+        ScreenTransform screenTransform = camera.getScreenTransform();
+        GeneralTransformation fin = screenTransform.combine(cameraTransform.combine(modelTransform));
 
-        for (Polygon polygon : polygons) {
-            List<Vertex> newVertices = new ArrayList<>();
-            for (Vertex vertex : polygon.getVertices()) {
-                // model matrix
-                Matrix4 modelM = model.getTransform().getMatrix();
-                model.getTransform()
-                // view matrix
-                Matrix4 viewM = camera.getCameraTransform().getMatrix();
-                // projection matrix
-                Matrix4 projectionM = camera.getScreenTransform().getMatrix();
+        List<Vector4> vectorVertices = new ArrayList<>();
+        List<Vector4> vectorNewVertices;
 
-                Matrix4 finalM = Mat4Math.prod(projectionM, Mat4Math.prod(viewM, modelM));
+        for(Vertex vertex: vertices){
+            vectorVertices.add(vertex.getValues());
+        }
+        vectorNewVertices = fin.transform(vectorVertices);
+        float w = screenTransform.getMatrix().get(2, 3);
 
-                Vertex newVertex = new Vertex(Mat4Math.prod(finalM, vertex.getValues()));
-                newVertices.add(newVertex);
+        for(Vector4 vertex: vectorNewVertices){
+            for(int i = 0; i < 4; i++){
+                vertex.set(i, vertex.get(i) / w);
             }
             Point2D points[] = new Point2D[3];
             for (int i = 0; i < 3; i++) {
-                points[i] = new Point2D(newVertices.get(i).getX()*getScreenWidth()/10+200, newVertices.get(i).getY()*getScreenHeight()/10+200);
+                points[i] = new Point2D(vectorNewVertices.get(i).x()*getScreenWidth()/10+200, vectorNewVertices.get(i).y()*getScreenHeight()/10+200);
                 System.out.println(points[i].getX() + " " + points[i].getY());
             }
             // TODO Сделать нормальным выбором рисовать ли Waveframe -- @Fiecher

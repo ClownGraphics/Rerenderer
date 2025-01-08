@@ -24,7 +24,7 @@ public class ScreenTransform extends GeneralTransformation {
         this.properties = properties;
         recalculateMatrix();
     }
-    private void recalculateMatrix(){
+    public void recalculateMatrix(){
         float fov = properties.getFov();
         float ar = properties.getAr();
         float f = properties.getF();

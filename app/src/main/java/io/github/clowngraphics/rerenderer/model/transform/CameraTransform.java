@@ -24,7 +24,7 @@ public class CameraTransform extends GeneralTransformation {
         recalculateMatrix();
     }
 
-    private void recalculateMatrix(){
+    public void recalculateMatrix(){
         setMatrix(Mat4Math.prod(scalarProjection.getMatrix(), translation.getMatrix()));
     }
 

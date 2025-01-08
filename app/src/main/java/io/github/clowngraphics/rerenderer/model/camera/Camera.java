@@ -13,6 +13,8 @@ import io.github.clowngraphics.rerenderer.model.transform.ScreenTransform;
 
 
 //todo: это что-то на криворуком, переделать
+// - делать систему управления положения камерой и моделью наследуя от одного интерфейса видимо было ошибкой?
+// - возможно преобразования камеры стоило применять самой камерой методом lookAt
 public class Camera implements Object {
     CameraTransform cameraTransform = new CameraTransform();
 
@@ -60,6 +62,16 @@ public class Camera implements Object {
         xAxis = Vec3Math.normalize(xAxis);
         yAxis = Vec3Math.normalize(yAxis);
         zAxis = Vec3Math.normalize(zAxis);
+
+        //это просто ужас, но я сам виноват в этом
+        cameraTransform.getTranslation().translate(eye.x(), Axis.X);
+        cameraTransform.getTranslation().translate(eye.y(), Axis.Y);
+        cameraTransform.getTranslation().translate(eye.z(), Axis.Z);
+
+        cameraTransform.getScalarProjection().setVx(xAxis);
+        cameraTransform.getScalarProjection().setVy(yAxis);
+        cameraTransform.getScalarProjection().setVz(zAxis);
+        cameraTransform.recalculateMatrix();
     }
     //todo: переделать передвижение камеры
     public Vector3 getEye() {

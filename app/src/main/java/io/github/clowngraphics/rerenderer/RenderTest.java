@@ -43,11 +43,11 @@ public class RenderTest extends Application{
 
         ModelReader mr = new ModelReader();
         //TODO Пофиксить проблему с кодировками -- @Fiecher/Миша
-        String filename = getClass().getResource("cube.obj").getPath();
+        String filename = getClass().getResource("cube_triangulated.obj").getPath();
 
         Model model = new Model(mr.read(new File(filename)));
         CameraProperties cp = new CameraProperties();
-        Camera camera = new Camera(new Vec3(3,3,0), cp);
+        Camera camera = new Camera(new Vec3(1.4f,-1.8f,-2f), cp);
         camera.setTarget(new Vec3(0,0,0));
         // TODO: Camera.lookAt() - Миша
 

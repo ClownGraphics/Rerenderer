@@ -40,7 +40,7 @@ public class Model implements Object {
 
     public Model(final ObjFile obj, final Texture texture) {
         vertices = Vertex.convertVerticesFromJShaper(obj.vertexData().vertices());
-        polygons = Polygon.convertPolgonsFromJShaper(obj);
+        polygons = Polygon.convertPolygonsFromJShaper(obj);
 
         normals = new ArrayList<>();
         for (Polygon polygon : polygons){
@@ -54,8 +54,8 @@ public class Model implements Object {
 
     public Model(final ObjFile obj) {
         vertices = Vertex.convertVerticesFromJShaper(obj.vertexData().vertices());
-        polygons = Triangulation.triangulate(Polygon.convertPolgonsFromJShaper(obj));
-//        polygons = Polygon.convertPolgonsFromJShaper(obj.elements().faces());
+        polygons = Triangulation.triangulate(Polygon.convertPolygonsFromJShaper(obj));
+//        polygons = Polygon.convertPolygonsFromJShaper(obj);
         normals = new ArrayList<>();
         for (Polygon polygon : polygons){
             normals.add(polygon.getNormal());

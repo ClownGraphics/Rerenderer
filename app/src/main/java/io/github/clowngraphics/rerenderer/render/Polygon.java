@@ -13,8 +13,10 @@ public class Polygon {
 
     private List<Vertex> vertices;
     private List<Integer> vertexIndices;
-    public PolygonUVCoordinates polygonUVCoordinates;
-    public Vector3 normal;
+    private PolygonUVCoordinates polygonUVCoordinates;
+    private Vector3 normal;
+
+
 
     public Polygon(List<Vertex> vertices, PolygonUVCoordinates polygonUVCoordinates, List<Integer> vertexIndices) {
         this.vertices = vertices;
@@ -88,7 +90,7 @@ public class Polygon {
     }
 
 
-    public static List<Polygon> convertPolgonsFromJShaper(ObjFile obj) {
+    public static List<Polygon> convertPolygonsFromJShaper(ObjFile obj) {
 
         List<Face> faces = obj.elements().faces();
         List<Polygon> newPolygons = new ArrayList<>();

@@ -15,19 +15,19 @@ public class PolygonUVCoordinates {
 
 
     public PolygonUVCoordinates(Vector2 uv1, Vector2 uv2, Vector2 uv3) {
-        if (!checkCoordinateRange(uv1.x(), uv1.y())) {
-            throw new IllegalArgumentException("Coordinates for uv1 are not normalized");
-        }
+//        if (!checkCoordinateRange(uv1.x(), uv1.y())) {
+//            throw new IllegalArgumentException("Coordinates for uv1 are not normalized");
+//        }
         this.uv1 = uv1;
 
-        if (!checkCoordinateRange(uv2.x(), uv2.y())) {
-            throw new IllegalArgumentException("Coordinates for uv2 are not normalized");
-        }
+//        if (!checkCoordinateRange(uv2.x(), uv2.y())) {
+//            throw new IllegalArgumentException("Coordinates for uv2 are not normalized");
+//        }
         this.uv2 = uv2;
 
-        if (!checkCoordinateRange(uv3.x(), uv3.y())) {
-            throw new IllegalArgumentException("Coordinates for uv3 are not normalized");
-        }
+//        if (!checkCoordinateRange(uv3.x(), uv3.y())) {
+//            throw new IllegalArgumentException("Coordinates for uv3 are not normalized");
+//        }
         this.uv3 = uv3;
     }
 

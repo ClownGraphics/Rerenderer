@@ -64,9 +64,9 @@ public class Camera implements Object {
         zAxis = Vec3Math.normalize(zAxis);
 
         //это просто ужас, но я сам виноват в этом
-        cameraTransform.getTranslation().translate(eye.x(), Axis.X);
-        cameraTransform.getTranslation().translate(eye.y(), Axis.Y);
-        cameraTransform.getTranslation().translate(eye.z(), Axis.Z);
+        cameraTransform.getTranslation().translate(-eye.x(), Axis.X);
+        cameraTransform.getTranslation().translate(-eye.y(), Axis.Y);
+        cameraTransform.getTranslation().translate(-eye.z(), Axis.Z);
 
         cameraTransform.getScalarProjection().setVx(xAxis);
         cameraTransform.getScalarProjection().setVy(yAxis);

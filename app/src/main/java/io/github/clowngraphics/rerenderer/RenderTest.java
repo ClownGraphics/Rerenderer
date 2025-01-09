@@ -50,9 +50,7 @@ public class RenderTest extends Application{
         CameraProperties cp = new CameraProperties();
         Camera camera = new Camera(new Vec3(15,0,0), cp);
         camera.setTarget(new Vec3(0,0,0));
-        model.rotate((float) Math.PI/2, Axis.Y);
-        model.scale(2, Axis.X);
-        model.translate(1, Axis.Y);
+
         // TODO: Camera.lookAt() - Миша
 
         RenderPipeline rpipe = new RenderPipeline(gc, width, height);
@@ -69,6 +67,23 @@ public class RenderTest extends Application{
             Axis curr = Axis.X;
             int mode = 1;
             float amount = 0.1f;
+            float[] currScale = new float[]{1, 1, 1};
+            float[] currAngle = new float[3];
+            float[] currPos = new float[3];
+            private int getAxisId(Axis axis){
+                switch (axis){
+                    case X-> {
+                        return 0;
+                    }
+                    case Y-> {
+                        return 1;
+                    }
+                    case Z-> {
+                        return 2;
+                    }
+                }
+                return 0;
+            }
             @Override
             public void handle(KeyEvent t) {
                 if (t.getCode() == KeyCode.ESCAPE) {
@@ -87,28 +102,6 @@ public class RenderTest extends Application{
                 if (t.getCode() == KeyCode.SPACE){
                     mode = -mode;
                 }
-
-                if (t.getCode() == KeyCode.DIGIT1) {
-                    gc.setFill(Color.WHITE);
-                    gc.fillRect(0, 0, width, height);
-                    gc.setFill(Color.BLACK);
-                    model.scale(amount * mode, curr);
-                    rpipe.renderModel(camera, model);
-                }
-                if (t.getCode() == KeyCode.DIGIT2) {
-                    gc.setFill(Color.WHITE);
-                    gc.fillRect(0, 0, width, height);
-                    gc.setFill(Color.BLACK);
-                    model.rotate(amount * mode, curr);
-                    rpipe.renderModel(camera, model);
-                }
-                if (t.getCode() == KeyCode.DIGIT3) {
-                    gc.setFill(Color.WHITE);
-                    gc.fillRect(0, 0, width, height);
-                    gc.setFill(Color.BLACK);
-                    model.translate(amount * mode, curr);
-                    rpipe.renderModel(camera, model);
-                }
                 if(t.getCode() == KeyCode.DIGIT4){
                     amount += 0.05f;
                     System.out.println(amount);
@@ -116,6 +109,42 @@ public class RenderTest extends Application{
                 if(t.getCode() == KeyCode.DIGIT5){
                     amount -= 0.05f;
                     System.out.println(amount);
+                }
+                float change = amount * mode;
+
+
+                if (t.getCode() == KeyCode.DIGIT1) {
+                    gc.setFill(Color.WHITE);
+                    gc.fillRect(0, 0, width, height);
+                    gc.setFill(Color.BLACK);
+
+                    currScale[getAxisId(curr)] += change;
+
+                    System.out.println(currScale[getAxisId(curr)]);
+                    model.setScale(currScale[getAxisId(curr)], curr);
+                    rpipe.renderModel(camera, model);
+                }
+                if (t.getCode() == KeyCode.DIGIT2) {
+                    gc.setFill(Color.WHITE);
+                    gc.fillRect(0, 0, width, height);
+                    gc.setFill(Color.BLACK);
+
+                    currAngle[getAxisId(curr)] += change;
+
+                    System.out.println(currScale[getAxisId(curr)]);
+                    model.setAngle(currAngle[getAxisId(curr)], curr);
+                    rpipe.renderModel(camera, model);
+                }
+                if (t.getCode() == KeyCode.DIGIT3) {
+                    gc.setFill(Color.WHITE);
+                    gc.fillRect(0, 0, width, height);
+                    gc.setFill(Color.BLACK);
+
+                    currPos[getAxisId(curr)] += change;
+
+                    System.out.println(currScale[getAxisId(curr)]);
+                    model.setPosition(currPos[getAxisId(curr)], curr);
+                    rpipe.renderModel(camera, model);
                 }
             }
         });

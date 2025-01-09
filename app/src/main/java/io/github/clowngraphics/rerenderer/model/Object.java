@@ -15,4 +15,14 @@ public interface Object {
     default void translate(float t, Axis axis){
         getTransform().translate(t, axis);
     }
+
+    default void setAngle(float angle, Axis axis){
+        getTransform().setAngle(angle, axis);
+    }
+    default void setScale(float ds, Axis axis){
+        getTransform().setScale(ds, axis);
+    }
+    default void setPosition(float dt, Axis axis){
+        getTransform().setTranslation(dt, axis);
+    }
 }

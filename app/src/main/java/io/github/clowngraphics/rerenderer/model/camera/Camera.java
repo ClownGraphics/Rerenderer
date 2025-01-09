@@ -61,9 +61,11 @@ public class Camera /*implements Object*/ {
 
         // Vec3Math.sub(getTarget(), getEye()) оказывается перезаписывает getTarget()
 //        zAxis = Vec3Math.sub(getTarget(), getEye());
+//        zAxis = new Vec3(t.x() - e.x(), t.y() - e.y(), t.z() - e.z());
+
         Vector3 t = getTarget();
         Vector3 e = getEye();
-        zAxis = new Vec3(t.x() - e.x(), t.y() - e.y(), t.z() - e.z());
+        zAxis = Vec3Math.subtracted(getTarget(), getEye());
         xAxis = Vec3Math.cross(getUp(), zAxis);
         yAxis = Vec3Math.cross(zAxis, xAxis);
         xAxis = Vec3Math.normalize(xAxis);

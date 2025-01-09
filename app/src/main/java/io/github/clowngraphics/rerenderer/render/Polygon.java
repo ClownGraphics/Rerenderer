@@ -80,8 +80,8 @@ public class Polygon {
 
             Vector4 currentPosition = current.getValues();
             Vector4 nextPosition = next.getValues();
-
-            normal = Vec4Math.add(normal, Vec4Math.sub(currentPosition, nextPosition));
+            //todo: sub -> subtracted?
+            normal = Vec4Math.added(normal, Vec4Math.sub(currentPosition, nextPosition));
         }
 
 

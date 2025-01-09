@@ -104,7 +104,7 @@ public class ObjectReader {
         }
 
 
-        // polygons.add(new Polygon(polygonVertices));
+         polygons.add(new Polygon(vertexIndices, textureVertexIndices, normalIndices));
     }
 }
 

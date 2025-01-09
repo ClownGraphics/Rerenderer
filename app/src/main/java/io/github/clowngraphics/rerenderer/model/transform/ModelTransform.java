@@ -24,6 +24,18 @@ public class ModelTransform extends GeneralTransformation {
         recalculateMatrix();
     }
 
+    public void setAngle(float angle, Axis axis){
+        generalRotation.setAngle(angle, axis);
+        recalculateMatrix();
+    }
+    public void setScale(float ds, Axis axis){
+        scale.setScale(ds, axis);
+        recalculateMatrix();
+    }
+    public void setTranslation(float dt, Axis axis){
+        translation.setTranslation(dt, axis);
+        recalculateMatrix();
+    }
     public void rotate(float angle, Axis axis){
         generalRotation.rotate(angle, axis);
         recalculateMatrix();

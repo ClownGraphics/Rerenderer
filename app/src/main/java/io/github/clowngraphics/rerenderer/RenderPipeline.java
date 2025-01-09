@@ -15,6 +15,7 @@ import io.github.clowngraphics.rerenderer.render.texture.Texture;
 import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ public class RenderPipeline {
     int screenWidth;
     int screenHeight;
     private final GraphicsContext ctx;
-    private RenderType currentRenderType = RenderType.WIREFRAME;
+    private RenderType currentRenderType = RenderType.BOTH;
 
     public RenderPipeline(final GraphicsContext ctx, int screenWidth, int screenHeight) {
         this.ctx = Objects.requireNonNull(ctx);
@@ -56,6 +57,8 @@ public class RenderPipeline {
         final Camera selectedCamera = scene.getCurrentCamera();
 
         zBuffer.clear();
+        ctx.setFill(Color.WHITE);
+        ctx.fillRect(0, 0, getScreenWidth(), getScreenHeight());
 
         //TODO Тут будет что-то для освещения - @Fiecher
 
@@ -77,21 +80,15 @@ public class RenderPipeline {
         GeneralTransformation fin = screenTransform.combine(cameraTransform.combine(modelTransform));
 
         List<Vector4> vectorVertices = new ArrayList<>();
-        List<Vector4> vectorNewVertices = new ArrayList<>();
-        Vector3 temp;
+        List<Vector4> vectorNewVertices;
         for (Vertex vertex : vertices) {
             vectorVertices.add(vertex.getValues());
-//            temp = modelTransform.transform(new Vec3(vertex.getX(), vertex.getY(), vertex.getZ()));
-//            temp = cameraTransform.transform(new Vec3(temp.x(), temp.y(), temp.z()));
-//            temp = screenTransform.transform(temp);
-//            vectorNewVertices.add(Vec3Math.toVec4(temp));
         }
+
         vectorNewVertices = fin.transform(vectorVertices);
-//        float w = screenTransform.getMatrix().get(2, 3);
-        Point3D[] points;
         int w = getScreenWidth();
         int h = getScreenHeight();
-        // Проблема в том, что полигонов 12, а линий 18. Получается,
+
         for (Polygon polygon : polygons) {
             List<Point3D> pointsList = new ArrayList<>();
 
@@ -112,10 +109,4 @@ public class RenderPipeline {
         }
 
     }
-
-    private void lookAt(Camera camera) {
-
-    }
-
-
 }

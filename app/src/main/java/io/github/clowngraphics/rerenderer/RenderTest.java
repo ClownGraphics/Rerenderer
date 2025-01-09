@@ -7,12 +7,14 @@ import io.github.clowngraphics.rerenderer.model.Model;
 import io.github.clowngraphics.rerenderer.model.camera.Camera;
 import io.github.clowngraphics.rerenderer.model.camera.CameraProperties;
 import io.github.clowngraphics.rerenderer.RenderPipeline;
+import io.github.clowngraphics.rerenderer.render.Scene;
+import io.github.clowngraphics.rerenderer.render.texture.MonotoneTexture;
+import io.github.clowngraphics.rerenderer.render.texture.Texture;
 import io.github.shimeoki.jshaper.obj.ModelReader;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 
 import javafx.scene.Group;
-import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
@@ -35,8 +37,8 @@ public class RenderTest extends Application{
 
 
     @Override
-    public void start(Stage scene) throws Exception {
-        scene.setTitle("Render Test");
+    public void start(Stage stage) throws Exception {
+        stage.setTitle("Render Test");
 
         Group root = new Group();
         Canvas canvas = new Canvas(width, height);
@@ -44,26 +46,30 @@ public class RenderTest extends Application{
 
         ModelReader mr = new ModelReader();
         //TODO Пофиксить проблему с кодировками -- @Fiecher/Миша
-        String filename = getClass().getResource("WrapSkull.obj").getPath();
-
-        Model model = new Model(mr.read(new File(filename)));
+        String filename = getClass().getResource("cube.obj").getPath();
+        Texture texture = new MonotoneTexture(Color.AQUA);
+        Model model = new Model(mr.read(new File(filename)), texture);
         CameraProperties cp = new CameraProperties();
-        Camera camera = new Camera(new Vec3(15,0,0), cp);
+        Camera camera = new Camera(new Vec3(1,2,3), cp);
         camera.setTarget(new Vec3(0,0,0));
 
         // TODO: Camera.lookAt() - Миша
 
         RenderPipeline rpipe = new RenderPipeline(gc, width, height);
 
-        rpipe.renderModel(camera, model);
+        Scene scene = new Scene();
+        scene.setCamera(camera, 0);
+        scene.setModels(model, 0);
+
+        rpipe.renderScene(scene);
 
         root.getChildren().add(canvas);
-        scene.setScene(new Scene(root));
-        scene.show();
+        stage.setScene(new javafx.scene.Scene(root));
+        stage.show();
 
 
 
-        scene.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
+        stage.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
             Axis curr = Axis.X;
             int mode = 1;
             float amount = 0.1f;
@@ -87,7 +93,7 @@ public class RenderTest extends Application{
             @Override
             public void handle(KeyEvent t) {
                 if (t.getCode() == KeyCode.ESCAPE) {
-                    Stage sb = (Stage) scene.getScene().getWindow();
+                    Stage sb = (Stage) stage.getScene().getWindow();
                     sb.close();
                 }
                 if (t.getCode() == KeyCode.X){
@@ -114,37 +120,28 @@ public class RenderTest extends Application{
 
 
                 if (t.getCode() == KeyCode.DIGIT1) {
-                    gc.setFill(Color.WHITE);
-                    gc.fillRect(0, 0, width, height);
-                    gc.setFill(Color.BLACK);
 
                     currScale[getAxisId(curr)] += change;
 
                     System.out.println(currScale[getAxisId(curr)]);
                     model.setScale(currScale[getAxisId(curr)], curr);
-                    rpipe.renderModel(camera, model);
+                    rpipe.renderScene(scene);
                 }
                 if (t.getCode() == KeyCode.DIGIT2) {
-                    gc.setFill(Color.WHITE);
-                    gc.fillRect(0, 0, width, height);
-                    gc.setFill(Color.BLACK);
 
                     currAngle[getAxisId(curr)] += change;
 
                     System.out.println(currScale[getAxisId(curr)]);
                     model.setAngle(currAngle[getAxisId(curr)], curr);
-                    rpipe.renderModel(camera, model);
+                    rpipe.renderScene(scene);
                 }
                 if (t.getCode() == KeyCode.DIGIT3) {
-                    gc.setFill(Color.WHITE);
-                    gc.fillRect(0, 0, width, height);
-                    gc.setFill(Color.BLACK);
 
                     currPos[getAxisId(curr)] += change;
 
                     System.out.println(currScale[getAxisId(curr)]);
                     model.setPosition(currPos[getAxisId(curr)], curr);
-                    rpipe.renderModel(camera, model);
+                    rpipe.renderScene(scene);
                 }
             }
         });

@@ -4,5 +4,6 @@ public enum RenderType {
     WIREFRAME,
     SOLID,
     MATERIAL,
-    SHADING
+    SHADING,
+    BOTH
 }

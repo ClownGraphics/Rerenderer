@@ -8,6 +8,7 @@ import io.github.clowngraphics.rerenderer.model.camera.Camera;
 import io.github.clowngraphics.rerenderer.model.camera.CameraProperties;
 import io.github.clowngraphics.rerenderer.RenderPipeline;
 import io.github.clowngraphics.rerenderer.render.Scene;
+import io.github.clowngraphics.rerenderer.render.texture.ImageTexture;
 import io.github.clowngraphics.rerenderer.render.texture.MonotoneTexture;
 import io.github.clowngraphics.rerenderer.render.texture.Texture;
 import io.github.shimeoki.jshaper.obj.ModelReader;
@@ -45,10 +46,14 @@ public class RenderTest extends Application{
         GraphicsContext gc = canvas.getGraphicsContext2D();
 
         ModelReader mr = new ModelReader();
+
         //TODO Пофиксить проблему с кодировками -- @Fiecher/Миша
-        String filename = getClass().getResource("cube.obj").getPath();
-        Texture texture = new MonotoneTexture(Color.AQUA);
+        String filename = getClass().getResource("obamaprism.obj").getPath();
+        String textureFile = getClass().getResource("obamaprism.jpg").getPath();
+        ImageTexture texture = ImageTexture.setFromFile(new File(textureFile));
+
         Model model = new Model(mr.read(new File(filename)), texture);
+
         CameraProperties cp = new CameraProperties();
         Camera camera = new Camera(new Vec3(2,0.3f,0.4f), cp);
         camera.setTarget(new Vec3(0,0,0));

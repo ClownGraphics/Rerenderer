@@ -9,6 +9,7 @@ import java.util.List;
 
 public final class Vertex {
 
+    private int index;
     private Vector4 values = new Vec4();
 
     public Vertex(float x, float y, float z, float w) {
@@ -18,26 +19,33 @@ public final class Vertex {
         this.setW(w);
     }
 
-    public Vertex(Vector4 vector){
+    public Vertex(float x, float y, float z, float w, int index) {
+        this.setX(x);
+        this.setY(y);
+        this.setZ(z);
+        this.setW(w);
+    }
+
+    public Vertex(Vector4 vector) {
         this.setX(vector.x());
         this.setY(vector.y());
         this.setZ(vector.z());
         this.setW(vector.w());
     }
 
-    public void setX(float x){
+    public void setX(float x) {
         this.values.setX(x);
     }
 
-    public void setY(float y){
+    public void setY(float y) {
         this.values.setY(y);
     }
 
-    public void setZ(float z){
+    public void setZ(float z) {
         this.values.setZ(z);
     }
 
-    public void setW(float w){
+    public void setW(float w) {
         this.values.setW(w);
     }
 
@@ -45,20 +53,24 @@ public final class Vertex {
         return values;
     }
 
-    public float getX(){
+    public float getX() {
         return values.x();
     }
 
-    public float getY(){
+    public float getY() {
         return values.y();
     }
 
-    public float getZ(){
+    public float getZ() {
         return values.z();
     }
 
-    public float getW(){
+    public float getW() {
         return values.w();
+    }
+
+    public int getIndex() {
+        return index;
     }
 
     public void clear() {
@@ -68,10 +80,10 @@ public final class Vertex {
         this.setW(1);
     }
 
-    public static List<Vertex> convertVerticesFromJShaper(List<io.github.shimeoki.jshaper.obj.Vertex> oldVertices){
+    public static List<Vertex> convertVerticesFromJShaper(List<io.github.shimeoki.jshaper.obj.Vertex> oldVertices) {
         List<Vertex> newVertices = new ArrayList<>();
-        for (io.github.shimeoki.jshaper.obj.Vertex v : oldVertices){
-            newVertices.add(new Vertex(v.x(), v.y(), v.z(), v.w()));
+        for (io.github.shimeoki.jshaper.obj.Vertex v : oldVertices) {
+            newVertices.add(new Vertex(v.x(), v.y(), v.z(), v.w(), oldVertices.indexOf(v)));
         }
         return newVertices;
     }

@@ -2,19 +2,13 @@ package io.github.clowngraphics.rerenderer.triangulation;
 
 import io.github.alphameo.linear_algebra.vec.Vec2;
 import io.github.alphameo.linear_algebra.vec.Vector2;
-import io.github.clowngraphics.rerenderer.model.Model;
 import io.github.clowngraphics.rerenderer.render.Polygon;
 import io.github.clowngraphics.rerenderer.render.Triangulation;
-import io.github.clowngraphics.rerenderer.render.texture.PolygonUVCoordinates;
 import io.github.alphameo.linear_algebra.vec.Vec4;
 import io.github.clowngraphics.rerenderer.render.Vertex;
-import io.github.shimeoki.jshaper.ObjFile;
-import io.github.shimeoki.jshaper.ShaperError;
-import io.github.shimeoki.jshaper.obj.ModelReader;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
 import java.util.*;
 
 public class TriangulationTest {
@@ -84,7 +78,7 @@ public class TriangulationTest {
         list.add(new Vec2(0, 0));
         list.add(new Vec2(1, 0));
         list.add(new Vec2(0, 1));
-        PolygonUVCoordinates dummyUV = new PolygonUVCoordinates(list);
+
 
         return new Polygon(vertices, dummyUV);
     }

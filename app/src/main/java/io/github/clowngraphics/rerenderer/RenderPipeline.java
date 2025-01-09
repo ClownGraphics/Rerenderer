@@ -1,7 +1,5 @@
 package io.github.clowngraphics.rerenderer;
 
-import io.github.alphameo.linear_algebra.mat.Mat4Math;
-import io.github.alphameo.linear_algebra.mat.Matrix4;
 import io.github.alphameo.linear_algebra.vec.*;
 import io.github.clowngraphics.rerenderer.math.affine_transform.GeneralTransformation;
 import io.github.clowngraphics.rerenderer.model.Model;
@@ -12,12 +10,10 @@ import io.github.clowngraphics.rerenderer.model.transform.ScreenTransform;
 import io.github.clowngraphics.rerenderer.render.*;
 import io.github.clowngraphics.rerenderer.render.Polygon;
 import io.github.clowngraphics.rerenderer.render.texture.Texture;
-import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -69,7 +65,7 @@ public class RenderPipeline {
     }
 
     public void renderModel(Camera camera, Model model) {
-        TriangleRasterisator rasterisator = new TriangleRasterisator(ctx.getPixelWriter(), zBuffer);
+        Rasterisation rasterisator = new Rasterisation(ctx.getPixelWriter(), zBuffer);
         Texture texture = model.getTexture();
         List<Vertex> vertices = model.getVertices();
         List<Polygon> polygons = model.getPolygons();

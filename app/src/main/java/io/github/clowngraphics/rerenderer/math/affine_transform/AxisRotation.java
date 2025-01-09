@@ -61,17 +61,17 @@ public class AxisRotation extends GeneralTransformation{
 
     public void rotate(float angle){
         switch (axis){
-            case X -> getMatrix().add(rotationX(angle));
-            case Y -> getMatrix().add(rotationY(angle));
-            case Z -> getMatrix().add(rotationZ(angle));
+            case X -> setMatrix(getMatrix().prod(rotationX(angle)));
+            case Y -> setMatrix(getMatrix().prod(rotationY(angle)));
+            case Z -> setMatrix(getMatrix().prod(rotationZ(angle)));
         }
     }
     public void setAngle(float angle){
         getMatrix().mult(0);
         switch (axis){
-            case X -> getMatrix().add(rotationX(angle));
-            case Y -> getMatrix().add(rotationY(angle));
-            case Z -> getMatrix().add(rotationZ(angle));
+            case X -> setMatrix(getMatrix().prod(rotationX(angle)));
+            case Y -> setMatrix(getMatrix().prod(rotationY(angle)));
+            case Z -> setMatrix(getMatrix().prod(rotationZ(angle)));
         }
     }
 

@@ -5,6 +5,8 @@ package io.github.clowngraphics.rerenderer;
 
 import io.github.clowngraphics.rerenderer.model.Model;
 import io.github.clowngraphics.rerenderer.model.transform.ModelTransform;
+import io.github.clowngraphics.rerenderer.window.GraphicUserInterface;
+import javafx.scene.canvas.GraphicsContext;
 
 public class App {
     public String getGreeting() {
@@ -14,6 +16,6 @@ public class App {
     public static void main(String[] args) {
         System.out.println(new App().getGreeting());
 
-        RenderTest.main(null);
+        GraphicUserInterface.main(null);
     }
 }

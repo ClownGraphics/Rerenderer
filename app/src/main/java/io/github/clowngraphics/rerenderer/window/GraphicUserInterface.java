@@ -10,11 +10,11 @@ public class GraphicUserInterface extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("layout.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/io.github.clowngraphics.rerenderer.window/gui.fxml"));
         Scene scene = new Scene(loader.load(), 600, 400);
 
 
-        primaryStage.setTitle("FXML Example");
+        primaryStage.setTitle("3D viewer");
         primaryStage.setScene(scene);
         primaryStage.show();
     }

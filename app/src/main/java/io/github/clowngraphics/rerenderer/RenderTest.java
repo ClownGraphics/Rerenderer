@@ -99,7 +99,7 @@ public class RenderTest extends Application{
                 if (t.getCode() == KeyCode.Z){
                     curr = Axis.Z;
                 }
-                if (t.getCode() == KeyCode.SPACE){
+                if (t.getCode() == KeyCode.ENTER){
                     mode = -mode;
                 }
                 if(t.getCode() == KeyCode.DIGIT4){
@@ -111,44 +111,48 @@ public class RenderTest extends Application{
                     System.out.println(amount);
                 }
                 float change = amount * mode;
+                gc.setFill(Color.WHITE);
+                gc.fillRect(0, 0, width, height);
+                gc.setFill(Color.BLACK);
 
 
                 if (t.getCode() == KeyCode.DIGIT1) {
-                    gc.setFill(Color.WHITE);
-                    gc.fillRect(0, 0, width, height);
-                    gc.setFill(Color.BLACK);
-
                     currScale[getAxisId(curr)] += change;
-
                     System.out.println(currScale[getAxisId(curr)]);
                     model.setScale(currScale[getAxisId(curr)], curr);
-                    rpipe.renderModel(camera, model);
                 }
                 if (t.getCode() == KeyCode.DIGIT2) {
-                    gc.setFill(Color.WHITE);
-                    gc.fillRect(0, 0, width, height);
-                    gc.setFill(Color.BLACK);
-
                     currAngle[getAxisId(curr)] += change;
-
                     System.out.println(currScale[getAxisId(curr)]);
                     model.setAngle(currAngle[getAxisId(curr)], curr);
-                    rpipe.renderModel(camera, model);
                 }
                 if (t.getCode() == KeyCode.DIGIT3) {
-                    gc.setFill(Color.WHITE);
-                    gc.fillRect(0, 0, width, height);
-                    gc.setFill(Color.BLACK);
-
                     currPos[getAxisId(curr)] += change;
-
                     System.out.println(currScale[getAxisId(curr)]);
                     model.setPosition(currPos[getAxisId(curr)], curr);
-                    rpipe.renderModel(camera, model);
                 }
+
+                handleCamera(camera, t);
+                rpipe.renderModel(camera, model);
             }
+
         });
 
 
+    }
+
+    private void handleCamera(Camera camera, KeyEvent t) {
+        if (t.getCode() == KeyCode.W) {
+            camera.translate(0.1f, Axis.Z);
+        }
+        if (t.getCode() == KeyCode.S) {
+            camera.translate(-0.1f, Axis.Z);
+        }
+        if (t.getCode() == KeyCode.A) {
+            camera.translate(0.1f, Axis.X);
+        }
+        if (t.getCode() == KeyCode.D) {
+            camera.translate(-0.1f, Axis.X);
+        }
     }
 }

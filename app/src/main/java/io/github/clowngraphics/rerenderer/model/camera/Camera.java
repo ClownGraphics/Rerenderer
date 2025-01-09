@@ -1,11 +1,11 @@
 package io.github.clowngraphics.rerenderer.model.camera;
 
-import io.github.alphameo.linear_algebra.vec.Vec;
-import io.github.alphameo.linear_algebra.vec.Vec3;
-import io.github.alphameo.linear_algebra.vec.Vec3Math;
-import io.github.alphameo.linear_algebra.vec.Vector3;
+import io.github.alphameo.linear_algebra.mat.Mat4Math;
+import io.github.alphameo.linear_algebra.vec.*;
 import io.github.clowngraphics.rerenderer.math.affine_transform.Axis;
+import io.github.clowngraphics.rerenderer.math.affine_transform.GeneralRotation;
 import io.github.clowngraphics.rerenderer.math.affine_transform.ScalarProjection;
+import io.github.clowngraphics.rerenderer.math.affine_transform.Translation;
 import io.github.clowngraphics.rerenderer.model.Object;
 import io.github.clowngraphics.rerenderer.model.transform.CameraTransform;
 import io.github.clowngraphics.rerenderer.model.transform.ModelTransform;
@@ -22,7 +22,7 @@ public class Camera implements Object {
     //  1) Статическим классом трансформатором
     //  2) Внутренними методами
     // - Миша
-    ModelTransform orientation;
+    ModelTransform orientation = new ModelTransform();
     ScreenTransform screenTransform = new ScreenTransform();
     CameraProperties properties;
 
@@ -56,17 +56,17 @@ public class Camera implements Object {
     }
 
     private void updateVectors() {
-        zAxis = Vec3Math.sub(target, eye);
-        xAxis = Vec3Math.cross(up, zAxis);
+        zAxis = Vec3Math.sub(getTarget(), getEye());
+        xAxis = Vec3Math.cross(getUp(), zAxis);
         yAxis = Vec3Math.cross(zAxis, xAxis);
         xAxis = Vec3Math.normalize(xAxis);
         yAxis = Vec3Math.normalize(yAxis);
         zAxis = Vec3Math.normalize(zAxis);
 
         //это просто ужас, но я сам виноват в этом
-        cameraTransform.getTranslation().translate(-eye.x(), Axis.X);
-        cameraTransform.getTranslation().translate(-eye.y(), Axis.Y);
-        cameraTransform.getTranslation().translate(-eye.z(), Axis.Z);
+        cameraTransform.getTranslation().translate(-getEye().x(), Axis.X);
+        cameraTransform.getTranslation().translate(-getEye().y(), Axis.Y);
+        cameraTransform.getTranslation().translate(-getEye().z(), Axis.Z);
 
         cameraTransform.getScalarProjection().setVx(xAxis);
         cameraTransform.getScalarProjection().setVy(yAxis);
@@ -74,23 +74,74 @@ public class Camera implements Object {
         cameraTransform.recalculateMatrix();
     }
     //todo: переделать передвижение камеры
+
+
+    /*Короче я решил оставить интерфейс Object, как изначально и планировалось,
+     * был вариант сделать отдельные методы, изменяющие вектора камеры без преобразований,
+     * но тогда мы теряем возможность задавать поворот камеры на определённое значение.
+     * Необходимость в этом комментарии говорит о качестве кода, но, если коротко, суть вот в чём:
+     *   храним вектора eye, up и target
+     *   при вращении/перемещении камеры они не изменяются, меняются применяемые преобразования
+     *   если установить eye/up/target напрямую, то соответствующее им преобразование обнуляются*/
     public Vector3 getEye() {
-        return eye;
+        return orientation.transform(eye);
     }
 
     public void setEye(Vector3 eye) {
+        orientation.setTranslation(new Translation());
         this.eye = eye;
         updateVectors();
     }
 
     public Vector3 getTarget() {
-        return target;
+        return orientation.transform(target);
     }
 
     public void setTarget(Vector3 target) {
+        orientation.setAngle(0, Axis.X);
         this.target = target;
         updateVectors();
     }
+
+    public Vector3 getUp() {
+        return orientation.transform(up);
+    }
+
+    public void setUp(Vector3 up) {
+        orientation.setAngle(0, Axis.Y);
+        this.up = up;
+        updateVectors();
+    }
+
+    //old:
+//    public Vector3 getEye() {
+//        return eye;
+//    }
+//
+//    public void setEye(Vector3 eye) {
+//        this.eye = eye;
+//        updateVectors();
+//    }
+//
+//    public Vector3 getTarget() {
+//        return target;
+//    }
+//
+//    public void setTarget(Vector3 target) {
+//        this.target = target;
+//        updateVectors();
+//    }
+//
+//    public Vector3 getUp() {
+//        return up;
+//    }
+//
+//    public void setUp(Vector3 up) {
+//        this.up = up;
+//        updateVectors();
+//    }
+
+
     //todo: lookAt()
 //    public void lookAt(){}
     public CameraProperties getProperties() {
@@ -112,7 +163,6 @@ public class Camera implements Object {
     public void setScreenTransform(ScreenTransform screenTransform) {
         this.screenTransform = screenTransform;
     }
-
 
 
     @Override

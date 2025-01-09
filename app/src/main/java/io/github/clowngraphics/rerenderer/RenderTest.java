@@ -48,7 +48,7 @@ public class RenderTest extends Application{
 
         Model model = new Model(mr.read(new File(filename)));
         CameraProperties cp = new CameraProperties();
-        Camera camera = new Camera(new Vec3(15,0,0), cp);
+        Camera camera = new Camera(new Vec3(5,0,0), cp);
         camera.setTarget(new Vec3(0,0,0));
 
         // TODO: Camera.lookAt() - Миша
@@ -154,5 +154,8 @@ public class RenderTest extends Application{
         if (t.getCode() == KeyCode.D) {
             camera.translate(-0.1f, Axis.X);
         }
+//        System.out.println(camera.getEye());
+        System.out.println(camera.getTransform().getMatrix());
+        camera.updateVectors();
     }
 }

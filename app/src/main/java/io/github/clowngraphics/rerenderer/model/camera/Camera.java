@@ -55,7 +55,7 @@ public class Camera implements Object {
         updateVectors();
     }
 
-    private void updateVectors() {
+    public void updateVectors() {
         zAxis = Vec3Math.sub(getTarget(), getEye());
         xAxis = Vec3Math.cross(getUp(), zAxis);
         yAxis = Vec3Math.cross(zAxis, xAxis);
@@ -75,12 +75,7 @@ public class Camera implements Object {
     }
     //todo: переделать передвижение камеры
 
-
-    /*Короче я решил оставить интерфейс Object, как изначально и планировалось,
-     * был вариант сделать отдельные методы, изменяющие вектора камеры без преобразований,
-     * но тогда мы теряем возможность задавать поворот камеры на определённое значение.
-     * Необходимость в этом комментарии говорит о качестве кода, но, если коротко, суть вот в чём:
-     *   храним вектора eye, up и target
+     /*Храним вектора eye, up и target
      *   при вращении/перемещении камеры они не изменяются, меняются применяемые преобразования
      *   если установить eye/up/target напрямую, то соответствующее им преобразование обнуляются*/
     public Vector3 getEye() {

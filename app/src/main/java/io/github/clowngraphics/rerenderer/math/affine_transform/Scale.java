@@ -31,24 +31,51 @@ public class Scale extends GeneralTransformation {
         }
     }
 
-    public void scaleX(float sx) {
+    public void setScale(float s, Axis axis){
+        switch (axis){
+            case X -> setScaleX(s);
+            case Y -> setScaleY(s);
+            case Z -> setScaleZ(s);
+        }
+    }
+    public void setScaleX(float sx) {
         if(sx == 0){
             throw new IllegalArgumentException("Scaling by zero is prohibited.");
         }
         getMatrix().set(0, 0, sx);
     }
 
-    public void scaleY(float sy) {
+    public void setScaleY(float sy) {
         if(sy == 0){
             throw new IllegalArgumentException("Scaling by zero is prohibited.");
         }
         getMatrix().set(1, 1, sy);
     }
 
-    public void scaleZ(float sz) {
+    public void setScaleZ(float sz) {
         if(sz == 0){
             throw new IllegalArgumentException("Scaling by zero is prohibited.");
         }
         getMatrix().set(2, 2, sz);
+    }
+    public void scaleX(float sx) {
+        if(sx == 0){
+            throw new IllegalArgumentException("Scaling by zero is prohibited.");
+        }
+        getMatrix().set(0, 0, getMatrix().get(0, 0) + sx);
+    }
+
+    public void scaleY(float sy) {
+        if(sy == 0){
+            throw new IllegalArgumentException("Scaling by zero is prohibited.");
+        }
+        getMatrix().set(1, 1, getMatrix().get(1, 1) +  sy);
+    }
+
+    public void scaleZ(float sz) {
+        if(sz == 0){
+            throw new IllegalArgumentException("Scaling by zero is prohibited.");
+        }
+        getMatrix().set(2, 2, getMatrix().get(2, 2) + sz);
     }
 }

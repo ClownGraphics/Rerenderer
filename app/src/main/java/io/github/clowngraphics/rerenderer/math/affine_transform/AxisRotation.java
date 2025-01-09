@@ -67,7 +67,7 @@ public class AxisRotation extends GeneralTransformation{
         }
     }
     public void setAngle(float angle){
-        getMatrix().mult(0);
+        setMatrix(Mat4.unitMat());
         switch (axis){
             case X -> setMatrix(getMatrix().prod(rotationX(angle)));
             case Y -> setMatrix(getMatrix().prod(rotationY(angle)));

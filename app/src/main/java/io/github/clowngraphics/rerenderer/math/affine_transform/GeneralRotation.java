@@ -30,6 +30,21 @@ public class GeneralRotation extends GeneralTransformation {
         }
         recalculateMatrix();
     }
+    public GeneralRotation(RotationOrder rotationOrder){
+        this.rotationOrder = rotationOrder;
+        rotationX= new AxisRotation(0, Axis.X);
+        rotationY = new AxisRotation(0, Axis.Y);
+        rotationZ = new AxisRotation(0, Axis.Z);
+        switch (rotationOrder){
+            case XYZ -> setRotations(rotationX, rotationY, rotationZ);
+            case XZY -> setRotations(rotationX, rotationZ, rotationY);
+            case YXZ -> setRotations(rotationY, rotationX, rotationZ);
+            case YZX -> setRotations(rotationY, rotationZ, rotationX);
+            case ZXY -> setRotations(rotationZ, rotationX, rotationY);
+            case ZYX -> setRotations(rotationZ, rotationY, rotationX);
+        }
+        recalculateMatrix();
+    }
     public GeneralRotation(float rx, float ry, float rz, RotationOrder rotationOrder){
         this.rotationOrder = rotationOrder;
         rotationX= new AxisRotation(rx, Axis.X);
@@ -84,6 +99,6 @@ public class GeneralRotation extends GeneralTransformation {
         recalculateMatrix();
     }
     private void recalculateMatrix(){
-        setMatrix(Mat4Math.prod(Mat4Math.prod(first.getMatrix(), second.getMatrix()), third.getMatrix()));
+        setMatrix(Mat4Math.prod(Mat4Math.prod(third.getMatrix(), second.getMatrix()), first.getMatrix()));
     }
 }

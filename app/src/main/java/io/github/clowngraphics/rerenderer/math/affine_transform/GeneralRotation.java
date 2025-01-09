@@ -16,34 +16,11 @@ public class GeneralRotation extends GeneralTransformation {
     private AxisRotation rotationZ;
 
     public GeneralRotation(){
-        this.rotationOrder = RotationOrder.XYZ;
-        rotationX= new AxisRotation(0, Axis.X);
-        rotationY = new AxisRotation(0, Axis.Y);
-        rotationZ = new AxisRotation(0, Axis.Z);
-        switch (rotationOrder){
-            case XYZ -> setRotations(rotationX, rotationY, rotationZ);
-            case XZY -> setRotations(rotationX, rotationZ, rotationY);
-            case YXZ -> setRotations(rotationY, rotationX, rotationZ);
-            case YZX -> setRotations(rotationY, rotationZ, rotationX);
-            case ZXY -> setRotations(rotationZ, rotationX, rotationY);
-            case ZYX -> setRotations(rotationZ, rotationY, rotationX);
-        }
-        recalculateMatrix();
+        this(RotationOrder.XYZ);
     }
     public GeneralRotation(RotationOrder rotationOrder){
-        this.rotationOrder = rotationOrder;
-        rotationX= new AxisRotation(0, Axis.X);
-        rotationY = new AxisRotation(0, Axis.Y);
-        rotationZ = new AxisRotation(0, Axis.Z);
-        switch (rotationOrder){
-            case XYZ -> setRotations(rotationX, rotationY, rotationZ);
-            case XZY -> setRotations(rotationX, rotationZ, rotationY);
-            case YXZ -> setRotations(rotationY, rotationX, rotationZ);
-            case YZX -> setRotations(rotationY, rotationZ, rotationX);
-            case ZXY -> setRotations(rotationZ, rotationX, rotationY);
-            case ZYX -> setRotations(rotationZ, rotationY, rotationX);
-        }
-        recalculateMatrix();
+        this(0, 0, 0, rotationOrder);
+
     }
     public GeneralRotation(float rx, float ry, float rz, RotationOrder rotationOrder){
         this.rotationOrder = rotationOrder;

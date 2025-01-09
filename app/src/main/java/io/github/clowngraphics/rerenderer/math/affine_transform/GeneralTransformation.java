@@ -27,7 +27,7 @@ public class GeneralTransformation implements Transformation{
         return transformationMatrix;
     }
 
-    public void setMatrix(Matrix4 matrix) {
+    protected void setMatrix(Matrix4 matrix) {
         transformationMatrix = (Mat4) matrix;
     }
 }

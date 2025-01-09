@@ -31,16 +31,36 @@ public class Translation extends GeneralTransformation {
         }
     }
 
+    public void setTranslation(float t, Axis axis) {
+        switch (axis) {
+            case X -> setTranslationX(t);
+            case Y -> setTranslationY(t);
+            case Z -> setTranslationZ(t);
+        }
+    }
+
+    public void setTranslationX(float x) {
+        getMatrix().set(0, 3, x);
+    }
+
+    public void setTranslationY(float y) {
+        getMatrix().set(1, 3, y);
+    }
+
+    public void setTranslationZ(float z) {
+        getMatrix().set(2, 3, z);
+    }
+
     public void translateX(float dx) {
-        getMatrix().set(0, 3, dx);
+        getMatrix().set(0, 3, getMatrix().get(0, 3) + dx);
     }
 
     public void translateY(float dy) {
-        getMatrix().set(1, 3, dy);
+        getMatrix().set(1, 3, getMatrix().get(1, 3) + dy);
     }
 
     public void translateZ(float dz) {
-        getMatrix().set(2, 3, dz);
+        getMatrix().set(2, 3, getMatrix().get(2, 3) + dz);
     }
 
 }

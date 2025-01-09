@@ -17,6 +17,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 
@@ -47,8 +48,11 @@ public class RenderTest extends Application{
 
         Model model = new Model(mr.read(new File(filename)));
         CameraProperties cp = new CameraProperties();
-        Camera camera = new Camera(new Vec3(2.4f,-2.8f,-2f), cp);
+        Camera camera = new Camera(new Vec3(1.5f,0,0), cp);
         camera.setTarget(new Vec3(0,0,0));
+        model.rotate((float) Math.PI/2, Axis.Y);
+        model.scale(2, Axis.X);
+        model.translate(1, Axis.Y);
         // TODO: Camera.lookAt() - Миша
 
         RenderPipeline rpipe = new RenderPipeline(gc, width, height);
@@ -63,6 +67,22 @@ public class RenderTest extends Application{
             @Override
             public void handle(KeyEvent t) {
                 if (t.getCode() == KeyCode.ESCAPE) {
+                    Stage sb = (Stage) scene.getScene().getWindow();
+                    sb.close();
+                }
+
+                if (t.getCode() == KeyCode.DIGIT1) {
+                    gc.setFill(Color.WHITE);
+                    gc.fillRect(0, 0, width, height);
+                    gc.setFill(Color.BLACK);
+                    model.translate(0.1f, Axis.X);
+                    rpipe.renderModel(camera, model);
+                }
+                if (t.getCode() == KeyCode.DIGIT2) {
+                    Stage sb = (Stage) scene.getScene().getWindow();
+                    sb.close();
+                }
+                if (t.getCode() == KeyCode.DIGIT3) {
                     Stage sb = (Stage) scene.getScene().getWindow();
                     sb.close();
                 }

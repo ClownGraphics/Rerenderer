@@ -73,9 +73,9 @@ public class Camera /*implements Object*/ {
         zAxis = Vec3Math.normalize(zAxis);
 
         //это просто ужас, но я сам виноват в этом
-        cameraTransform.getTranslation().translate(-getEye().x(), Axis.X);
-        cameraTransform.getTranslation().translate(-getEye().y(), Axis.Y);
-        cameraTransform.getTranslation().translate(-getEye().z(), Axis.Z);
+        cameraTransform.getTranslation().setTranslation(-getEye().x(), Axis.X);
+        cameraTransform.getTranslation().setTranslation(-getEye().y(), Axis.Y);
+        cameraTransform.getTranslation().setTranslation(-getEye().z(), Axis.Z);
 
         cameraTransform.getScalarProjection().setVx(xAxis);
         cameraTransform.getScalarProjection().setVy(yAxis);
@@ -88,6 +88,34 @@ public class Camera /*implements Object*/ {
         Translation translation = new Translation();
         translation.translate(dt, axis);
         setEye(translation.transform(eye));
+    }
+
+    public void moveLeft(float dt){
+        move(dt, Axis.X);
+    }
+    public void moveUp(float dt){
+        move(dt, Axis.Y);
+    }public void moveForward(float dt){
+        move(dt, Axis.Z);
+    }
+//todo: проверить, сломаются ли методы при изменении ориентации камеры (надо же её перевернуть, она сейчас сломанная)
+
+//    public void moveRight(float dt){
+//        move(-dt, Axis.X);
+//    }
+//    public void moveDown(float dt){
+//        move(dt, Axis.Y);
+//    }public void moveForward(float dt){
+//        move(dt, Axis.Z);
+//    }
+
+    public void move(float dt, Axis axis){
+        switch (axis){
+            case X-> Vec3Math.add(eye, Vec3Math.multiplied(xAxis, dt));
+            case Y-> Vec3Math.add(eye, Vec3Math.multiplied(yAxis, dt));
+            case Z-> Vec3Math.add(eye, Vec3Math.multiplied(zAxis, dt));
+        }
+        updateVectors();
     }
 
     public void moveTo(float x, float y, float z) {

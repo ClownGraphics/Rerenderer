@@ -44,11 +44,11 @@ public class RenderTest extends Application{
 
         ModelReader mr = new ModelReader();
         //TODO Пофиксить проблему с кодировками -- @Fiecher/Миша
-        String filename = getClass().getResource("teapot.obj").getPath();
+        String filename = getClass().getResource("WrapSkull.obj").getPath();
 
         Model model = new Model(mr.read(new File(filename)));
         CameraProperties cp = new CameraProperties();
-        Camera camera = new Camera(new Vec3(5,0,0), cp);
+        Camera camera = new Camera(new Vec3(15,0,0), cp);
         camera.setTarget(new Vec3(0,0,0));
 
         // TODO: Camera.lookAt() - Миша
@@ -142,18 +142,24 @@ public class RenderTest extends Application{
 
     private void handleCamera(Camera camera, KeyEvent t) {
         if (t.getCode() == KeyCode.W) {
-            camera.translate(0.1f, Axis.X);
+            camera.moveForward(0.1f);
         }
         if (t.getCode() == KeyCode.S) {
-            camera.translate(-0.1f, Axis.X);
+            camera.moveForward(-0.1f);
         }
         if (t.getCode() == KeyCode.A) {
-            camera.translate(0.1f, Axis.Z);
+            camera.moveLeft(0.1f);
         }
         if (t.getCode() == KeyCode.D) {
-            camera.translate(-0.1f, Axis.Z);
+            camera.moveLeft(-0.1f);
         }
-        System.out.println(camera.getEye());
+        if (t.getCode() == KeyCode.Q) {
+            camera.moveUp(0.1f);
+        }
+        if (t.getCode() == KeyCode.E) {
+            camera.moveUp(-0.1f);
+        }
+//        System.out.println(camera.getEye());
 //        camera.updateVectors();
     }
 }

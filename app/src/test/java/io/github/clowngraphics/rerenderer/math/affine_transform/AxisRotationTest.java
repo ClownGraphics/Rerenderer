@@ -76,4 +76,77 @@ public class AxisRotationTest {
         });
         Assertions.assertEquals(assertion, after);
     }
+
+
+
+    @Test
+    void setAngleXTest() {
+        AxisRotation axisRotation = new AxisRotation(Axis.X);
+        Matrix4 assertion;
+        Matrix4 before = axisRotation.getMatrix();
+        assertion = new Mat4(new float[][]{
+                {1, 0, 0, 0},
+                {0, 1, 0, 0},
+                {0, 0, 1, 0},
+                {0, 0, 0, 1},
+        });
+        Assertions.assertEquals(assertion, before);
+
+        axisRotation.setAngle((float) Math.PI/2);
+        Matrix4 after = axisRotation.getMatrix();
+        assertion = new Mat4(new float[][]{
+                {1, 0, 0, 0},
+                {0, 0, 1, 0},
+                {0, -1, 0, 0},
+                {0, 0, 0, 1},
+        });
+        Assertions.assertEquals(assertion, after);
+    }
+
+    @Test
+    void setAngleYTest() {
+        AxisRotation axisRotation = new AxisRotation(Axis.Y);
+        Matrix4 assertion;
+        Matrix4 before = axisRotation.getMatrix();
+        assertion = new Mat4(new float[][]{
+                {1, 0, 0, 0},
+                {0, 1, 0, 0},
+                {0, 0, 1, 0},
+                {0, 0, 0, 1},
+        });
+        Assertions.assertEquals(assertion, before);
+
+        axisRotation.setAngle((float) Math.PI/2);
+        Matrix4 after = axisRotation.getMatrix();
+        assertion = new Mat4(new float[][]{
+                {0, 0, 1, 0},
+                {0, 1, 0, 0},
+                {-1, 0, 0, 0},
+                {0, 0, 0, 1},
+        });
+        Assertions.assertEquals(assertion, after);
+    }
+    @Test
+    void setAngleZTest() {
+        AxisRotation axisRotation = new AxisRotation(Axis.Z);
+        Matrix4 assertion;
+        Matrix4 before = axisRotation.getMatrix();
+        assertion = new Mat4(new float[][]{
+                {1, 0, 0, 0},
+                {0, 1, 0, 0},
+                {0, 0, 1, 0},
+                {0, 0, 0, 1},
+        });
+        Assertions.assertEquals(assertion, before);
+
+        axisRotation.setAngle((float) Math.PI/2);
+        Matrix4 after = axisRotation.getMatrix();
+        assertion = new Mat4(new float[][]{
+                {0, 1, 0, 0},
+                {-1, 0, 0, 0},
+                {0, 0, 1, 0},
+                {0, 0, 0, 1},
+        });
+        Assertions.assertEquals(assertion, after);
+    }
 }

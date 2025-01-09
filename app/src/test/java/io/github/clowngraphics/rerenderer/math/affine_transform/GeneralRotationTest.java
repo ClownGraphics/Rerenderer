@@ -1,11 +1,12 @@
 package io.github.clowngraphics.rerenderer.math.affine_transform;
 
 import io.github.alphameo.linear_algebra.mat.Mat4;
+import io.github.alphameo.linear_algebra.mat.Mat4Math;
 import io.github.alphameo.linear_algebra.mat.Matrix4;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Assertions;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 public class GeneralRotationTest {
     @Test
@@ -189,5 +190,41 @@ public class GeneralRotationTest {
                 {0, 0, 0, 1},
         });
         assertEquals(assertion, generalRotation.getMatrix());
+    }
+
+    @Test
+    void sequentialRotationsTest() {
+        GeneralRotation generalRotation = new GeneralRotation();
+        generalRotation.rotate((float) (Math.PI / 2), Axis.X);
+        generalRotation.rotate((float) (Math.PI / 2), Axis.Y);
+
+        AxisRotation xRotation = new AxisRotation(Axis.X);
+        xRotation.rotate((float) (Math.PI / 2));
+
+        AxisRotation yRotation = new AxisRotation(Axis.Y);
+        yRotation.rotate((float) (Math.PI / 2));
+
+        Matrix4 xyRotation = Mat4Math.prod(yRotation.getMatrix(), xRotation.getMatrix());
+        Matrix4 yxRotation = Mat4Math.prod(xRotation.getMatrix(), yRotation.getMatrix());
+        assertEquals(xyRotation, generalRotation.getMatrix());
+        assertNotEquals(yxRotation, generalRotation.getMatrix());
+    }
+
+    @Test
+    void rotationOrderTest() {
+        GeneralRotation generalRotation = new GeneralRotation(RotationOrder.YXZ);
+        generalRotation.rotate((float) (Math.PI / 2), Axis.X);
+        generalRotation.rotate((float) (Math.PI / 2), Axis.Y);
+
+        AxisRotation xRotation = new AxisRotation(Axis.X);
+        xRotation.rotate((float) (Math.PI / 2));
+
+        AxisRotation yRotation = new AxisRotation(Axis.Y);
+        yRotation.rotate((float) (Math.PI / 2));
+
+        Matrix4 xyRotation = Mat4Math.prod(yRotation.getMatrix(), xRotation.getMatrix());
+        Matrix4 yxRotation = Mat4Math.prod(xRotation.getMatrix(), yRotation.getMatrix());
+        assertEquals(yxRotation, generalRotation.getMatrix());
+        assertNotEquals(xyRotation, generalRotation.getMatrix());
     }
 }

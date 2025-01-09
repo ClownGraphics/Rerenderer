@@ -9,12 +9,12 @@ import javafx.geometry.Point3D;
 import javafx.scene.image.PixelWriter;
 import java.util.*;
 
-public class TriangleRasterisator {
+public class Rastetisator {
 
     private PixelWriter pixelWriter;
     private ZBuffer zBuffer;
 
-    public TriangleRasterisator(PixelWriter pixelWriter, ZBuffer zBuffer) {
+    public Rastetisator(PixelWriter pixelWriter, ZBuffer zBuffer) {
         this.pixelWriter = pixelWriter;
         this.zBuffer = zBuffer;
     }

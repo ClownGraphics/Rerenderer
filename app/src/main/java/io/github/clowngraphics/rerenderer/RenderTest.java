@@ -44,11 +44,11 @@ public class RenderTest extends Application{
 
         ModelReader mr = new ModelReader();
         //TODO Пофиксить проблему с кодировками -- @Fiecher/Миша
-        String filename = getClass().getResource("teapot.obj").getPath();
+        String filename = getClass().getResource("WrapSkull.obj").getPath();
 
         Model model = new Model(mr.read(new File(filename)));
         CameraProperties cp = new CameraProperties();
-        Camera camera = new Camera(new Vec3(1.5f,0,0), cp);
+        Camera camera = new Camera(new Vec3(15,0,0), cp);
         camera.setTarget(new Vec3(0,0,0));
         model.rotate((float) Math.PI/2, Axis.Y);
         model.scale(2, Axis.X);
@@ -68,6 +68,7 @@ public class RenderTest extends Application{
         scene.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
             Axis curr = Axis.X;
             int mode = 1;
+            float amount = 0.1f;
             @Override
             public void handle(KeyEvent t) {
                 if (t.getCode() == KeyCode.ESCAPE) {
@@ -91,22 +92,30 @@ public class RenderTest extends Application{
                     gc.setFill(Color.WHITE);
                     gc.fillRect(0, 0, width, height);
                     gc.setFill(Color.BLACK);
-                    model.scale(0.1f * mode, curr);
+                    model.scale(amount * mode, curr);
                     rpipe.renderModel(camera, model);
                 }
                 if (t.getCode() == KeyCode.DIGIT2) {
                     gc.setFill(Color.WHITE);
                     gc.fillRect(0, 0, width, height);
                     gc.setFill(Color.BLACK);
-                    model.rotate(0.1f * mode, curr);
+                    model.rotate(amount * mode, curr);
                     rpipe.renderModel(camera, model);
                 }
                 if (t.getCode() == KeyCode.DIGIT3) {
                     gc.setFill(Color.WHITE);
                     gc.fillRect(0, 0, width, height);
                     gc.setFill(Color.BLACK);
-                    model.translate(0.1f * mode, curr);
+                    model.translate(amount * mode, curr);
                     rpipe.renderModel(camera, model);
+                }
+                if(t.getCode() == KeyCode.DIGIT4){
+                    amount += 0.05f;
+                    System.out.println(amount);
+                }
+                if(t.getCode() == KeyCode.DIGIT5){
+                    amount -= 0.05f;
+                    System.out.println(amount);
                 }
             }
         });

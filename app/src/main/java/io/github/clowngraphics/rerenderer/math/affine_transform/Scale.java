@@ -62,20 +62,20 @@ public class Scale extends GeneralTransformation {
         if(sx == 0){
             throw new IllegalArgumentException("Scaling by zero is prohibited.");
         }
-        getMatrix().set(0, 0, getMatrix().get(0, 0) + sx);
+        getMatrix().set(0, 0, getMatrix().get(0, 0) * sx);
     }
 
     public void scaleY(float sy) {
         if(sy == 0){
             throw new IllegalArgumentException("Scaling by zero is prohibited.");
         }
-        getMatrix().set(1, 1, getMatrix().get(1, 1) +  sy);
+        getMatrix().set(1, 1, getMatrix().get(1, 1) *  sy);
     }
 
     public void scaleZ(float sz) {
         if(sz == 0){
             throw new IllegalArgumentException("Scaling by zero is prohibited.");
         }
-        getMatrix().set(2, 2, getMatrix().get(2, 2) + sz);
+        getMatrix().set(2, 2, getMatrix().get(2, 2) * sz);
     }
 }

@@ -11,9 +11,9 @@ public class Barycentric {
     public Barycentric(final float lambda1, final float lambda2, final float lambda3) {
 
         final double sum = lambda1 + lambda2 + lambda3;
-        if (!Utils.equals(sum, 1)) {
-            throw new IllegalArgumentException("Coordinates are not normalized");
-        }
+//        if (!Utils.equals(sum, 1)) {
+//            throw new IllegalArgumentException("Coordinates are not normalized");
+//        }
 
         this.lambda1 = lambda1;
         this.lambda2 = lambda2;

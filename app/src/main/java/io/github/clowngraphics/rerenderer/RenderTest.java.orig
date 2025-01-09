@@ -74,6 +74,8 @@ public class RenderTest extends Application{
                     Stage sb = (Stage) scene.getScene().getWindow();
                     sb.close();
                 }
+<<<<<<< HEAD
+=======
                 if (t.getCode() == KeyCode.X){
                     curr = Axis.X;
                 }
@@ -86,11 +88,24 @@ public class RenderTest extends Application{
                 if (t.getCode() == KeyCode.SPACE){
                     mode = -mode;
                 }
+>>>>>>> 401de54 (MergeRenderTest)
 
                 if (t.getCode() == KeyCode.DIGIT1) {
                     gc.setFill(Color.WHITE);
                     gc.fillRect(0, 0, width, height);
                     gc.setFill(Color.BLACK);
+<<<<<<< HEAD
+                    model.translate(0.1f, Axis.X);
+                    rpipe.renderModel(camera, model);
+                }
+                if (t.getCode() == KeyCode.DIGIT2) {
+                    Stage sb = (Stage) scene.getScene().getWindow();
+                    sb.close();
+                }
+                if (t.getCode() == KeyCode.DIGIT3) {
+                    Stage sb = (Stage) scene.getScene().getWindow();
+                    sb.close();
+=======
                     model.scale(0.1f * mode, curr);
                     rpipe.renderModel(camera, model);
                 }
@@ -107,6 +122,7 @@ public class RenderTest extends Application{
                     gc.setFill(Color.BLACK);
                     model.translate(0.1f * mode, curr);
                     rpipe.renderModel(camera, model);
+>>>>>>> 401de54 (MergeRenderTest)
                 }
             }
         });

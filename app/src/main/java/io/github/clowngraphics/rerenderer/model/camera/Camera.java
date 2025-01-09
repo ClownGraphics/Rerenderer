@@ -1,11 +1,11 @@
 package io.github.clowngraphics.rerenderer.model.camera;
 
-import io.github.alphameo.linear_algebra.vec.Vec;
-import io.github.alphameo.linear_algebra.vec.Vec3;
-import io.github.alphameo.linear_algebra.vec.Vec3Math;
-import io.github.alphameo.linear_algebra.vec.Vector3;
+import io.github.alphameo.linear_algebra.mat.Mat4Math;
+import io.github.alphameo.linear_algebra.vec.*;
 import io.github.clowngraphics.rerenderer.math.affine_transform.Axis;
+import io.github.clowngraphics.rerenderer.math.affine_transform.GeneralRotation;
 import io.github.clowngraphics.rerenderer.math.affine_transform.ScalarProjection;
+import io.github.clowngraphics.rerenderer.math.affine_transform.Translation;
 import io.github.clowngraphics.rerenderer.model.Object;
 import io.github.clowngraphics.rerenderer.model.transform.CameraTransform;
 import io.github.clowngraphics.rerenderer.model.transform.ModelTransform;
@@ -15,14 +15,15 @@ import io.github.clowngraphics.rerenderer.model.transform.ScreenTransform;
 //todo: это что-то на криворуком, переделать
 // - делать систему управления положения камерой и моделью наследуя от одного интерфейса видимо было ошибкой?
 // - возможно преобразования камеры стоило применять самой камерой методом lookAt
-public class Camera implements Object {
+
+public class Camera /*implements Object*/ {
     CameraTransform cameraTransform = new CameraTransform();
 
     //TODO: решить, как лучше получать преобразованную камеру:
     //  1) Статическим классом трансформатором
     //  2) Внутренними методами
     // - Миша
-    ModelTransform orientation;
+    /*ModelTransform orientation = new ModelTransform();*/
     ScreenTransform screenTransform = new ScreenTransform();
     CameraProperties properties;
 
@@ -56,17 +57,25 @@ public class Camera implements Object {
     }
 
     private void updateVectors() {
-        zAxis = Vec3Math.sub(target, eye);
-        xAxis = Vec3Math.cross(up, zAxis);
+        assert getTarget() != getEye();
+
+        // Vec3Math.sub(getTarget(), getEye()) оказывается перезаписывает getTarget()
+//        zAxis = Vec3Math.sub(getTarget(), getEye());
+//        zAxis = new Vec3(t.x() - e.x(), t.y() - e.y(), t.z() - e.z());
+
+        Vector3 t = getTarget();
+        Vector3 e = getEye();
+        zAxis = Vec3Math.subtracted(getTarget(), getEye());
+        xAxis = Vec3Math.cross(getUp(), zAxis);
         yAxis = Vec3Math.cross(zAxis, xAxis);
         xAxis = Vec3Math.normalize(xAxis);
         yAxis = Vec3Math.normalize(yAxis);
         zAxis = Vec3Math.normalize(zAxis);
 
         //это просто ужас, но я сам виноват в этом
-        cameraTransform.getTranslation().translate(-eye.x(), Axis.X);
-        cameraTransform.getTranslation().translate(-eye.y(), Axis.Y);
-        cameraTransform.getTranslation().translate(-eye.z(), Axis.Z);
+        cameraTransform.getTranslation().setTranslation(-getEye().x(), Axis.X);
+        cameraTransform.getTranslation().setTranslation(-getEye().y(), Axis.Y);
+        cameraTransform.getTranslation().setTranslation(-getEye().z(), Axis.Z);
 
         cameraTransform.getScalarProjection().setVx(xAxis);
         cameraTransform.getScalarProjection().setVy(yAxis);
@@ -74,6 +83,62 @@ public class Camera implements Object {
         cameraTransform.recalculateMatrix();
     }
     //todo: переделать передвижение камеры
+
+    public void translate(float dt, Axis axis) {
+        Translation translation = new Translation();
+        translation.translate(dt, axis);
+        setEye(translation.transform(eye));
+    }
+
+    public void moveLeft(float dt){
+        move(dt, Axis.X);
+    }
+    public void moveUp(float dt){
+        move(dt, Axis.Y);
+    }public void moveForward(float dt){
+        move(dt, Axis.Z);
+    }
+//todo: проверить, сломаются ли методы при изменении ориентации камеры (надо же её перевернуть, она сейчас сломанная)
+
+//    public void moveRight(float dt){
+//        move(-dt, Axis.X);
+//    }
+//    public void moveDown(float dt){
+//        move(dt, Axis.Y);
+//    }public void moveForward(float dt){
+//        move(dt, Axis.Z);
+//    }
+
+    public void move(float dt, Axis axis){
+        switch (axis){
+            case X-> Vec3Math.add(eye, Vec3Math.multiplied(xAxis, dt));
+            case Y-> Vec3Math.add(eye, Vec3Math.multiplied(yAxis, dt));
+            case Z-> Vec3Math.add(eye, Vec3Math.multiplied(zAxis, dt));
+        }
+        updateVectors();
+    }
+
+    public void moveTo(float x, float y, float z) {
+        setEye(new Vec3(x, y, z));
+    }
+
+    //todo: camera rotation
+    public void rotateUp() {
+
+    }
+
+    public void rotateLeft() {
+
+    }
+
+    public void rotateDown() {
+
+    }
+
+    public void rotateRight() {
+
+    }
+
     public Vector3 getEye() {
         return eye;
     }
@@ -91,6 +156,17 @@ public class Camera implements Object {
         this.target = target;
         updateVectors();
     }
+
+    public Vector3 getUp() {
+        return up;
+    }
+
+    public void setUp(Vector3 up) {
+        this.up = up;
+        updateVectors();
+    }
+
+
     //todo: lookAt()
 //    public void lookAt(){}
     public CameraProperties getProperties() {
@@ -114,14 +190,47 @@ public class Camera implements Object {
     }
 
 
-
-    @Override
-    public void scale(float s, Axis axis) {
-        return;
-    }
-
-    @Override
-    public ModelTransform getTransform() {
-        return orientation;
-    }
+    /*Взаимодействие с интерфейсом Object:
+     *   храним вектора eye, up и target
+     *   при вращении/перемещении камеры они не изменяются, меняются применяемые преобразования
+     *   если установить eye/up/target напрямую, то соответствующее им преобразование обнуляются*/
+//    public Vector3 getEye() {
+//        return orientation.transform(eye);
+//    }
+//
+//    public void setEye(Vector3 eye) {
+//        orientation.setTranslation(new Translation());
+//        this.eye = eye;
+//        updateVectors();
+//    }
+//
+//    public Vector3 getTarget() {
+//        return orientation.transform(target);
+//    }
+//
+//    public void setTarget(Vector3 target) {
+//        orientation.setAngle(0, Axis.X);
+//        this.target = target;
+//        updateVectors();
+//    }
+//
+//    public Vector3 getUp() {
+//        return orientation.transform(up);
+//    }
+//
+//    public void setUp(Vector3 up) {
+//        orientation.setAngle(0, Axis.Y);
+//        this.up = up;
+//        updateVectors();
+//    }
+//
+//    @Override
+//    public void scale(float s, Axis axis) {
+//        return;
+//    }
+//
+//    @Override
+//    public ModelTransform getTransform() {
+//        return orientation;
+//    }
 }

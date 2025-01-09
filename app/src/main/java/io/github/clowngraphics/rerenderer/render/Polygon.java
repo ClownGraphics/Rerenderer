@@ -50,25 +50,25 @@ public class Polygon {
 
     //TODO Сделать просчет нормали полигона
     public Vector3 computeNormal() {
-//        if (vertices.size() < 3) {
-//            throw new IllegalStateException("Polygon must have at least 3 vertices to compute a normal");
-//        }
-//
-//        Vector4 normal = new Vec4(0, 0, 0, 0);
-//
-//        for (int i = 0; i < vertices.size(); i++) {
-//            Vertex current = vertices.get(i);
-//            Vertex next = vertices.get((i + 1) % vertices.size());
-//
-//            Vector4 currentPosition = current.getValues();
-//            Vector4 nextPosition = next.getValues();
-//
-//            normal = Vec4Math.add(normal, Vec4Math.sub(currentPosition, nextPosition));
-//        }
-//
-//
-//        return normalize(new Vec3(normal.x(), normal.y(), normal.z()));
-        return null;
+        if (vertices.size() < 3) {
+            throw new IllegalStateException("Polygon must have at least 3 vertices to compute a normal");
+        }
+
+        Vector4 normal = new Vec4(0, 0, 0, 0);
+
+        for (int i = 0; i < vertices.size(); i++) {
+            Vertex current = vertices.get(i);
+            Vertex next = vertices.get((i + 1) % vertices.size());
+
+            Vector4 currentPosition = current.getValues();
+            Vector4 nextPosition = next.getValues();
+            //todo: sub -> subtracted?
+            normal = Vec4Math.added(normal, Vec4Math.sub(currentPosition, nextPosition));
+        }
+
+
+        return normalize(new Vec3(normal.x(), normal.y(), normal.z()));
+
     }
 
     private Vector3 normalize(Vec3 v) {

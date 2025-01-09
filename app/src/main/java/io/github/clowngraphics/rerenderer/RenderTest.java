@@ -73,8 +73,8 @@ public class RenderTest extends Application{
         stage.show();
 
 
+        scene.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
 
-        stage.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
             Axis curr = Axis.X;
             int mode = 1;
             float amount = 0.1f;
@@ -110,7 +110,7 @@ public class RenderTest extends Application{
                 if (t.getCode() == KeyCode.Z){
                     curr = Axis.Z;
                 }
-                if (t.getCode() == KeyCode.SPACE){
+                if (t.getCode() == KeyCode.ENTER){
                     mode = -mode;
                 }
                 if(t.getCode() == KeyCode.DIGIT4){
@@ -122,35 +122,58 @@ public class RenderTest extends Application{
                     System.out.println(amount);
                 }
                 float change = amount * mode;
+                gc.setFill(Color.WHITE);
+                gc.fillRect(0, 0, width, height);
+                gc.setFill(Color.BLACK);
 
 
                 if (t.getCode() == KeyCode.DIGIT1) {
 
                     currScale[getAxisId(curr)] += change;
-
                     System.out.println(currScale[getAxisId(curr)]);
                     model.setScale(currScale[getAxisId(curr)], curr);
-                    rpipe.renderScene(scene);
                 }
                 if (t.getCode() == KeyCode.DIGIT2) {
 
                     currAngle[getAxisId(curr)] += change;
-
                     System.out.println(currScale[getAxisId(curr)]);
                     model.setAngle(currAngle[getAxisId(curr)], curr);
-                    rpipe.renderScene(scene);
                 }
                 if (t.getCode() == KeyCode.DIGIT3) {
-
                     currPos[getAxisId(curr)] += change;
-
                     System.out.println(currScale[getAxisId(curr)]);
                     model.setPosition(currPos[getAxisId(curr)], curr);
-                    rpipe.renderScene(scene);
                 }
+
+                handleCamera(camera, t);
+                rpipe.renderModel(camera, model);
             }
+
         });
 
 
+    }
+
+    private void handleCamera(Camera camera, KeyEvent t) {
+        if (t.getCode() == KeyCode.W) {
+            camera.moveForward(0.1f);
+        }
+        if (t.getCode() == KeyCode.S) {
+            camera.moveForward(-0.1f);
+        }
+        if (t.getCode() == KeyCode.A) {
+            camera.moveLeft(0.1f);
+        }
+        if (t.getCode() == KeyCode.D) {
+            camera.moveLeft(-0.1f);
+        }
+        if (t.getCode() == KeyCode.Q) {
+            camera.moveUp(0.1f);
+        }
+        if (t.getCode() == KeyCode.E) {
+            camera.moveUp(-0.1f);
+        }
+//        System.out.println(camera.getEye());
+//        camera.updateVectors();
     }
 }

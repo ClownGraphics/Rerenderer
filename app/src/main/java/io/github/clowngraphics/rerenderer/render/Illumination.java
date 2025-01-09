@@ -71,7 +71,7 @@ public class Illumination {
                     if (v == null) {
                         return faceNormal.clone();
                     } else {
-                        return Vec3Math.add(v, faceNormal);
+                        return Vec3Math.added(v, faceNormal);
                     }
                 });
             }

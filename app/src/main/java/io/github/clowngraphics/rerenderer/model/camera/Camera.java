@@ -26,7 +26,7 @@ public class Camera implements Object {
     ScreenTransform screenTransform = new ScreenTransform();
     CameraProperties properties;
 
-    private Vector3 up = new Vec3(0, 0, 1);
+    private Vector3 up = new Vec3(0, -1, 0);
     private Vector3 eye;
     private Vector3 target = new Vec3(0, 0, 0);
     private Vector3 xAxis;

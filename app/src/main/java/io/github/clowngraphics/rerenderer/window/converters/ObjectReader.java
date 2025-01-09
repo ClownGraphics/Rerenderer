@@ -12,8 +12,11 @@ public class ObjectReader {
 
     public static ObjectFile readObjFile(File objFile) throws IOException {
         List<Vertex> vertices = new ArrayList<>();
+        List<Integer> vertexIndices = new ArrayList<>();
         List<Vec2> textureVertices = new ArrayList<>();
+        List<Integer> textureVertexIndices = new ArrayList<>();
         List<Vec3> normals = new ArrayList<>();
+        List<Integer> normalIndices = new ArrayList<>();
         List<Polygon> polygons = new ArrayList<>();
 
         try (BufferedReader reader = new BufferedReader(new FileReader(objFile))) {
@@ -33,7 +36,7 @@ public class ObjectReader {
             }
         }
 
-        return new ObjectFile(vertices, textureVertices, normals, polygons);
+        return new ObjectFile(vertices, vertexIndices, textureVertices, textureVertexIndices, normals, normalIndices, polygons);
     }
 
     private static Vertex parseVertex(String line) {

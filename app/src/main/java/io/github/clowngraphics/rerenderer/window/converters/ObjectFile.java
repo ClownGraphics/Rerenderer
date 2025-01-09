@@ -49,4 +49,16 @@ public final class ObjectFile {
     public List<Polygon> getPolygons() {
         return polygons;
     }
+
+    public List<Integer> getVertexIndices() {
+        return vertexIndices;
+    }
+
+    public List<Integer> getTextureVertexIndices() {
+        return textureVertexIndices;
+    }
+
+    public List<Integer> getNormalIndices() {
+        return normalIndices;
+    }
 }

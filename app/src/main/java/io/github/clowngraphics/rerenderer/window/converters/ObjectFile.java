@@ -10,19 +10,27 @@ import java.util.*;
 public final class ObjectFile {
 
     private final List<Vertex> vertices;
+    private final List<Integer> vertexIndices;
     private final List<Vec2> textureVertices;
+    private final List<Integer> textureVertexIndices;
     private final List<Vec3> normals;
+    private final List<Integer> normalIndices;
     private final List<Polygon> polygons;
 
     public ObjectFile(
             List<Vertex> vertices,
+            List<Integer> vertexIndices,
             List<Vec2> textureVertices,
+            List<Integer> textureVertexIndices,
             List<Vec3> normals,
+            List<Integer> normalIndices,
             List<Polygon> polygons) {
-
         this.vertices = Objects.requireNonNull(vertices);
+        this.vertexIndices = Objects.requireNonNull(vertexIndices);
         this.textureVertices = Objects.requireNonNull(textureVertices);
+        this.textureVertexIndices = Objects.requireNonNull(textureVertexIndices);
         this.normals = Objects.requireNonNull(normals);
+        this.normalIndices = Objects.requireNonNull(normalIndices);
         this.polygons = Objects.requireNonNull(polygons);
     }
 

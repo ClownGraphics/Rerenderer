@@ -77,21 +77,15 @@ public class RenderPipeline {
         GeneralTransformation fin = screenTransform.combine(cameraTransform.combine(modelTransform));
 
         List<Vector4> vectorVertices = new ArrayList<>();
-        List<Vector4> vectorNewVertices = new ArrayList<>();
-        Vector3 temp;
+        List<Vector4> vectorNewVertices;
         for (Vertex vertex : vertices) {
             vectorVertices.add(vertex.getValues());
-//            temp = modelTransform.transform(new Vec3(vertex.getX(), vertex.getY(), vertex.getZ()));
-//            temp = cameraTransform.transform(new Vec3(temp.x(), temp.y(), temp.z()));
-//            temp = screenTransform.transform(temp);
-//            vectorNewVertices.add(Vec3Math.toVec4(temp));
         }
+
         vectorNewVertices = fin.transform(vectorVertices);
-//        float w = screenTransform.getMatrix().get(2, 3);
-        Point3D[] points;
         int w = getScreenWidth();
         int h = getScreenHeight();
-        // Проблема в том, что полигонов 12, а линий 18. Получается,
+
         for (Polygon polygon : polygons) {
             List<Point3D> pointsList = new ArrayList<>();
 
@@ -112,10 +106,4 @@ public class RenderPipeline {
         }
 
     }
-
-    private void lookAt(Camera camera) {
-
-    }
-
-
 }

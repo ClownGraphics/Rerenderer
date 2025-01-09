@@ -2,9 +2,10 @@ package io.github.clowngraphics.rerenderer.math.affine_transform;
 
 import io.github.alphameo.linear_algebra.mat.Mat4;
 import io.github.alphameo.linear_algebra.mat.Matrix4;
-import org.checkerframework.checker.units.qual.A;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class AxisRotationTest {
     @Test
@@ -18,7 +19,7 @@ public class AxisRotationTest {
                 {0, 0, 1, 0},
                 {0, 0, 0, 1},
         });
-        Assertions.assertEquals(assertion, before);
+        assertEquals(assertion, before);
 
         axisRotation.rotate((float) Math.PI / 2);
         Matrix4 after = axisRotation.getMatrix();
@@ -28,7 +29,7 @@ public class AxisRotationTest {
                 {0, -1, 0, 0},
                 {0, 0, 0, 1},
         });
-        Assertions.assertEquals(assertion, after);
+        assertEquals(assertion, after);
     }
 
     @Test
@@ -42,7 +43,7 @@ public class AxisRotationTest {
                 {0, 0, 1, 0},
                 {0, 0, 0, 1},
         });
-        Assertions.assertEquals(assertion, before);
+        assertEquals(assertion, before);
 
         axisRotation.rotate((float) Math.PI / 2);
         Matrix4 after = axisRotation.getMatrix();
@@ -52,7 +53,7 @@ public class AxisRotationTest {
                 {-1, 0, 0, 0},
                 {0, 0, 0, 1},
         });
-        Assertions.assertEquals(assertion, after);
+        assertEquals(assertion, after);
     }
 
     @Test
@@ -66,7 +67,7 @@ public class AxisRotationTest {
                 {0, 0, 1, 0},
                 {0, 0, 0, 1},
         });
-        Assertions.assertEquals(assertion, before);
+        assertEquals(assertion, before);
 
         axisRotation.rotate((float) Math.PI / 2);
         Matrix4 after = axisRotation.getMatrix();
@@ -76,7 +77,7 @@ public class AxisRotationTest {
                 {0, 0, 1, 0},
                 {0, 0, 0, 1},
         });
-        Assertions.assertEquals(assertion, after);
+        assertEquals(assertion, after);
     }
 
 
@@ -91,7 +92,7 @@ public class AxisRotationTest {
                 {0, 0, 1, 0},
                 {0, 0, 0, 1},
         });
-        Assertions.assertEquals(assertion, before);
+        assertEquals(assertion, before);
 
         axisRotation.setAngle((float) Math.PI / 2);
         Matrix4 after = axisRotation.getMatrix();
@@ -101,7 +102,7 @@ public class AxisRotationTest {
                 {0, -1, 0, 0},
                 {0, 0, 0, 1},
         });
-        Assertions.assertEquals(assertion, after);
+        assertEquals(assertion, after);
     }
 
     @Test
@@ -115,7 +116,7 @@ public class AxisRotationTest {
                 {0, 0, 1, 0},
                 {0, 0, 0, 1},
         });
-        Assertions.assertEquals(assertion, before);
+        assertEquals(assertion, before);
 
         axisRotation.setAngle((float) Math.PI / 2);
         Matrix4 after = axisRotation.getMatrix();
@@ -125,7 +126,7 @@ public class AxisRotationTest {
                 {-1, 0, 0, 0},
                 {0, 0, 0, 1},
         });
-        Assertions.assertEquals(assertion, after);
+        assertEquals(assertion, after);
     }
 
     @Test
@@ -139,7 +140,7 @@ public class AxisRotationTest {
                 {0, 0, 1, 0},
                 {0, 0, 0, 1},
         });
-        Assertions.assertEquals(assertion, before);
+        assertEquals(assertion, before);
 
         axisRotation.setAngle((float) Math.PI / 2);
         Matrix4 after = axisRotation.getMatrix();
@@ -149,7 +150,7 @@ public class AxisRotationTest {
                 {0, 0, 1, 0},
                 {0, 0, 0, 1},
         });
-        Assertions.assertEquals(assertion, after);
+        assertEquals(assertion, after);
     }
 
     @Test
@@ -162,7 +163,7 @@ public class AxisRotationTest {
                 {0, 0, 1, 0},
                 {0, 0, 0, 1},
         });
-        Assertions.assertEquals(assertion, axisRotation.getMatrix());
+        assertEquals(assertion, axisRotation.getMatrix());
     }
 
     @Test
@@ -175,7 +176,7 @@ public class AxisRotationTest {
                 {0, 0, 1, 0},
                 {0, 0, 0, 1},
         });
-        Assertions.assertEquals(assertion, axisRotation.getMatrix());
+        assertEquals(assertion, axisRotation.getMatrix());
     }
     @Test
     void zeroRotationZTest() {
@@ -187,7 +188,6 @@ public class AxisRotationTest {
                 {0, 0, 1, 0},
                 {0, 0, 0, 1},
         });
-        Assertions.assertEquals(assertion, axisRotation.getMatrix());
+        assertEquals(assertion, axisRotation.getMatrix());
     }
-
 }

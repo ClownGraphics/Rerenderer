@@ -32,14 +32,23 @@ public class Scale extends GeneralTransformation {
     }
 
     public void scaleX(float sx) {
+        if(sx == 0){
+            throw new IllegalArgumentException("Scaling by zero is prohibited.");
+        }
         getMatrix().set(0, 0, sx);
     }
 
     public void scaleY(float sy) {
+        if(sy == 0){
+            throw new IllegalArgumentException("Scaling by zero is prohibited.");
+        }
         getMatrix().set(1, 1, sy);
     }
 
     public void scaleZ(float sz) {
+        if(sz == 0){
+            throw new IllegalArgumentException("Scaling by zero is prohibited.");
+        }
         getMatrix().set(2, 2, sz);
     }
 }

@@ -78,7 +78,7 @@ public class TriangleRasterisator {
         double z = z1;
 
         for (int x = x1; x <= x2; x++) {
-            if (zBuffer.isDrawable(x, y, (float) z)) {
+            if (zBuffer.isDrawable(x, y, z)) {
                 Barycentric b = t.barycentrics(new Point3D(x, y, z));
                 if (b.isInside()) {
                     ColorRGB color = t.getTexture().get(b);
@@ -131,8 +131,8 @@ public class TriangleRasterisator {
         int x2 = (int) p2.getX();
         int y2 = (int) p2.getY();
 
-        float z1 = (float) p1.getZ();
-        float z2 = (float) p2.getZ();
+        double z1 = (double) p1.getZ();
+        double z2 = (double) p2.getZ();
 
         int dx = Math.abs(x2 - x1);
         int dy = Math.abs(y2 - y1);
@@ -140,8 +140,8 @@ public class TriangleRasterisator {
         int sy = y1 < y2 ? 1 : -1;
         int err = dx - dy;
 
-        float dz = dx > dy ? (z2 - z1) / dx : (z2 - z1) / dy;
-        float z = z1;
+        double dz = dx > dy ? (z2 - z1) / dx : (z2 - z1) / dy;
+        double z = z1;
 
         while (true) {
             if (zBuffer.isDrawable(x1, y1, z)) {
@@ -161,7 +161,6 @@ public class TriangleRasterisator {
                 err += dx;
                 y1 += sy;
             }
-
             z += dz;
         }
     }

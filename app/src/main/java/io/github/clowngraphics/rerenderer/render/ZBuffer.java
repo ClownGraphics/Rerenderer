@@ -10,17 +10,17 @@ public class ZBuffer {
 
     private final int height;
 
-    private final float[][] zBuffer;
+    private final double[][] zBuffer;
 
     public ZBuffer(int width, int height) {
 
         this.width = width;
         this.height = height;
-        zBuffer = new float[width][height];
+        zBuffer = new double[width][height];
         clear();
     }
 
-    public boolean isDrawable(int x, int y, float z) {
+    public boolean isDrawable(int x, int y, double z) {
         if (x < 0 || x >= width || y < 0 || y >= height) {
             return false;
         }
@@ -33,7 +33,7 @@ public class ZBuffer {
 
 
     public void clear() {
-        for (float[] row : zBuffer) {
+        for (double[] row : zBuffer) {
             Arrays.fill(row, Float.MAX_VALUE);
         }
     }

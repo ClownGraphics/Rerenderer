@@ -28,8 +28,8 @@ import java.io.File;
 
 public class RenderTest extends Application{
 
-    int width = 500;
-    int height = 500;
+    int width = 800;
+    int height = 800;
 
     public static void main(String[] args) {
         launch(args);
@@ -50,7 +50,7 @@ public class RenderTest extends Application{
         Texture texture = new MonotoneTexture(Color.AQUA);
         Model model = new Model(mr.read(new File(filename)), texture);
         CameraProperties cp = new CameraProperties();
-        Camera camera = new Camera(new Vec3(1,0.3f,0.4f), cp);
+        Camera camera = new Camera(new Vec3(2,0.3f,0.4f), cp);
         camera.setTarget(new Vec3(0,0,0));
 
         // TODO: Camera.lookAt() - Миша

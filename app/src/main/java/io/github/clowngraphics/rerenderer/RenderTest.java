@@ -7,6 +7,8 @@ import io.github.clowngraphics.rerenderer.model.Model;
 import io.github.clowngraphics.rerenderer.model.camera.Camera;
 import io.github.clowngraphics.rerenderer.model.camera.CameraProperties;
 import io.github.clowngraphics.rerenderer.RenderPipeline;
+import io.github.clowngraphics.rerenderer.render.texture.MonotoneTexture;
+import io.github.clowngraphics.rerenderer.render.texture.Texture;
 import io.github.shimeoki.jshaper.obj.ModelReader;
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -44,11 +46,11 @@ public class RenderTest extends Application{
 
         ModelReader mr = new ModelReader();
         //TODO Пофиксить проблему с кодировками -- @Fiecher/Миша
-        String filename = getClass().getResource("WrapSkull.obj").getPath();
-
-        Model model = new Model(mr.read(new File(filename)));
+        String filename = getClass().getResource("cube.obj").getPath();
+        Texture texture = new MonotoneTexture(Color.AQUA);
+        Model model = new Model(mr.read(new File(filename)), texture);
         CameraProperties cp = new CameraProperties();
-        Camera camera = new Camera(new Vec3(15,0,0), cp);
+        Camera camera = new Camera(new Vec3(1,2,3), cp);
         camera.setTarget(new Vec3(0,0,0));
 
         // TODO: Camera.lookAt() - Миша

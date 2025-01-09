@@ -7,6 +7,7 @@ import io.github.clowngraphics.rerenderer.render.texture.ColorRGB;
 import io.github.clowngraphics.rerenderer.render.texture.Texture;
 import javafx.geometry.Point3D;
 import javafx.scene.image.PixelWriter;
+import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -91,7 +92,7 @@ public class TriangleRasterisator {
     // TODO Правильно? -- @Fiecher
     private void drawHLine(final Triangle t, final int x1, final int x2, final int z, final int y) {
 
-        for (int x = (int) x1; x <= x2; x++) {
+        for (int x = x1; x <= x2; x++) {
             final Barycentric b;
 
             try {
@@ -115,12 +116,7 @@ public class TriangleRasterisator {
         Objects.requireNonNull(p1);
         Objects.requireNonNull(p2);
         Objects.requireNonNull(p3);
-        if (renderType == RenderType.WIREFRAME) {
-            drawEdges(p1, p2, p3);
-            return;
-        }
-
-        if (renderType == RenderType.SOLID) {
+        if (renderType == RenderType.SOLID || renderType == RenderType.BOTH) {
 
             Triangle t = new Triangle(p1, p2, p3, texture);
             List<Point3D> vertices = sortedVertices(t);
@@ -159,6 +155,10 @@ public class TriangleRasterisator {
                 drawFlat(t, v3, v4, v2);
             }
         }
+
+        if (renderType == RenderType.WIREFRAME || renderType == RenderType.BOTH) {
+            drawEdges(p1, p2, p3);
+        }
     }
 
     private void drawEdges(Point3D p1, Point3D p2, Point3D p3) {
@@ -180,7 +180,7 @@ public class TriangleRasterisator {
         int err = dx - dy;
 
         while (true) {
-            pixelWriter.setColor(x1, y1, javafx.scene.paint.Color.BLACK);
+            pixelWriter.setColor(x1, y1, Color.BLACK);
 
             if (x1 == x2 && y1 == y2) {
                 break;

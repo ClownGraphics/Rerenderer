@@ -26,7 +26,7 @@ public class RenderPipeline {
     int screenWidth;
     int screenHeight;
     private final GraphicsContext ctx;
-    private RenderType currentRenderType = RenderType.WIREFRAME;
+    private RenderType currentRenderType = RenderType.BOTH;
 
     public RenderPipeline(final GraphicsContext ctx, int screenWidth, int screenHeight) {
         this.ctx = Objects.requireNonNull(ctx);

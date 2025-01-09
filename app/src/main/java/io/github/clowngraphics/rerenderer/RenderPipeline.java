@@ -65,7 +65,7 @@ public class RenderPipeline {
     }
 
     public void renderModel(Camera camera, Model model) {
-        Rastetisator rasterisator = new Rastetisator(ctx.getPixelWriter(), zBuffer);
+        Rasterisation rasterisator = new Rasterisation(ctx.getPixelWriter(), zBuffer);
         Texture texture = model.getTexture();
         List<Vertex> vertices = model.getVertices();
         List<Polygon> polygons = model.getPolygons();

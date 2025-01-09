@@ -9,12 +9,12 @@ import javafx.geometry.Point3D;
 import javafx.scene.image.PixelWriter;
 import java.util.*;
 
-public class Rastetisator {
+public class Rasterisation {
 
-    private PixelWriter pixelWriter;
-    private ZBuffer zBuffer;
+    private final PixelWriter pixelWriter;
+    private final ZBuffer zBuffer;
 
-    public Rastetisator(PixelWriter pixelWriter, ZBuffer zBuffer) {
+    public Rasterisation(PixelWriter pixelWriter, ZBuffer zBuffer) {
         this.pixelWriter = pixelWriter;
         this.zBuffer = zBuffer;
     }
@@ -131,8 +131,8 @@ public class Rastetisator {
         int x2 = (int) p2.getX();
         int y2 = (int) p2.getY();
 
-        double z1 = (double) p1.getZ();
-        double z2 = (double) p2.getZ();
+        double z1 = p1.getZ();
+        double z2 = p2.getZ();
 
         int dx = Math.abs(x2 - x1);
         int dy = Math.abs(y2 - y1);

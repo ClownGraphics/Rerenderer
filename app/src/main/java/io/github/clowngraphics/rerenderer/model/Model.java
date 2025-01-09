@@ -11,6 +11,7 @@ import io.github.clowngraphics.rerenderer.model.transform.ModelTransform;
 import io.github.clowngraphics.rerenderer.render.Polygon;
 import io.github.clowngraphics.rerenderer.render.Triangulation;
 import io.github.clowngraphics.rerenderer.render.Vertex;
+import io.github.clowngraphics.rerenderer.render.texture.ImageTexture;
 import io.github.clowngraphics.rerenderer.render.texture.Texture;
 import io.github.shimeoki.jshaper.ObjFile;
 import io.github.shimeoki.jshaper.obj.TextureVertex;
@@ -43,12 +44,12 @@ public class Model implements Object {
     );
 
 
-    public Model(final ObjFile obj, final Texture texture) {
+    public Model(final ObjFile obj, final ImageTexture texture) {
         vertices = Vertex.convertVerticesFromJShaper(obj.vertexData().vertices());
         polygons = Triangulation.triangulate(Polygon.convertPolygonsFromJShaper(obj));
         textureVertices = convertTextureVerticesFromJShaper(obj.vertexData().textureVertices());
         normals = convertNormalsFromJShaper(obj.vertexData().vertexNormals());
-
+        texture.setTextureVertices(getTextureVertices());
         this.texture = texture;
     }
 
@@ -57,7 +58,14 @@ public class Model implements Object {
         polygons = Triangulation.triangulate(Polygon.convertPolygonsFromJShaper(obj));
         textureVertices = convertTextureVerticesFromJShaper(obj.vertexData().textureVertices());
         normals = convertNormalsFromJShaper(obj.vertexData().vertexNormals());
+    }
 
+    public Model(final ObjFile obj, final Texture texture) {
+        vertices = Vertex.convertVerticesFromJShaper(obj.vertexData().vertices());
+        polygons = Triangulation.triangulate(Polygon.convertPolygonsFromJShaper(obj));
+        textureVertices = convertTextureVerticesFromJShaper(obj.vertexData().textureVertices());
+        normals = convertNormalsFromJShaper(obj.vertexData().vertexNormals());
+        this.texture = texture;
     }
 
     private static List<Vector2> convertTextureVerticesFromJShaper(List<TextureVertex> oldTextureVertices){

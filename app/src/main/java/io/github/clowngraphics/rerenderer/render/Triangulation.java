@@ -4,38 +4,51 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-
 public final class Triangulation {
 
     public static List<Polygon> triangulate(List<Polygon> polygons) {
-        int vertexCount = 0;
+        int triangleCount = 0;
 
+        // Подсчет общего количества треугольников после триангуляции
         for (Polygon polygon : polygons) {
-            vertexCount += polygon.getVertexIndices().size() - 1;
+            triangleCount += polygon.getVertexIndices().size() - 2;
         }
 
-        List<Polygon> result = new ArrayList<>(vertexCount);
+        List<Polygon> result = new ArrayList<>(triangleCount);
 
+        // Триангуляция каждого многоугольника
         for (Polygon polygon : polygons) {
-            for (int vertex = 1; vertex < polygon.getVertexIndices().size() - 1; vertex++) {
+            int vertexCount = polygon.getVertexIndices().size();
+            List<Integer> vertexIndices = polygon.getVertexIndices();
+            List<Integer> textureVertexIndices = polygon.getTextureVertexIndices();
+            List<Integer> normalIndices = polygon.getNormalIndices();
 
-                List<Integer> vertexIndices = getVertexes(polygon.getVertexIndices(), 0, vertex, vertex + 1);
-                List<Integer> textureVertexIndices;
-                if (!polygon.getTextureVertexIndices().isEmpty()) {
-                    textureVertexIndices = getVertexes(polygon.getTextureVertexIndices(), 0, vertex, vertex + 1);
+            for (int i = 1; i < vertexCount - 1; i++) {
+                // Создаём новый треугольник
+                List<Integer> newVertexIndices = getVertexes(vertexIndices, 0, i, i + 1);
 
-                } else {
-                    textureVertexIndices = polygon.getTextureVertexIndices();
+                List<Integer> newTextureVertexIndices = new ArrayList<>();
+                if (!textureVertexIndices.isEmpty()) {
+                    // Перенос текстурных координат
+                    newTextureVertexIndices = getVertexes(textureVertexIndices, 0, i, i + 1);
                 }
-                polygon.computeNormal();
-                result.add(new Polygon(vertexIndices, textureVertexIndices, polygon.getNormalIndices()));
+
+                List<Integer> newNormalIndices = new ArrayList<>();
+                if (!normalIndices.isEmpty()) {
+                    // Перенос нормалей
+                    newNormalIndices = getVertexes(normalIndices, 0, i, i + 1);
+                }
+
+                // Добавляем новый треугольник в результат
+                result.add(new Polygon(newVertexIndices, newTextureVertexIndices, newNormalIndices));
             }
         }
 
         return result;
     }
 
-    public static ArrayList<Integer> getVertexes(List<Integer> vertexes, int v1, int v2, int v3) {
-        return new ArrayList<>(Arrays.asList(vertexes.get(v1), vertexes.get(v2), vertexes.get(v3)));
+    // Утилитарный метод для извлечения индексов
+    public static ArrayList<Integer> getVertexes(List<Integer> indices, int v1, int v2, int v3) {
+        return new ArrayList<>(Arrays.asList(indices.get(v1), indices.get(v2), indices.get(v3)));
     }
 }

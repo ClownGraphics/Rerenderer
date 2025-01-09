@@ -23,6 +23,10 @@ public class ImageTexture implements Texture {
         this.height = image.getHeight();
     }
 
+    public void setTextureVertices(List<Vector2> textureVertices) {
+        this.textureVertices = textureVertices;
+    }
+
     public ColorRGB get(final float x, final float y) {
         if (x < -1 || y < -1 || x > 1 || y > 1) {
             throw new IllegalArgumentException("Coordinates must be in [-1, 1]");

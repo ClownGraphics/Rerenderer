@@ -2,6 +2,8 @@ package io.github.clowngraphics.rerenderer.window.converters;
 
 import io.github.alphameo.linear_algebra.vec.Vec2;
 import io.github.alphameo.linear_algebra.vec.Vec3;
+import io.github.alphameo.linear_algebra.vec.Vector2;
+import io.github.alphameo.linear_algebra.vec.Vector3;
 import io.github.clowngraphics.rerenderer.render.Polygon;
 import io.github.clowngraphics.rerenderer.render.Vertex;
 
@@ -11,18 +13,18 @@ public final class ObjectFile {
 
     private final List<Vertex> vertices;
     private final List<Integer> vertexIndices;
-    private final List<Vec2> textureVertices;
+    private final List<Vector2> textureVertices;
     private final List<Integer> textureVertexIndices;
-    private final List<Vec3> normals;
+    private final List<Vector3> normals;
     private final List<Integer> normalIndices;
     private final List<Polygon> polygons;
 
     public ObjectFile(
             List<Vertex> vertices,
             List<Integer> vertexIndices,
-            List<Vec2> textureVertices,
+            List<Vector2> textureVertices,
             List<Integer> textureVertexIndices,
-            List<Vec3> normals,
+            List<Vector3> normals,
             List<Integer> normalIndices,
             List<Polygon> polygons) {
         this.vertices = Objects.requireNonNull(vertices);
@@ -38,11 +40,11 @@ public final class ObjectFile {
         return vertices;
     }
 
-    public List<Vec2> getTextureVertices() {
+    public List<Vector2> getTextureVertices() {
         return textureVertices;
     }
 
-    public List<Vec3> getNormals() {
+    public List<Vector3> getNormals() {
         return normals;
     }
 

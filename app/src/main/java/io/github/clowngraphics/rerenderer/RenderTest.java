@@ -54,11 +54,13 @@ public class RenderTest extends Application{
 
 
         String filename = getClass().getResource("obamaprism.obj").getPath();
-        ObjectFile objectFile = ObjectReader.readObjFile(new File(filename));
         String textureFile = getClass().getResource("obamaprism.jpg").getPath();
         ImageTexture texture = ImageTexture.setFromFile(new File(textureFile));
 
-        Model model = new Model(mr.read(new File(filename)), texture);
+        ObjectFile objectFile = ObjectReader.readObjFile(new File(filename));
+
+        Model model = new Model(objectFile, texture);
+//        Model model = new Model(mr.read(new File(filename)), texture);
 
         CameraProperties cp = new CameraProperties();
         Camera camera = new Camera(new Vec3(2,0.3f,0.4f), cp);

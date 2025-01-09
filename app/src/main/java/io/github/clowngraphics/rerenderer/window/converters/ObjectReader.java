@@ -1,8 +1,6 @@
 package io.github.clowngraphics.rerenderer.window.converters;
 
-import io.github.alphameo.linear_algebra.vec.Vec2;
-import io.github.alphameo.linear_algebra.vec.Vec3;
-import io.github.alphameo.linear_algebra.vec.Vec4;
+import io.github.alphameo.linear_algebra.vec.*;
 import io.github.clowngraphics.rerenderer.render.Polygon;
 import io.github.clowngraphics.rerenderer.render.Vertex;
 
@@ -17,9 +15,9 @@ public class ObjectReader {
     public static ObjectFile readObjFile(File objFile) throws IOException {
         List<Vertex> vertices = new ArrayList<>();
         List<Integer> vertexIndices = new ArrayList<>();
-        List<Vec2> textureVertices = new ArrayList<>();
+        List<Vector2> textureVertices = new ArrayList<>();
         List<Integer> textureVertexIndices = new ArrayList<>();
-        List<Vec3> normals = new ArrayList<>();
+        List<Vector3> normals = new ArrayList<>();
         List<Integer> normalIndices = new ArrayList<>();
         List<Polygon> polygons = new ArrayList<>();
 
@@ -81,30 +79,42 @@ public class ObjectReader {
         return new Vec3(x, y, z);
     }
 
-    private static void parsePolygon(String line, List<Integer> vertexIndices, List<Integer> textureVertexIndices, List<Integer> normalIndices, List<Polygon> polygons) {
+    private static void parsePolygon(
+            String line,
+            List<Integer> vertexIndices,
+            List<Integer> textureVertexIndices,
+            List<Integer> normalIndices,
+            List<Polygon> polygons) {
+
         String[] parts = line.split(" ");
-        List<Vertex> polygonVertices = new ArrayList<>();
+        List<Integer> polygonVertexIndices = new ArrayList<>();
+        List<Integer> polygonTextureIndices = new ArrayList<>();
+        List<Integer> polygonNormalIndices = new ArrayList<>();
 
         for (int i = 1; i < parts.length; i++) {
             String[] indices = parts[i].split("/");
+
+
             int vertexIndex = Integer.parseInt(indices[0]) - 1;
-            vertexIndices.add(vertexIndex);
+            polygonVertexIndices.add(vertexIndex);
 
-            int textureIndex = indices.length > 1 && !indices[1].isEmpty() ? Integer.parseInt(indices[1]) - 1 : -1;
-            if (textureIndex >= 0) {
-                textureVertexIndices.add(textureIndex);
-            }
 
-            int normalIndex = indices.length > 2 ? Integer.parseInt(indices[2]) - 1 : -1;
-            if (normalIndex >= 0) {
-                normalIndices.add(normalIndex);
+            if (indices.length > 1 && !indices[1].isEmpty()) {
+                int textureIndex = Integer.parseInt(indices[1]) - 1;
+                polygonTextureIndices.add(textureIndex);
             }
 
 
+            if (indices.length > 2 && !indices[2].isEmpty()) {
+                int normalIndex = Integer.parseInt(indices[2]) - 1;
+                polygonNormalIndices.add(normalIndex);
+            }
         }
 
 
-         polygons.add(new Polygon(vertexIndices, textureVertexIndices, normalIndices));
+        polygons.add(new Polygon(polygonVertexIndices, polygonTextureIndices, polygonNormalIndices));
     }
+
+
 }
 

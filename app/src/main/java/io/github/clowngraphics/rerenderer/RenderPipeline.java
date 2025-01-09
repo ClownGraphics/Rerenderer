@@ -15,6 +15,7 @@ import io.github.clowngraphics.rerenderer.render.texture.Texture;
 import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -56,6 +57,8 @@ public class RenderPipeline {
         final Camera selectedCamera = scene.getCurrentCamera();
 
         zBuffer.clear();
+        ctx.setFill(Color.WHITE);
+        ctx.fillRect(0, 0, getScreenWidth(), getScreenHeight());
 
         //TODO Тут будет что-то для освещения - @Fiecher
 

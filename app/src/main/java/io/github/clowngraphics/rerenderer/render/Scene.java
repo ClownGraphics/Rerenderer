@@ -6,6 +6,7 @@ import io.github.clowngraphics.rerenderer.model.Model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Scene {
     private List<Camera> cameras = new ArrayList<>();
@@ -28,11 +29,19 @@ public class Scene {
     }
 
     public void setCamera(Camera camera, int index) {
-        this.cameras.set(index, camera);
+        if (cameras.isEmpty()) {
+            this.cameras.add(index, camera);
+        } else {
+            this.cameras.set(index, camera);
+        }
     }
 
     public void setModels(Model model, int index) {
-        this.models.set(index, model);
+        if (models.isEmpty()){
+            this.models.add(index,model);
+        } else {
+            this.models.set(index, model);
+        }
     }
 
     public List<Model> getModels() {

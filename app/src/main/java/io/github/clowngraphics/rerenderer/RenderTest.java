@@ -120,37 +120,28 @@ public class RenderTest extends Application{
 
 
                 if (t.getCode() == KeyCode.DIGIT1) {
-                    gc.setFill(Color.WHITE);
-//                    gc.fillRect(0, 0, width, height);
-                    gc.setFill(Color.BLACK);
 
                     currScale[getAxisId(curr)] += change;
 
                     System.out.println(currScale[getAxisId(curr)]);
                     model.setScale(currScale[getAxisId(curr)], curr);
-                    rpipe.renderModel(camera, model);
+                    rpipe.renderScene(scene);
                 }
                 if (t.getCode() == KeyCode.DIGIT2) {
-                    gc.setFill(Color.WHITE);
-//                    gc.fillRect(0, 0, width, height);
-                    gc.setFill(Color.BLACK);
 
                     currAngle[getAxisId(curr)] += change;
 
                     System.out.println(currScale[getAxisId(curr)]);
                     model.setAngle(currAngle[getAxisId(curr)], curr);
-                    rpipe.renderModel(camera, model);
+                    rpipe.renderScene(scene);
                 }
                 if (t.getCode() == KeyCode.DIGIT3) {
-                    gc.setFill(Color.WHITE);
-//                    gc.fillRect(0, 0, width, height);
-                    gc.setFill(Color.BLACK);
 
                     currPos[getAxisId(curr)] += change;
 
                     System.out.println(currScale[getAxisId(curr)]);
                     model.setPosition(currPos[getAxisId(curr)], curr);
-                    rpipe.renderModel(camera, model);
+                    rpipe.renderScene(scene);
                 }
             }
         });

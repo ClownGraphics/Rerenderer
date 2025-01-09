@@ -44,7 +44,7 @@ public class RenderTest extends Application{
 
         ModelReader mr = new ModelReader();
         //TODO Пофиксить проблему с кодировками -- @Fiecher/Миша
-        String filename = getClass().getResource("WrapSkull.obj").getPath();
+        String filename = getClass().getResource("teapot.obj").getPath();
 
         Model model = new Model(mr.read(new File(filename)));
         CameraProperties cp = new CameraProperties();
@@ -60,7 +60,6 @@ public class RenderTest extends Application{
         root.getChildren().add(canvas);
         scene.setScene(new Scene(root));
         scene.show();
-
 
 
         scene.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
@@ -143,19 +142,18 @@ public class RenderTest extends Application{
 
     private void handleCamera(Camera camera, KeyEvent t) {
         if (t.getCode() == KeyCode.W) {
-            camera.translate(0.1f, Axis.Z);
-        }
-        if (t.getCode() == KeyCode.S) {
-            camera.translate(-0.1f, Axis.Z);
-        }
-        if (t.getCode() == KeyCode.A) {
             camera.translate(0.1f, Axis.X);
         }
-        if (t.getCode() == KeyCode.D) {
+        if (t.getCode() == KeyCode.S) {
             camera.translate(-0.1f, Axis.X);
         }
-//        System.out.println(camera.getEye());
-        System.out.println(camera.getTransform().getMatrix());
-        camera.updateVectors();
+        if (t.getCode() == KeyCode.A) {
+            camera.translate(0.1f, Axis.Z);
+        }
+        if (t.getCode() == KeyCode.D) {
+            camera.translate(-0.1f, Axis.Z);
+        }
+        System.out.println(camera.getEye());
+//        camera.updateVectors();
     }
 }

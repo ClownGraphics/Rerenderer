@@ -15,14 +15,15 @@ import io.github.clowngraphics.rerenderer.model.transform.ScreenTransform;
 //todo: это что-то на криворуком, переделать
 // - делать систему управления положения камерой и моделью наследуя от одного интерфейса видимо было ошибкой?
 // - возможно преобразования камеры стоило применять самой камерой методом lookAt
-public class Camera implements Object {
+
+public class Camera /*implements Object*/ {
     CameraTransform cameraTransform = new CameraTransform();
 
     //TODO: решить, как лучше получать преобразованную камеру:
     //  1) Статическим классом трансформатором
     //  2) Внутренними методами
     // - Миша
-    ModelTransform orientation = new ModelTransform();
+    /*ModelTransform orientation = new ModelTransform();*/
     ScreenTransform screenTransform = new ScreenTransform();
     CameraProperties properties;
 
@@ -55,8 +56,14 @@ public class Camera implements Object {
         updateVectors();
     }
 
-    public void updateVectors() {
-        zAxis = Vec3Math.sub(getTarget(), getEye());
+    private void updateVectors() {
+        assert getTarget() != getEye();
+
+        // Vec3Math.sub(getTarget(), getEye()) оказывается перезаписывает getTarget()
+//        zAxis = Vec3Math.sub(getTarget(), getEye());
+        Vector3 t = getTarget();
+        Vector3 e = getEye();
+        zAxis = new Vec3(t.x() - e.x(), t.y() - e.y(), t.z() - e.z());
         xAxis = Vec3Math.cross(getUp(), zAxis);
         yAxis = Vec3Math.cross(zAxis, xAxis);
         xAxis = Vec3Math.normalize(xAxis);
@@ -75,66 +82,59 @@ public class Camera implements Object {
     }
     //todo: переделать передвижение камеры
 
-     /*Храним вектора eye, up и target
-     *   при вращении/перемещении камеры они не изменяются, меняются применяемые преобразования
-     *   если установить eye/up/target напрямую, то соответствующее им преобразование обнуляются*/
+    public void translate(float dt, Axis axis) {
+        Translation translation = new Translation();
+        translation.translate(dt, axis);
+        setEye(translation.transform(eye));
+    }
+
+    public void moveTo(float x, float y, float z) {
+        setEye(new Vec3(x, y, z));
+    }
+
+    //todo: camera rotation
+    public void rotateUp() {
+
+    }
+
+    public void rotateLeft() {
+
+    }
+
+    public void rotateDown() {
+
+    }
+
+    public void rotateRight() {
+
+    }
+
     public Vector3 getEye() {
-        return orientation.transform(eye);
+        return eye;
     }
 
     public void setEye(Vector3 eye) {
-        orientation.setTranslation(new Translation());
         this.eye = eye;
         updateVectors();
     }
 
     public Vector3 getTarget() {
-        return orientation.transform(target);
+        return target;
     }
 
     public void setTarget(Vector3 target) {
-        orientation.setAngle(0, Axis.X);
         this.target = target;
         updateVectors();
     }
 
     public Vector3 getUp() {
-        return orientation.transform(up);
+        return up;
     }
 
     public void setUp(Vector3 up) {
-        orientation.setAngle(0, Axis.Y);
         this.up = up;
         updateVectors();
     }
-
-    //old:
-//    public Vector3 getEye() {
-//        return eye;
-//    }
-//
-//    public void setEye(Vector3 eye) {
-//        this.eye = eye;
-//        updateVectors();
-//    }
-//
-//    public Vector3 getTarget() {
-//        return target;
-//    }
-//
-//    public void setTarget(Vector3 target) {
-//        this.target = target;
-//        updateVectors();
-//    }
-//
-//    public Vector3 getUp() {
-//        return up;
-//    }
-//
-//    public void setUp(Vector3 up) {
-//        this.up = up;
-//        updateVectors();
-//    }
 
 
     //todo: lookAt()
@@ -160,13 +160,47 @@ public class Camera implements Object {
     }
 
 
-    @Override
-    public void scale(float s, Axis axis) {
-        return;
-    }
-
-    @Override
-    public ModelTransform getTransform() {
-        return orientation;
-    }
+    /*Взаимодействие с интерфейсом Object:
+     *   храним вектора eye, up и target
+     *   при вращении/перемещении камеры они не изменяются, меняются применяемые преобразования
+     *   если установить eye/up/target напрямую, то соответствующее им преобразование обнуляются*/
+//    public Vector3 getEye() {
+//        return orientation.transform(eye);
+//    }
+//
+//    public void setEye(Vector3 eye) {
+//        orientation.setTranslation(new Translation());
+//        this.eye = eye;
+//        updateVectors();
+//    }
+//
+//    public Vector3 getTarget() {
+//        return orientation.transform(target);
+//    }
+//
+//    public void setTarget(Vector3 target) {
+//        orientation.setAngle(0, Axis.X);
+//        this.target = target;
+//        updateVectors();
+//    }
+//
+//    public Vector3 getUp() {
+//        return orientation.transform(up);
+//    }
+//
+//    public void setUp(Vector3 up) {
+//        orientation.setAngle(0, Axis.Y);
+//        this.up = up;
+//        updateVectors();
+//    }
+//
+//    @Override
+//    public void scale(float s, Axis axis) {
+//        return;
+//    }
+//
+//    @Override
+//    public ModelTransform getTransform() {
+//        return orientation;
+//    }
 }

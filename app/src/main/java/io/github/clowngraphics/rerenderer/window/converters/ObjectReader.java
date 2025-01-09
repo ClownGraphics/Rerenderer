@@ -2,8 +2,12 @@ package io.github.clowngraphics.rerenderer.window.converters;
 
 import io.github.alphameo.linear_algebra.vec.Vec2;
 import io.github.alphameo.linear_algebra.vec.Vec3;
+import io.github.alphameo.linear_algebra.vec.Vec4;
 import io.github.clowngraphics.rerenderer.render.Polygon;
 import io.github.clowngraphics.rerenderer.render.Vertex;
+
+import java.io.*;
+import java.util.*;
 
 import java.io.*;
 import java.util.*;
@@ -31,7 +35,7 @@ public class ObjectReader {
                 } else if (line.startsWith("vn ")) {
                     normals.add(parseNormal(line));
                 } else if (line.startsWith("f ")) {
-                    polygons.add(parsePolygon(line, vertices, normals, textureVertices));
+                    parsePolygon(line, vertexIndices, textureVertexIndices, normalIndices, polygons);
                 }
             }
         }
@@ -49,7 +53,7 @@ public class ObjectReader {
         float y = Float.parseFloat(parts[2]);
         float z = Float.parseFloat(parts[3]);
 
-        return new Vertex(new Vec3(x, y, z), null, null);
+        return new Vertex(new Vec4(x, y, z, 1));
     }
 
     private static Vec2 parseTextureVertex(String line) {
@@ -77,27 +81,30 @@ public class ObjectReader {
         return new Vec3(x, y, z);
     }
 
-    private static Polygon parsePolygon(String line, List<Vertex> vertices, List<Vec3> normals, List<Vec2> textureVertices) {
+    private static void parsePolygon(String line, List<Integer> vertexIndices, List<Integer> textureVertexIndices, List<Integer> normalIndices, List<Polygon> polygons) {
         String[] parts = line.split(" ");
         List<Vertex> polygonVertices = new ArrayList<>();
 
         for (int i = 1; i < parts.length; i++) {
             String[] indices = parts[i].split("/");
             int vertexIndex = Integer.parseInt(indices[0]) - 1;
-            int textureIndex = indices.length > 1 && !indices[1].isEmpty() ? Integer.parseInt(indices[1]) - 1 : -1;
-            int normalIndex = indices.length > 2 ? Integer.parseInt(indices[2]) - 1 : -1;
+            vertexIndices.add(vertexIndex);
 
-            if (vertexIndex < 0 || vertexIndex >= vertices.size()) {
-                throw new IllegalArgumentException("Invalid vertex index: " + parts[i]);
+            int textureIndex = indices.length > 1 && !indices[1].isEmpty() ? Integer.parseInt(indices[1]) - 1 : -1;
+            if (textureIndex >= 0) {
+                textureVertexIndices.add(textureIndex);
             }
 
-            Vec3 normal = (normalIndex >= 0 && normalIndex < normals.size()) ? normals.get(normalIndex) : null;
-            Vec2 textureVertex = (textureIndex >= 0 && textureIndex < textureVertices.size()) ? textureVertices.get(textureIndex) : null;
+            int normalIndex = indices.length > 2 ? Integer.parseInt(indices[2]) - 1 : -1;
+            if (normalIndex >= 0) {
+                normalIndices.add(normalIndex);
+            }
 
-            polygonVertices.add(new Vertex(vertices.get(vertexIndex).getPosition(), normal, textureVertex));
+
         }
 
-        return new Polygon(polygonVertices);
+
+        // polygons.add(new Polygon(polygonVertices));
     }
 }
 

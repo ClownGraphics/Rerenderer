@@ -8,7 +8,6 @@ import io.github.clowngraphics.rerenderer.model.Model;
 import io.github.clowngraphics.rerenderer.render.Polygon;
 import io.github.clowngraphics.rerenderer.render.Vertex;
 import io.github.clowngraphics.rerenderer.render.texture.Texture;
-import io.github.shimeoki.jshaper.ObjFile;
 
 import java.io.*;
 import java.util.*;

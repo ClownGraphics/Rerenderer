@@ -20,13 +20,17 @@ public class ZBuffer {
         clear();
     }
 
-    public boolean isDrawable(int x, int y, int z){
-        if (z < zBuffer[x][y]){
+    public boolean isDrawable(int x, int y, float z) {
+        if (x < 0 || x >= width || y < 0 || y >= height) {
+            return false;
+        }
+        if (z < zBuffer[x][y]) {
             zBuffer[x][y] = z;
             return true;
         }
         return false;
     }
+
 
     public void clear() {
         for (float[] row : zBuffer) {

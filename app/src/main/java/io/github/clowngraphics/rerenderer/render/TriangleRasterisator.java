@@ -7,17 +7,11 @@ import io.github.clowngraphics.rerenderer.render.texture.ColorRGB;
 import io.github.clowngraphics.rerenderer.render.texture.Texture;
 import javafx.geometry.Point3D;
 import javafx.scene.image.PixelWriter;
-import javafx.scene.paint.Color;
-
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class TriangleRasterisator {
 
     private PixelWriter pixelWriter;
-
     private ZBuffer zBuffer;
 
     public TriangleRasterisator(PixelWriter pixelWriter, ZBuffer zBuffer) {
@@ -25,129 +19,93 @@ public class TriangleRasterisator {
         this.zBuffer = zBuffer;
     }
 
-    public PixelWriter getPixelWriter() {
-        return pixelWriter;
-    }
-
-    public void setPixelWriter(PixelWriter pixelWriter) {
-        this.pixelWriter = pixelWriter;
-    }
-
     private List<Point3D> sortedVertices(final Triangle t) {
-        final List<Point3D> vertices = new ArrayList<>();
-        vertices.add(t.getPoint1());
-        vertices.add(t.getPoint2());
-        vertices.add(t.getPoint3());
-
+        List<Point3D> vertices = Arrays.asList(t.getPoint1(), t.getPoint2(), t.getPoint3());
         vertices.sort(Comparator.comparing(Point3D::getY).thenComparing(Point3D::getX));
         return vertices;
     }
 
-    private void drawFlat(final Triangle t, final Point3D lone, final Point3D flat1, final Point3D flat2) {
-        final double lx = lone.getX();
-        final double ly = lone.getY();
+    private void drawFlat(final Triangle t, Point3D top, Point3D middle, Point3D bottom) {
+        double dx1 = (middle.getX() - top.getX()) / (middle.getY() - top.getY());
+        double dx2 = (bottom.getX() - top.getX()) / (bottom.getY() - top.getY());
+        double dz1 = (middle.getZ() - top.getZ()) / (middle.getY() - top.getY());
+        double dz2 = (bottom.getZ() - top.getZ()) / (bottom.getY() - top.getY());
 
-        // "delta flat x1"
-        final double deltaFlatX1 = flat1.getX() - lx;
-        final double deltaFlatY1 = flat1.getY() - ly;
-
-        final double deltaFlatX2 = flat2.getX() - lx;
-        final double deltaFlatY2 = flat2.getY() - ly;
-
-        double deltaX1 = deltaFlatX1 / deltaFlatY1;
-        double deltaX2 = deltaFlatX2 / deltaFlatY2;
-
-        final double flatY = flat1.getY();
-        if (Utils.moreThan(ly, flatY)) {
-            drawBottom(t, lone, flatY, deltaX1, deltaX2);
+        if (Utils.moreThan(top.getY(), middle.getY())) {
+            drawBottom(t, top, middle.getY(), dx1, dx2, dz1, dz2);
         } else {
-            drawTop(t, lone, flatY, deltaX1, deltaX2);
+            drawTop(t, top, middle.getY(), dx1, dx2, dz1, dz2);
         }
     }
 
-    private void drawTop(final Triangle t, final Point3D v, final double maxY, final double dx1, final double dx2) {
-
-        double x1 = v.getX();
+    private void drawTop(Triangle t, Point3D top, double maxY, double dx1, double dx2, double dz1, double dz2) {
+        double x1 = top.getX();
         double x2 = x1;
+        double z1 = top.getZ();
+        double z2 = z1;
 
-        for (int y = (int) v.getY(); y <= maxY; y++) {
-            drawHLine(t, (int) x1, (int) x2, (int) v.getZ(), y);
+        for (int y = (int) top.getY(); y <= maxY; y++) {
+            drawHLine(t, (int) x1, (int) x2, z1, z2, y);
             x1 += dx1;
             x2 += dx2;
+            z1 += dz1;
+            z2 += dz2;
         }
     }
 
-    private void drawBottom(final Triangle t, final Point3D v, final double minY, final double dx1, final double dx2) {
-
-        double x1 = v.getX();
+    private void drawBottom(Triangle t, Point3D bottom, double minY, double dx1, double dx2, double dz1, double dz2) {
+        double x1 = bottom.getX();
         double x2 = x1;
+        double z1 = bottom.getZ();
+        double z2 = z1;
 
-        for (int y = (int) v.getY(); y > minY; y--) {
-            drawHLine(t, (int) x1, (int) x2, (int) v.getZ(), y);
-
+        for (int y = (int) bottom.getY(); y > minY; y--) {
+            drawHLine(t, (int) x1, (int) x2, z1, z2, y);
             x1 -= dx1;
             x2 -= dx2;
+            z1 -= dz1;
+            z2 -= dz2;
         }
     }
-    // TODO Правильно? -- @Fiecher
-    private void drawHLine(final Triangle t, final int x1, final int x2, final int z, final int y) {
+
+    private void drawHLine(Triangle t, int x1, int x2, double z1, double z2, int y) {
+        if (x1 > x2) {
+            int tempX = x1; x1 = x2; x2 = tempX;
+            double tempZ = z1; z1 = z2; z2 = tempZ;
+        }
+
+        double dz = (z2 - z1) / (x2 - x1);
+        double z = z1;
 
         for (int x = x1; x <= x2; x++) {
-            final Barycentric b;
-
-            try {
-                b = t.barycentrics(new Point3D(x, y, z));
-            } catch (Exception e) {
-                continue;
+            if (zBuffer.isDrawable(x, y, (float) z)) {
+                Barycentric b = t.barycentrics(new Point3D(x, y, z));
+                if (b.isInside()) {
+                    ColorRGB color = t.getTexture().get(b);
+                    pixelWriter.setColor(x, y, color.convertToJFXColor());
+                }
             }
-
-            if (!b.isInside()) {
-                continue;
-            }
-
-            ColorRGB color = t.getTexture().get(b);
-            if (zBuffer.isDrawable(x, y, z)) {
-                pixelWriter.setColor(x, y, color.convertToJFXColor());
-            }
+            z += dz;
         }
     }
 
     public void draw(Point3D p1, Point3D p2, Point3D p3, Texture texture, RenderType renderType) {
-        Objects.requireNonNull(p1);
-        Objects.requireNonNull(p2);
-        Objects.requireNonNull(p3);
-        if (renderType == RenderType.SOLID || renderType == RenderType.BOTH) {
+        Triangle t = new Triangle(p1, p2, p3, texture);
+        List<Point3D> vertices = sortedVertices(t);
+        Point3D v1 = vertices.get(0);
+        Point3D v2 = vertices.get(1);
+        Point3D v3 = vertices.get(2);
 
-            Triangle t = new Triangle(p1, p2, p3, texture);
-            List<Point3D> vertices = sortedVertices(t);
+        if (Utils.equals(v2.getY(), v3.getY())) {
+            drawFlat(t, v1, v2, v3);
+        } else if (Utils.equals(v1.getY(), v2.getY())) {
+            drawFlat(t, v3, v1, v2);
+        } else {
+            double x4 = v1.getX() + ((v2.getY() - v1.getY()) / (v3.getY() - v1.getY())) * (v3.getX() - v1.getX());
+            double z4 = v1.getZ() + ((v2.getY() - v1.getY()) / (v3.getY() - v1.getY())) * (v3.getZ() - v1.getZ());
+            Point3D v4 = new Point3D(x4, v2.getY(), z4);
 
-            Point3D v1 = vertices.get(0);
-            Point3D v2 = vertices.get(1);
-            Point3D v3 = vertices.get(2);
-
-            double x1 = v1.getX();
-            double y1 = v1.getY();
-
-            double x2 = v2.getX();
-            double y2 = v2.getY();
-
-            double x3 = v3.getX();
-            double y3 = v3.getY();
-
-            if (Utils.equals(y2, y3)) {
-                drawFlat(t, v1, v2, v3);
-                return;
-            }
-
-            if (Utils.equals(y1, y2)) {
-                drawFlat(t, v3, v1, v2);
-                return;
-            }
-
-            final double x4 = x1 + ((y2 - y1) / (y3 - y1)) * (x3 - x1);
-            final Point3D v4 = new Point3D(x4, v2.getY(), v2.getZ());
-
-            if (Utils.moreThan(x4, x2)) {
+            if (x4 > v2.getX()) {
                 drawFlat(t, v1, v2, v4);
                 drawFlat(t, v3, v2, v4);
             } else {
@@ -173,14 +131,22 @@ public class TriangleRasterisator {
         int x2 = (int) p2.getX();
         int y2 = (int) p2.getY();
 
+        float z1 = (float) p1.getZ();
+        float z2 = (float) p2.getZ();
+
         int dx = Math.abs(x2 - x1);
         int dy = Math.abs(y2 - y1);
         int sx = x1 < x2 ? 1 : -1;
         int sy = y1 < y2 ? 1 : -1;
         int err = dx - dy;
 
+        float dz = dx > dy ? (z2 - z1) / dx : (z2 - z1) / dy;
+        float z = z1;
+
         while (true) {
-            pixelWriter.setColor(x1, y1, Color.BLACK);
+            if (zBuffer.isDrawable(x1, y1, z)) {
+                pixelWriter.setColor(x1, y1, javafx.scene.paint.Color.BLACK);
+            }
 
             if (x1 == x2 && y1 == y2) {
                 break;
@@ -195,6 +161,8 @@ public class TriangleRasterisator {
                 err += dx;
                 y1 += sy;
             }
+
+            z += dz;
         }
     }
 }

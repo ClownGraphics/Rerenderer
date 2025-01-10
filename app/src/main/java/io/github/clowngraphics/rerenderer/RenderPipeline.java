@@ -100,8 +100,12 @@ public class RenderPipeline {
                         vertex.z()
                 ));
             }
+            List<Integer> tvIndecies = new ArrayList<>();
+            tvIndecies.add(polygon.getTextureVertexIndices().get(0));
+            tvIndecies.add(polygon.getTextureVertexIndices().get(1));
+            tvIndecies.add(polygon.getTextureVertexIndices().get(2));
 
-            rasterisator.draw(pointsList.get(0), pointsList.get(1), pointsList.get(2), texture, getCurrentRenderType());
+            rasterisator.draw(pointsList.get(0), pointsList.get(1), pointsList.get(2), tvIndecies, texture, getCurrentRenderType());
         }
 
     }

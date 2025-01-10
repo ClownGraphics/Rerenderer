@@ -3,6 +3,8 @@ package io.github.clowngraphics.rerenderer.render.texture;
 
 import io.github.clowngraphics.rerenderer.math.Barycentric;
 import javafx.scene.paint.Color;
+
+import java.util.List;
 import java.util.Objects;
 
 public class MonotoneTexture implements Texture {
@@ -20,7 +22,7 @@ public class MonotoneTexture implements Texture {
         this.color = new ColorRGB(color);
     }
 
-    public ColorRGB get(final Barycentric b) {
+    public ColorRGB get(final Barycentric b, List<Integer> tvIndecies) {
         Objects.requireNonNull(b);
         return color;
     }

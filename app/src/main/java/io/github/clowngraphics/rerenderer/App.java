@@ -9,13 +9,7 @@ import io.github.clowngraphics.rerenderer.window.GraphicUserInterface;
 import javafx.scene.canvas.GraphicsContext;
 
 public class App {
-    public String getGreeting() {
-        return "Hello World!";
-    }
-
     public static void main(String[] args) {
-        System.out.println(new App().getGreeting());
-
         RenderTest.main(null);
     }
 }

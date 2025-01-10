@@ -1,9 +1,11 @@
 package io.github.clowngraphics.rerenderer.window.converters;
 
-import io.github.alphameo.linear_algebra.vec.Vec2;
-import io.github.alphameo.linear_algebra.vec.Vec3;
+import io.github.alphameo.linear_algebra.vec.*;
 import io.github.clowngraphics.rerenderer.render.Polygon;
 import io.github.clowngraphics.rerenderer.render.Vertex;
+
+import java.io.*;
+import java.util.*;
 
 import java.io.*;
 import java.util.*;
@@ -12,8 +14,11 @@ public class ObjectReader {
 
     public static ObjectFile readObjFile(File objFile) throws IOException {
         List<Vertex> vertices = new ArrayList<>();
-        List<Vec2> textureVertices = new ArrayList<>();
-        List<Vec3> normals = new ArrayList<>();
+        List<Integer> vertexIndices = new ArrayList<>();
+        List<Vector2> textureVertices = new ArrayList<>();
+        List<Integer> textureVertexIndices = new ArrayList<>();
+        List<Vector3> normals = new ArrayList<>();
+        List<Integer> normalIndices = new ArrayList<>();
         List<Polygon> polygons = new ArrayList<>();
 
         try (BufferedReader reader = new BufferedReader(new FileReader(objFile))) {
@@ -28,12 +33,12 @@ public class ObjectReader {
                 } else if (line.startsWith("vn ")) {
                     normals.add(parseNormal(line));
                 } else if (line.startsWith("f ")) {
-                    polygons.add(parsePolygon(line, vertices, normals, textureVertices));
+                    parsePolygon(line, vertexIndices, textureVertexIndices, normalIndices, polygons);
                 }
             }
         }
 
-        return new ObjectFile(vertices, textureVertices, normals, polygons);
+        return new ObjectFile(vertices, vertexIndices, textureVertices, textureVertexIndices, normals, normalIndices, polygons);
     }
 
     private static Vertex parseVertex(String line) {
@@ -46,7 +51,7 @@ public class ObjectReader {
         float y = Float.parseFloat(parts[2]);
         float z = Float.parseFloat(parts[3]);
 
-        return new Vertex(new Vec3(x, y, z), null, null);
+        return new Vertex(new Vec4(x, y, z, 1));
     }
 
     private static Vec2 parseTextureVertex(String line) {
@@ -74,27 +79,42 @@ public class ObjectReader {
         return new Vec3(x, y, z);
     }
 
-    private static Polygon parsePolygon(String line, List<Vertex> vertices, List<Vec3> normals, List<Vec2> textureVertices) {
+    private static void parsePolygon(
+            String line,
+            List<Integer> vertexIndices,
+            List<Integer> textureVertexIndices,
+            List<Integer> normalIndices,
+            List<Polygon> polygons) {
+
         String[] parts = line.split(" ");
-        List<Vertex> polygonVertices = new ArrayList<>();
+        List<Integer> polygonVertexIndices = new ArrayList<>();
+        List<Integer> polygonTextureIndices = new ArrayList<>();
+        List<Integer> polygonNormalIndices = new ArrayList<>();
 
         for (int i = 1; i < parts.length; i++) {
             String[] indices = parts[i].split("/");
-            int vertexIndex = Integer.parseInt(indices[0]) - 1;
-            int textureIndex = indices.length > 1 && !indices[1].isEmpty() ? Integer.parseInt(indices[1]) - 1 : -1;
-            int normalIndex = indices.length > 2 ? Integer.parseInt(indices[2]) - 1 : -1;
 
-            if (vertexIndex < 0 || vertexIndex >= vertices.size()) {
-                throw new IllegalArgumentException("Invalid vertex index: " + parts[i]);
+
+            int vertexIndex = Integer.parseInt(indices[0]) - 1;
+            polygonVertexIndices.add(vertexIndex);
+
+
+            if (indices.length > 1 && !indices[1].isEmpty()) {
+                int textureIndex = Integer.parseInt(indices[1]) - 1;
+                polygonTextureIndices.add(textureIndex);
             }
 
-            Vec3 normal = (normalIndex >= 0 && normalIndex < normals.size()) ? normals.get(normalIndex) : null;
-            Vec2 textureVertex = (textureIndex >= 0 && textureIndex < textureVertices.size()) ? textureVertices.get(textureIndex) : null;
 
-            polygonVertices.add(new Vertex(vertices.get(vertexIndex).getPosition(), normal, textureVertex));
+            if (indices.length > 2 && !indices[2].isEmpty()) {
+                int normalIndex = Integer.parseInt(indices[2]) - 1;
+                polygonNormalIndices.add(normalIndex);
+            }
         }
 
-        return new Polygon(polygonVertices);
+
+        polygons.add(new Polygon(polygonVertexIndices, polygonTextureIndices, polygonNormalIndices));
     }
+
+
 }
 

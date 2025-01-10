@@ -11,6 +11,8 @@ import io.github.clowngraphics.rerenderer.render.Scene;
 import io.github.clowngraphics.rerenderer.render.texture.ImageTexture;
 import io.github.clowngraphics.rerenderer.render.texture.MonotoneTexture;
 import io.github.clowngraphics.rerenderer.render.texture.Texture;
+import io.github.clowngraphics.rerenderer.window.converters.ObjectFile;
+import io.github.clowngraphics.rerenderer.window.converters.ObjectReader;
 import io.github.shimeoki.jshaper.obj.ModelReader;
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -48,11 +50,17 @@ public class RenderTest extends Application{
         ModelReader mr = new ModelReader();
 
         //TODO Пофиксить проблему с кодировками -- @Fiecher/Миша
+
+
+
         String filename = getClass().getResource("obamaprism.obj").getPath();
         String textureFile = getClass().getResource("obamaprism.jpg").getPath();
         ImageTexture texture = ImageTexture.setFromFile(new File(textureFile));
 
-        Model model = new Model(mr.read(new File(filename)), texture);
+        ObjectFile objectFile = ObjectReader.readObjFile(new File(filename));
+
+        Model model = new Model(objectFile, texture);
+//        Model model = new Model(mr.read(new File(filename)), texture);
 
         CameraProperties cp = new CameraProperties();
         Camera camera = new Camera(new Vec3(2,0.3f,0.4f), cp);

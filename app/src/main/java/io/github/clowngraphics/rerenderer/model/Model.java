@@ -13,6 +13,7 @@ import io.github.clowngraphics.rerenderer.render.Triangulation;
 import io.github.clowngraphics.rerenderer.render.Vertex;
 import io.github.clowngraphics.rerenderer.render.texture.ImageTexture;
 import io.github.clowngraphics.rerenderer.render.texture.Texture;
+import io.github.clowngraphics.rerenderer.window.converters.ObjectFile;
 import io.github.shimeoki.jshaper.ObjFile;
 import io.github.shimeoki.jshaper.obj.TextureVertex;
 import io.github.shimeoki.jshaper.obj.VertexNormal;
@@ -43,6 +44,21 @@ public class Model implements Object {
             0, 0, 0, 1
     );
 
+    public Model(final ObjectFile obj){
+        vertices = obj.getVertices();
+        textureVertices = obj.getTextureVertices();
+        normals = obj.getNormals();
+        polygons = Triangulation.triangulate(obj.getPolygons());
+    }
+
+    public Model(final ObjectFile obj, ImageTexture texture){
+        vertices = obj.getVertices();
+        textureVertices = obj.getTextureVertices();
+        normals = obj.getNormals();
+        polygons = Triangulation.triangulate(obj.getPolygons());
+        texture.setTextureVertices(getTextureVertices());
+        this.texture = texture;
+    }
 
     public Model(final ObjFile obj, final ImageTexture texture) {
         vertices = Vertex.convertVerticesFromJShaper(obj.vertexData().vertices());

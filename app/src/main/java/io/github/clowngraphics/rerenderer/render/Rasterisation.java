@@ -13,6 +13,7 @@ public class Rasterisation {
 
     private final PixelWriter pixelWriter;
     private final ZBuffer zBuffer;
+    private List<Integer> tvIndecies;
 
     public Rasterisation(PixelWriter pixelWriter, ZBuffer zBuffer) {
         this.pixelWriter = pixelWriter;
@@ -81,7 +82,7 @@ public class Rasterisation {
             if (zBuffer.isDrawable(x, y, z)) {
                 Barycentric b = t.barycentrics(new Point3D(x, y, z));
                 if (b.isInside()) {
-                    ColorRGB color = t.getTexture().get(b);
+                    ColorRGB color = t.getTexture().get(b, tvIndecies);
                     pixelWriter.setColor(x, y, color.convertToJFXColor());
                 }
             }
@@ -89,8 +90,9 @@ public class Rasterisation {
         }
     }
 
-    public void draw(Point3D p1, Point3D p2, Point3D p3, Texture texture, RenderType renderType) {
+    public void draw(Point3D p1, Point3D p2, Point3D p3, List<Integer> tvIndecies,Texture texture, RenderType renderType) {
         Triangle t = new Triangle(p1, p2, p3, texture);
+        this.tvIndecies = tvIndecies;
         List<Point3D> vertices = sortedVertices(t);
         Point3D v1 = vertices.get(0);
         Point3D v2 = vertices.get(1);

@@ -49,18 +49,17 @@ public class ImageTexture implements Texture {
     }
 
     @Override
-    public ColorRGB get(Barycentric b) {
-        // Interpolate UV coordinates using barycentric weights
+    public ColorRGB get(Barycentric b, List<Integer> tvIndecies) {
         float u = (float) (
-                b.getLambda1() * textureVertices.get(0).x() +
-                        b.getLambda2() * textureVertices.get(1).x() +
-                        b.getLambda3() * textureVertices.get(2).x()
+                b.getLambda1() * textureVertices.get(tvIndecies.get(0)).x() +
+                        b.getLambda2() * textureVertices.get(tvIndecies.get(1)).x() +
+                        b.getLambda3() * textureVertices.get(tvIndecies.get(2)).x()
         );
 
         float v = (float) (
-                b.getLambda1() * textureVertices.get(0).y() +
-                        b.getLambda2() * textureVertices.get(1).y() +
-                        b.getLambda3() * textureVertices.get(2).y()
+                b.getLambda1() * textureVertices.get(tvIndecies.get(0)).y() +
+                        b.getLambda2() * textureVertices.get(tvIndecies.get(1)).y() +
+                        b.getLambda3() * textureVertices.get(tvIndecies.get(2)).y()
         );
 
         int pixelX = Math.min((int) (u * (width - 1)), width - 1);

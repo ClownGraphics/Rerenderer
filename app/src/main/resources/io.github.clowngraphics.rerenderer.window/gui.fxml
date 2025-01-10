@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
@@ -32,9 +34,47 @@
       </MenuBar>
       <HBox layoutX="3.0" layoutY="3.0" prefHeight="392.0" prefWidth="458.0">
          <children>
-            <Canvas height="390.0" width="456.0" />
+            <Canvas fx:id="canvas" height="390.0" width="456.0" />
          </children>
       </HBox>
-      <VBox layoutX="469.0" layoutY="30.0" prefHeight="366.0" prefWidth="126.0" />
+      <VBox layoutX="469.0" layoutY="30.0" prefHeight="366.0" prefWidth="126.0">
+         <children>
+            <SplitPane dividerPositions="0.3141025641025641, 0.6586538461538461" prefHeight="6.0" prefWidth="126.0">
+               <items>
+                  <TextField fx:id="TransX" />
+                  <TextField fx:id="TransY" />
+                  <TextField fx:id="TransZ" />
+               </items>
+            </SplitPane>
+            <HBox prefHeight="6.0" prefWidth="126.0">
+               <children>
+                  <Label text="Transform" />
+               </children>
+            </HBox>
+            <SplitPane dividerPositions="0.3221153846153846, 0.6666666666666666" prefHeight="0.0" prefWidth="126.0">
+               <items>
+                  <TextField fx:id="RotateX" />
+                  <TextField fx:id="RotateY" />
+                  <TextField fx:id="RotateZ" />
+               </items>
+            </SplitPane>
+            <HBox prefHeight="10.0" prefWidth="126.0">
+               <children>
+                  <Label text="Rotate" />
+               </children>
+            </HBox>
+            <SplitPane dividerPositions="0.3221153846153846, 0.6666666666666666" prefHeight="0.0" prefWidth="126.0">
+               <items>
+                  <TextField fx:id="ScaleX" prefHeight="26.0" prefWidth="38.0" />
+                  <TextField fx:id="ScaleY" />
+                  <TextField fx:id="ScaleZ" />
+               </items>
+            </SplitPane>
+            <HBox prefHeight="6.0" prefWidth="126.0">
+               <children>
+                  <Label text="Scale" />
+               </children>
+            </HBox>
+         </children></VBox>
    </children>
 </AnchorPane>
